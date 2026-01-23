@@ -1,9 +1,9 @@
 ---
 title: "Test Presentation"
 subtitle: "⚔<br/>with xaringan"
-author: "Yihui Xie"
+author: "Denys Sharpylo"
 institute: "RStudio, PBC"
-date: "2016/12/12 (updated: `r Sys.Date()`)"
+date: "2026/01/23 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -13,3 +13,4 @@ output:
       countIncrementalSlides: false
 ---
 **This is a test presentation**
+
