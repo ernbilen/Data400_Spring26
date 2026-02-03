@@ -20,7 +20,7 @@ Beyond just the artists specifically, which tours to even cover also comes down 
 
 1. Taylor Swift's Eras Tour
 2. The Weeknd's After Hours til Dawn tour
-3. Coldplay's Music of the Spheres WOrld Tour
+3. Coldplay's Music of the Spheres World Tour
 4. Ed Sheeran's Mathematics Tour (Officially called the +−=÷× Tour)
 5. Bruce Springsteen and the E Street Band's 2023-2025 Tour
 6. Metallica's M72 Tour
@@ -58,6 +58,15 @@ Traffic tolls. Flight revenues. Cell phone movement.
 Tblae
 
 ## Stakeholders
-The primary stakeholders in this matter are local businesses themselve. This project is not planning on looking at the economics of tours themselves, such as the revenue from tickets and merchandise for the artist and for the venue. Instead, this project plans on analyzing the surrounding metro area. Can local businesses, especially those who would be catering to those only visiting the area for this show, expect a noticeable increase in revenue when a major artist comes to town? Should the owners of hotels and restaurants expect to see an increase in reservations? Should transit services, such as Uber, Lyft, and local public transportation, expect to see a surge in use? Most importantly in my mind, is it worthwhile for these cities to ensure that major artists want to come perform there for the sake of their bottom line?
+The primary stakeholders in this matter are local businesses themselves. This project is not planning on looking at the economics of tours themselves, such as the revenue from tickets and merchandise for the artist and for the venue. Instead, this project plans on analyzing the surrounding metro area. Can local businesses, especially those who would be catering to those only visiting the area for this show, expect a noticeable increase in revenue when a major artist comes to town? Should the owners of hotels and restaurants expect to see an increase in reservations? Should transit services, such as Uber, Lyft, and local public transportation, expect to see a surge in use? Most importantly in my mind, is it worthwhile for these cities to ensure that major artists want to come perform there for the sake of their bottom line?
 
 ## Ethical Ramifications
+Large tours coming to any given metro area having a positive economic impact may hold value for the city, but at the same time there are other people in this picture that the primary question doesn't acknowledge. 
+
+### The Audience
+First off, the actual concertgoers and the logistics of them getting to shows has to be acknowledged. Especially since the United States hasn't raised its federal minimum wage from $7.25 an hour since the 1980s, and concert tickets are only getting more expensive (especially for tours of the scale this project examines), more cities wanting more touring acts to come through might not be good for the financial situations of the audience attending. This could itself influence whether or not the economic statement made by this project will even be relevant later on.
+
+### The Tour Itself
+Concert tours on the whole take a lot of work to put on. Most tours of a notable scale (by which I mean held at actual concert venues) are going to need speakers so the audience can actually hear the music, microphones to pick up what's being played, a means for those pieces to communicate, a proper lighting set up for any effects the artist may try to incorporate, etc. All of that takes a lot of people to set up and manage. On an arena scale that's even more true. Teams of over one hundred people cumulatively are not unexpected for any one location. In working on sets, lighting, sound, rigging up all of the pieces in question. In recent years, in large part because of the pandemic, people haven't been able to be trained as effectively ahead of time. Due to that lack of skilled workers, those who are available have to be stretched thin more often than not. If the data encourages the city to invite more artists to perform to boost their GDP, they are inevitably risking lower quality work from backstage personnel. If even one piece fails, the whole show fails.
+
+## Conclusion
