@@ -19,12 +19,27 @@ registerS3method(
   envir = asNamespace("knitr")
 )
 ```
-## The actual question
+# The actual question
+Can one successfully predict the chart trajectory of a song based on where it entered and who's song it is week by week? Most labels want their acts to perform consistently, but due to shifting cultural trends that will nearly never be the case. Still, being able to have some level of accuracy about how consistently successful any given song will be is good for marketing. There are other distinctly musical trends that decide which songs are going to be the singles, but in terms of general performance on this one chart, how much consistency is there?
 
-would you rather have, unlimited bacon, but no more video games; OR, games, unlimited games, but no games
+## Tractibility of the Data
+Luckily, in large part because I am a nerd, I was doing some research into the Billboard Hot 100 throughout the years last semester. Not for any particular project, just for fun, and managed to scrape every single chart up to around September 2025.
 
 ```{r, warning=FALSE}
 example_chart <- readxl::read_xlsx('/Users/benjaminfox/Desktop/Billboard Webscraping Data/Every_Billboard_Song.xlsx')
 
 head(example_chart)
 ```
+
+Things get a little tricky after that though, since Billboard recently updated their archive such that only Pro subscribers to their magazine can access it. So for the weeks since September-ish, I will go to someone else's Github repository. This repository is stored only in json though, so the disentanglement of it will be trickier. 
+```{r, warning=FALSE}
+#Pulling from the chart in September
+goodDatesLink <- jsonlite::fromJSON("https://raw.githubusercontent.com/mhollingshead/billboard-hot-100/main/date/2025-09-06.json")
+
+pulled_chart <- goodDatesLink$data
+head(pulled_chart)
+```
+Still, I've messed with the data to get it into a nice form before, I can do it again.
+
+## Exploratory Data Analysis
+What the fuck are these fellas doin?
