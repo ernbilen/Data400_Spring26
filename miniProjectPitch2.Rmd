@@ -1,0 +1,30 @@
+---
+title: "My Other Idea For The Mini Project"
+author: "Benjamin J. Fox"
+date: "2026-02-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, include=FALSE}
+knit_print.data.frame = function(x, ...) {
+  res = paste(c("", "", knitr::kable(x)), collapse = "\n")
+  knitr::asis_output(res)
+}
+
+registerS3method(
+  "knit_print", "data.frame", knit_print.data.frame,
+  envir = asNamespace("knitr")
+)
+```
+## The actual question
+
+would you rather have, unlimited bacon, but no more video games; OR, games, unlimited games, but no games
+
+```{r, warning=FALSE}
+example_chart <- readxl::read_xlsx('/Users/benjaminfox/Desktop/Billboard Webscraping Data/Every_Billboard_Song.xlsx')
+
+head(example_chart)
+```
