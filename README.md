@@ -10,8 +10,8 @@
 * **Meeting day/time**: T-F S1 1:30-2:45p, S2 3-4:15pm @Althouse G7
 * Office hours also available by appointment.
 * **QRA:** Alaina Rongione [rongiona@dickinson.edu](mailto:rongiona@dickinson.edu)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Minh Trinh [trinhm@dickinson.edu](mailto:trinhm@dickinson.edu)		   
-* **QRA Office Hours:** <br> Alaina, Monday at 7:30-9p <br> Minh, 7:30-9p
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Minh Trinh [trinhm@dickinson.edu](mailto:trinhm@dickinson.edu)		   
+* **QRA Office Hours:** <br> Alaina, Monday at 8-10p <br> Minh, 8-10p
 
 ## Course description ##
 
