@@ -11,7 +11,7 @@
 * Office hours also available by appointment.
 * **QRA:** Alaina Rongione [rongiona@dickinson.edu](mailto:rongiona@dickinson.edu)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Minh Trinh [trinhm@dickinson.edu](mailto:trinhm@dickinson.edu)		   
-* **QRA Office Hours:** <br> Alaina, Monday at 8-10p <br> Minh, 8-10p
+* **QRA Office Hours:** <br> Alaina, Monday at 8-10p @Tome117 <br> Minh, Monday at 8-10p @Tome121
 
 ## Course description ##
 
