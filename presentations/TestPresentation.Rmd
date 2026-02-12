@@ -1,0 +1,16 @@
+---
+title: "Test Presentation"
+subtitle: "⚔<br/>with xaringan"
+author: "Charlie Baughan"
+institute: ""
+date: "2016/12/12 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+# this is a test presentation
