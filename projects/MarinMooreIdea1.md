@@ -1,0 +1,15 @@
+Marin Moore 
+Prof. Bilen 
+Data Capstone 
+30 January 2026 
+## Project Idea 1
+#### Tractable Data
+This mini project will explore the relationship between the number of anti-LGBTQ+ bills introduced in a U.S. state and the physical health of LGBTQ+ citizens of that state. This exploration is rooted in minority stress theory, the theory that exposure to discrimination – in this case via proposed legislation to revoke LGBTQ+ citizens’ civil, educational, and medical rights – physically degrades the body and produces poorer health outcomes for those affected. Physical health conditions and health risk behaviors of interest may include heart disease, depression, smoker status and frequency, alcohol consumption, and more. 
+#### Data Retrieval
+Such health data is available from the CDC’s Behavioral Risk Factor Surveillance System ([BRFSS](https://www.cdc.gov/brfss/annual_data/annual_data.htm)), reporting data from hundreds of thousands of U.S. citizens each year. The most recent year with published data is 2024. The [ACLU](https://www.aclu.org/legislative-attacks-on-lgbtq-rights-2026) tracks anti-LGBTQ+ bills proposed by state legislatures, and its earliest year reported is 2018.
+#### Model Specification
+The model used to analyze these relationships will be inferential, intended to explore the extent to which anti-LGBTQ+ legislation may impact LGBTQ+ health outcomes and health risk behaviors. Drawing annual data from 2018 to 2024 from both the BRFSS and the ACLU, which both provide U.S. state as a variable for each record, will enable comparison of state-level LGBTQ+ health averages and quantity of anti-LGBTQ+ bills introduced and/or passed into law.  
+#### Stakeholders
+Stakeholders in this research include LGBTQ+ adults and youth, families of LGBTQ+ Americans, public health officials, healthcare providers, legislators at all levels of government, educators, and the entire American citizenry because the erosion of LGBTQ+ citizens’ civil, educational, and medical rights is just one facet of the intentional erosion of American democratic ideals.
+#### Ethics & Implications
+This research can expand our understanding of the physical health consequences of discriminatory legislation experienced by LGBTQ+ Americans. This can enable LGBTQ+ Americans and their families to make informed decisions to protect their physical (and mental) health, as well as enable educators to take steps to protect the wellbeing of their LGBTQ+ students. It can also allow public health officials and healthcare providers to provide accurate recommendations for LGBTQ+ patients in states with high levels of anti-LGBTQ+ legislation. Further, this research can demonstrate to legislators the material harms created by anti-LGBTQ+ legislation and encourage the introduction and approval of pro-LGBTQ+ rights legislation. Further societal benefits will likely be revealed through the results of the model itself.  
