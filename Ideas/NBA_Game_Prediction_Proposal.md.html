@@ -1,0 +1,48 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>NBA Game Prediction Proposal.md</title><style></style></head><body id="preview">
+<h1 class="code-line" data-line-start=0 data-line-end=1 ><a id="Luke_Finkielstein_Mini_Project_Idea_Proposal_0"></a>Luke Finkielstein Mini Project Idea Proposal:</h1>
+<h1 class="code-line" data-line-start=1 data-line-end=2 ><a id="NBA_Game__Stat_Prediction_1"></a>NBA Game &amp; Stat Prediction</h1>
+<p class="has-line-data" data-line-start="4" data-line-end="5">Research Question: How can we predict the outcome of NBA games with better than 60% accuracy?</p>
+<p class="has-line-data" data-line-start="6" data-line-end="7">Approach: Develop a classification model (probably logistic regression) to predict NBA game outcomes using historical game statistics and betting odds. The model will identify games with favorable edges to inform predictions.</p>
+<h2 class="code-line" data-line-start=9 data-line-end=10 ><a id="Gathering_Tractable_Data_9"></a>Gathering Tractable Data</h2>
+<p class="has-line-data" data-line-start="11" data-line-end="12"><strong>Target:</strong> Game outcomes (win/loss)</p>
+<p class="has-line-data" data-line-start="13" data-line-end="14"><strong>Key Features:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="14" data-line-end="15">Team performance metrics (record, scoring, defense)</li>
+<li class="has-line-data" data-line-start="15" data-line-end="16">Player availability/injury status</li>
+<li class="has-line-data" data-line-start="16" data-line-end="17">Opponent strength ranking</li>
+<li class="has-line-data" data-line-start="17" data-line-end="18">Game context (home/away, back-to-back games)</li>
+<li class="has-line-data" data-line-start="18" data-line-end="20">Betting odds from sportsbooks (BetGM, DraftKings, Fanduel, etc.)</li>
+</ul>
+<p class="has-line-data" data-line-start="20" data-line-end="21"><strong>Data sources:</strong> ESPN, <a href="http://NBA.com">NBA.com</a>, <a href="http://Basektball-reference.com">Basektball-reference.com</a>, Kaggle all have pre-compiled datasets of real games going back 20+ years. Additional data can be scraped from these websites if necessary. Feasibility is high—game data and odds are publicly available.</p>
+<h2 class="code-line" data-line-start=22 data-line-end=23 ><a id="Retrieval__Preparation_22"></a>Retrieval &amp; Preparation</h2>
+<p class="has-line-data" data-line-start="24" data-line-end="25">Two viable approaches:</p>
+<ul>
+<li class="has-line-data" data-line-start="26" data-line-end="27">Use existing public dataset (faster, reduces timeline overhead)</li>
+<li class="has-line-data" data-line-start="27" data-line-end="28">Web scrape/API calls for game stats and odds (more control, more time-intensive)</li>
+</ul>
+<h2 class="code-line" data-line-start=30 data-line-end=31 ><a id="EDA__Insights_30"></a>EDA &amp; Insights</h2>
+<p class="has-line-data" data-line-start="32" data-line-end="33">Analyze outcome variation by team strength, matchups, injuries, and game context. Identify predictive features (home-court advantage, efficiency metrics). Perform EDA and visualize feature correlations with game outcomes. Calculate correlations between candidate features and game outcomes to determine which have the strongest predictive signals. Visualizations will include scatter plots of team efficiency metrics, heatmaps of feature correlations, and distribution plots comparing home vs. away performance. I can compare the model performance against a simple baseline (like always predicting the higher-seeded team) to ensure the model adds meaningful value.</p>
+<h2 class="code-line" data-line-start=34 data-line-end=35 ><a id="Potential_Limitations_34"></a>Potential Limitations</h2>
+<ul>
+<li class="has-line-data" data-line-start="36" data-line-end="37"><strong>Unpredictable events:</strong> Model cannot account for unexpected injuries, trades, coaching changes, or rest decisions made close to game time.</li>
+<li class="has-line-data" data-line-start="37" data-line-end="38"><strong>Probabilistic predictions:</strong> Accuracy &gt;50% does not guarantee profit; individual game predictions are probabilistic and subject to variance.</li>
+<li class="has-line-data" data-line-start="38" data-line-end="39"><strong>Data limitations:</strong> Historical data may not fully capture changes in league dynamics, rule changes, or roster composition over 20+ years.</li>
+<li class="has-line-data" data-line-start="39" data-line-end="41"><strong>Sample size:</strong> Model performance is limited by the number of games available for training and testing.</li>
+</ul>
+<h2 class="code-line" data-line-start=41 data-line-end=42 ><a id="Implications_for_Stakeholders_41"></a>Implications for Stakeholders</h2>
+<p class="has-line-data" data-line-start="43" data-line-end="44"><strong>Sports Bettors/Fans:</strong> Would help make informed decisions on predicting winners and increase profitability.</p>
+<p class="has-line-data" data-line-start="45" data-line-end="46"><strong>Sportsbooks:</strong> Understand what drives betting patterns and refine odds-setting.</p>
+<p class="has-line-data" data-line-start="47" data-line-end="48"><strong>NBA Teams</strong>: Understanding which factors affect a team’s ability to win would be very interesting to coaches/players/owners.</p>
+<h2 class="code-line" data-line-start=49 data-line-end=50 ><a id="Responsible_Deployment__Ethics_49"></a>Responsible Deployment &amp; Ethics</h2>
+<p class="has-line-data" data-line-start="51" data-line-end="52"><strong>Concerns:</strong> Model could encourage problem gambling; predictions are probabilistic and not deterministic.</p>
+<p class="has-line-data" data-line-start="53" data-line-end="54"><strong>Legal:</strong> Gambling laws vary by state (sports betting is legal in PA, both online and in person). This model would be for analysis only, not financial advice.</p>
+<p class="has-line-data" data-line-start="55" data-line-end="56"><strong>Mitigation:</strong> Include gambling risk disclaimers, talk about it as purely academic.</p>
+<h2 class="code-line" data-line-start=57 data-line-end=58 ><a id="Timeline_57"></a>Timeline</h2>
+<ul>
+<li class="has-line-data" data-line-start="59" data-line-end="60">Weeks 1-2: Data collection/preparation</li>
+<li class="has-line-data" data-line-start="60" data-line-end="61">Week 3: EDA and feature engineering</li>
+<li class="has-line-data" data-line-start="61" data-line-end="63">Weeks 4-5: Model development and evaluation</li>
+</ul>
+<p class="has-line-data" data-line-start="63" data-line-end="64"><strong>Deliverable:</strong> Trained  model with accuracy metrics and feature importance analysis.</p>
+
+</body></html>
