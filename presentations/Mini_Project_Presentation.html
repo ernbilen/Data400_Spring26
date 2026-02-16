@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>DATA400 Mini Project Presentation</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ben Brandt" />
+    <script src="Mini_Project_Presentation_files/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# DATA400 Mini Project Presentation
+]
+.subtitle[
+## Analyzing Home Buying Features in Fairfax, VA
+]
+.author[
+### Ben Brandt
+]
+
+---
+
+
+
+
+
+## Project Overview
+
+.pull-left[
+### **Goal**
+Use web scraping and machine learning to identify the most influential features in determining house prices
+
+### **Approach**
+- Scrape listing data from Realtor.com
+- Perform data preprocessing and EDA
+- Build Random Forest model
+- Analyze feature importances
+]
+
+.pull-right[
+### **Location**
+Fairfax, VA
+
+### **Data Size**
+~200 listings
+
+### **Future Work**
+Expand to additional areas for broader insights
+]
+
+---
+
+## Tractable Data Features
+
+### Key variables identified for price prediction:
+
+.pull-left[
+**Property Characteristics**
+- Number of Bedrooms
+- Number of Bathrooms
+- Square Feet of House
+- Square Feet of Lot
+]
+
+.pull-right[
+**Location &amp; Type**
+- Type of house (single-family, condo, etc.)
+- Postal Code
+]
+
+&lt;br&gt;
+
+.center[*These features are readily available on property listings and likely influence pricing*]
+
+---
+
+## Data Structure
+
+**Additional metadata collected for categorization:**
+
+Property ID, State, City, Sold Price
+
+**Code snippet showing data extraction:**
+
+
+``` python
+for prop in results:
+    properties.append({
+        "Property ID": prop.get("property_id"),
+        "List Price": prop.get("list_price"),
+        "Beds": prop["description"].get("beds"),
+        "Baths": prop["description"].get("baths_consolidated"),
+        "Sqft": prop["description"].get("sqft"),
+        "Lot Sqft": prop["description"].get("lot_sqft"),
+        "Type": prop["description"].get("type"),
+        "Sold Price": prop["description"]["sold_price"],
+        "City": prop["location"]["address"].get("city"),
+        "State": prop["location"]["address"].get("state"),
+        "Postal Code": prop["location"]["address"].get("postal_code")})
+```
+
+---
+
+## Sample Dataset
+
+
+
+
+``` python
+print(df.head(5))
+```
+
+```
+##    Property ID  List Price  Beds  ...     City     State  Postal Code
+## 0   6265846881      875000   5.0  ...  Fairfax  Virginia        22032
+## 1   5158044653     1299000   7.0  ...  Fairfax  Virginia        22031
+## 2   9655783933     1475000   5.0  ...  Fairfax  Virginia        22031
+## 3   6948301446      789990   3.0  ...  Fairfax  Virginia        22030
+## 4   6122958404      889000   4.0  ...  Fairfax  Virginia        22032
+## 
+## [5 rows x 11 columns]
+```
+
+---
+
+## Data Retrieval Challenges
+
+### **The Challenge**
+Most realtor websites have aggressive bot detection systems
+
+.pull-left[
+**Unsuccessful Attempts**
+- Zillow
+- Homes.com
+- Redfin
+
+*All blocked within seconds*
+]
+
+.pull-right[
+**Successful Solution**
+Used Realtor.com with:
+- **seleniumBase** - simulate browser
+- **BeautifulSoup** - parse HTML
+- **json** - extract structured data
+]
+
+---
+class: inverse, center, middle
+
+# Data Preprocessing
+
+---
+
+## Data Type Transformations
+
+Converting identification variables to categorical types for proper handling
+
+.pull-left[
+### Before Transforming
+
+```
+## Property ID      int64
+## List Price       int64
+## Beds           float64
+## Baths          float64
+## Sqft           float64
+## Lot Sqft       float64
+## Type            object
+## Sold Price     float64
+## City            object
+## State           object
+## Postal Code      int64
+## dtype: object
+```
+
+
+]
+
+.pull-right[
+### After Transforming
+
+```
+## Property ID    category
+## List Price        int64
+## Beds            float64
+## Baths           float64
+## Sqft            float64
+## Lot Sqft        float64
+## Type           category
+## Sold Price      float64
+## City           category
+## State          category
+## Postal Code    category
+## dtype: object
+```
+]
+
+---
+
+## Handling Missing Values
+
+**Identify missing data**
+
+
+``` python
+print(df.isnull().sum())
+```
+
+```
+## Property ID     0
+## List Price      0
+## Beds           13
+## Baths          13
+## Sqft           13
+## Lot Sqft       70
+## Type            0
+## Sold Price     35
+## City            0
+## State           0
+## Postal Code     0
+## dtype: int64
+```
+
+---
+
+## Analyzing Categorical Variables
+**Look at Type and Postal Code unique values**
+
+```
+## 
+## Type (Unique values = 5)
+## Type
+## single_family    97
+## condos           68
+## townhomes        45
+## land             13
+## farm              1
+## 
+## Postal Code (Unique values = 4)
+## Postal Code
+## 22030    83
+## 22033    60
+## 22031    51
+## 22032    30
+```
+
+---
+
+## Data Cleaning Strategy
+
+### **Key Insight**
+Properties with type "land" lack beds, baths, and square footage
+
+### **Solution**
+1. Remove "land" category entirely
+2. Fill remaining missing values with median
+
+
+
+---
+class: inverse, center, middle
+
+# Exploratory Data Analysis
+
+---
+
+## Correlation Heatmap
+
+**Examining relationships between numeric variables**
+
+&lt;img src="Mini_Project_Presentation_files/figure-html/unnamed-chunk-10-1.png" alt="" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Bedroom &amp; Bathroom Distribution
+
+&lt;img src="Mini_Project_Presentation_files/figure-html/unnamed-chunk-11-3.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Property Type Distribution
+
+**Distribution of house types after removing "land" category**
+
+&lt;img src="Mini_Project_Presentation_files/figure-html/unnamed-chunk-12-5.png" alt="" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## List Price Distribution
+
+**Original vs. Log-transformed price distributions**
+
+&lt;img src="Mini_Project_Presentation_files/figure-html/unnamed-chunk-13-7.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Square Footage Distribution
+
+&lt;img src="Mini_Project_Presentation_files/figure-html/unnamed-chunk-14-9.png" alt="" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Lot Size Distribution
+
+&lt;img src="Mini_Project_Presentation_files/figure-html/unnamed-chunk-15-11.png" alt="" width="70%" style="display: block; margin: auto;" /&gt;
+
+.center[*Extreme outliers are likely farms with significantly larger lot sizes*]
+
+---
+class: inverse, center, middle
+
+# Random Forest Model
+
+---
+
+## Model Development
+
+**Preparing data and fitting Random Forest model**
+
+
+``` python
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+
+# Encode categorical variables
+df = pd.get_dummies(df, columns=['Type', 'Postal Code'], drop_first=True)
+
+# Define predictors and response
+X = df.drop(['List Price', 'Sold Price', 'Property ID', 'City', 'State'], 
+            axis=1)
+y = df['Sold Price']
+
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, 
+                                                      random_state=42)
+
+# Fit Random Forest
+p = X_train.shape[1]
+m = max(1, p // 3)
+
+
+rf = RandomForestRegressor(n_estimators=500, max_features=m, random_state=42)
+rf.fit(X_train, y_train)
+```
+
+```{=html}
+&lt;style&gt;#sk-container-id-1 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: black;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
+  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-icon: #696969;
+
+  @media (prefers-color-scheme: dark) {
+    /* Redefinition of color scheme for dark theme */
+    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
+    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-icon: #878787;
+  }
+}
+
+#sk-container-id-1 {
+  color: var(--sklearn-color-text);
+}
+
+#sk-container-id-1 pre {
+  padding: 0;
+}
+
+#sk-container-id-1 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+#sk-container-id-1 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
+
+#sk-container-id-1 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-text-repr-fallback {
+  display: none;
+}
+
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-1 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-1 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-1 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-1 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-1 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-1 label.sk-toggleable__label {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-1 div.sk-toggleable__content {
+  max-height: 0;
+  max-width: 0;
+  overflow: hidden;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  max-height: 200px;
+  max-width: 100%;
+  overflow: auto;
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label label.sk-toggleable__label,
+#sk-container-id-1 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-1 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2em;
+}
+
+#sk-container-id-1 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-1 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-1 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 1ex;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-1);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `&lt;a&gt;` HTML tag */
+
+#sk-container-id-1 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-1 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+&lt;/style&gt;&lt;div id="sk-container-id-1" class="sk-top-container"&gt;&lt;div class="sk-text-repr-fallback"&gt;&lt;pre&gt;RandomForestRegressor(max_features=3, n_estimators=500, random_state=42)&lt;/pre&gt;&lt;b&gt;In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. &lt;br /&gt;On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.&lt;/b&gt;&lt;/div&gt;&lt;div class="sk-container" hidden&gt;&lt;div class="sk-item"&gt;&lt;div class="sk-estimator fitted sk-toggleable"&gt;&lt;input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked&gt;&lt;label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted"&gt;&amp;nbsp;&amp;nbsp;RandomForestRegressor&lt;a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.4/modules/generated/sklearn.ensemble.RandomForestRegressor.html"&gt;?&lt;span&gt;Documentation for RandomForestRegressor&lt;/span&gt;&lt;/a&gt;&lt;span class="sk-estimator-doc-link fitted"&gt;i&lt;span&gt;Fitted&lt;/span&gt;&lt;/span&gt;&lt;/label&gt;&lt;div class="sk-toggleable__content fitted"&gt;&lt;pre&gt;RandomForestRegressor(max_features=3, n_estimators=500, random_state=42)&lt;/pre&gt;&lt;/div&gt; &lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+```
+
+
+
+
+---
+
+## Feature Importance Results
+
+**What drives home prices in Fairfax, VA?**
+
+&lt;img src="Mini_Project_Presentation_files/figure-html/unnamed-chunk-19-13.png" alt="" width="45%" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse, center, middle
+
+# Implications &amp; Ethics
+
+---
+
+## Implications for Stakeholders
+
+.pull-left[
+### **Home Buyers**
+- Understand which features most impact price
+- Make informed purchasing decisions
+- Prioritize features that matter most
+
+### **Home Sellers**
+- Accurately value their property
+- Set competitive listing prices
+- Identify valuable features to highlight
+]
+
+.pull-right[
+### **Realty Companies**
+- Better understand market dynamics
+- Target marketing efforts effectively
+- Advise clients on pricing strategies
+]
+
+---
+
+## Ethical &amp; Legal Considerations
+
+.pull-left[
+### **Concerns**
+
+**Legal**
+- Likely violates Realtor.com Terms of Service
+- Required bot detection prevention
+
+**Privacy**
+- Addresses excluded from dataset
+- Seller information kept private
+
+**Academic Use Only**
+- No commercial application
+- Purely for learning purposes
+]
+
+.pull-right[
+### **Positive Impact**
+
+**Transparency**
+- Adds layer of transparency to home pricing
+- Empowers informed decisions
+
+**Accessibility**
+- Makes market insights available
+- Helps buyers understand value drivers
+
+**Education**
+- Real-world data science application
+- Demonstrates ethical considerations
+]
+
+---
+class: inverse, center, middle
+
+# Thank you!
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "slideNumberFormat": "%current%",
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "ratio": "16:9",
+  "countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
