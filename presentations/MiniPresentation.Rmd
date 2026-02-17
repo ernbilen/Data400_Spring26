@@ -1,0 +1,89 @@
+---
+title: "Math Performance Correlations"
+subtitle: "New York City Public Schools"
+author: "Josie Kelley"
+institute: "Dickinson College"
+date: "02/20/2026"
+
+output:
+  xaringan::moon_reader:
+    css: ["metropolis"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+
+# Overview of Project
+
+New York City Public Schools has publicly available data on its schools and students. I studied four factors to determine correlation with math test scores based on data from the 2024-2025 school year. 
+
+## Four Factors Considered for Each Middle School
+- Average Class Size
+- Average Attendance Percentage
+- Percentage of Students in Temporary Housing 
+- Percentage of Students Classified as Living in Poverty
+
+<img src="images/NYC_DOE_Logo.png" class="small" style="width:300px; display:inl; margin:auto;">
+
+---
+
+# Data Retrieval
+
+- Each variable including the test scores was downloaded to an excel file from the NYCPS website. 
+
+
+- I cleaned the data using Python, and I used Pandas to create a data frame that included the average test score, average class size, attendance percentage, temporary housing percentage, and poverty percentage for each school. 
+
+- Prior to linear regression I created box and scatter plots.
+
+---
+
+# Box Plots
+<img src="images/Attendance.png" class="small" style="width:265px; display:inl; margin:auto;">
+<img src="images/Housing.png" class="small" style="width:265px; display:inl; margin:auto;">
+<img src="images/ClassSize.png" class="small" style="width:265px; display:inl; margin:auto;">
+<img src="images/Poverty.png" class="small" style="width:265px; display:inl; margin:auto;">
+<img src="images/TestScores.png" class="small" style="width:265px; display:inline; margin:auto;">
+---
+# Scatter Plots
+<img src="images/AttendScat.png" class="small" style="width:365px; display:inl; margin:auto;">
+<img src="images/TempScat.png" class="small" style="width:365px; display:inl; margin:auto;">
+<img src="images/ClassScat.png" class="small" style="width:365px; display:inl; margin:auto;">
+<img src="images/PovertyScat.png" class="small" style="width:365px; display:inl; margin:auto;">
+---
+# Linear Regression
+
+- I used linear regression with Test Scores as the dependent variable and the other variables as independent variables. 
+
+- My coefficients for Average Class Size, Average Attendance %, % Students in Temporary Housing, and % Poverty were:
+0.52, 1.65, -13.25, and -20.87 collectively. 
+
+- The R² Score of 0.60 indicates a moderate to strong linear relationship between the independent and dependent variables. 
+
+---
+# Implications for Stakeholders
+
+- An implication for educational researchers is to analyze the effectiveness of specific attendance policies using a differences in differences outcomes model.
+
+- An implication for educators and school boards is to invest more time and money into helping students living in poverty or in temporary housing learn important content. These students may benefit from extra structure or scaffolding in the classroom because they may have more barriers to success. 
+
+---
+# Ethical, legal, societal implications
+
+- A possible ethical implication is that schools with higher percentages of poverty may have lower quality of education due to the correlation with lower math test scores. 
+
+
+- A possible legal implication is that lawmakers should create intervention programs for schools with lower attendance percentages. 
+
+
+
+
+
+- A possible societal implication is that students living in poverty may be more likely to have lower math performance which could lead to limited future options, like careers or education. 
+
+
+
