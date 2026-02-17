@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>OPT Outcomes (2019–2022)</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="mytheme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+background-image: url("Slide12.png")
+background-size: cover
+background-position: center
+class: center, middle
+
+&lt;div class="intro-card"&gt;
+  &lt;div style="font-size: 44px; font-weight: 800; margin-bottom: 10px;"&gt;
+    OPT Outcomes (2019–2022)
+  &lt;/div&gt;
+  &lt;div style="font-size: 24px; font-weight: 500; margin-bottom: 12px;"&gt;
+    DATA 400 Mini Project
+  &lt;/div&gt;
+  &lt;div style="font-size: 20px; opacity: 0.9;"&gt;
+    Camela Phung
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- first slide --&gt;
+
+---
+background-image: url("Slide4.png")
+background-size: cover
+background-position: center
+class: middle
+
+&lt;div style="position: absolute; top: 12%; right: 5%; width: 45%; text-align: left; padding: 20px;"&gt;
+  &lt;h2 style="font-size: 40px; margin-bottom: 40px; border-left: 8px solid; padding-left: 20px;"&gt;
+    Research Questions
+  &lt;/h2&gt;
+  
+  &lt;ul style="font-size: 26px; line-height: 1.6; padding-left: 20px;"&gt;
+    &lt;li style="margin-bottom: 25px;"&gt;
+      What student characteristics are associated with &lt;strong&gt;OPT termination&lt;/strong&gt; (2019–2022)?
+    &lt;/li&gt;
+    &lt;li style="margin-bottom: 35px;"&gt;
+      Does &lt;strong&gt;field of study&lt;/strong&gt; or &lt;strong&gt;STEM designation&lt;/strong&gt; matter?
+    &lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;div style="font-size: 22px; font-style: italic; opacity: 0.8; border-top: 1px solid #ccc; pt-10px; padding-top: 15px;"&gt;
+    &lt;strong&gt;Methodological Note:&lt;/strong&gt; Analysis isolates intrinsic student factors by holding work experience variables constant.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- 2nd slide --&gt;
+
+---
+background-image: url("Slide3.png")
+background-size: cover
+background-position: center
+class: center, middle
+
+&lt;div style="padding-top: 80px;"&gt;
+  &lt;h1 style="color: black; font-size: 48px; margin-bottom: 10px;"&gt;Data Retrieval &amp; Processing&lt;/h1&gt;
+  
+  &lt;p style="font-size: 26px; color: #333; margin-bottom: 30px;"&gt;
+    &lt;strong&gt;Source:&lt;/strong&gt; ICE FOIA Library (2023-ICFO-43657)
+  &lt;/p&gt;
+
+  &lt;div style="display: flex; flex-direction: column; align-items: center; gap: 25px;"&gt;
+    &lt;img src="summary/sources_ice.png" style="width: 68%; border: 2px solid #333; border-radius: 8px; box-shadow: 0px 4px 15px rgba(0,0,0,0.15);" /&gt;
+    
+    &lt;img src="summary/combine_sources.png" style="width: 45%;" /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+???
+
+
+### Presentation Script (Rubric Alignment):
+
+* **Data Retrieval (15%):** Data was retrieved directly from the ICE Freedom of Information Act (FOIA) Library, specifically release 2023-ICFO-43657. These are anonymized, individual-level records for F-1 international students.
+* **Aggregation:** The process began by merging 13 distinct Excel parts (as seen on the slide) to create a single, comprehensive dataset covering records from 2004 to the present.
+* **Tractability (15%):** To ensure the data was tractable and focused, I performed two key steps:
+    1. **Time Filtering:** I isolated records with a `program_end_date` between 2019 and 2022 to analyze outcomes surrounding the pandemic period.
+    2. **Feature Selection:** I intentionally dropped high-noise columns like "Employer Name" and "Salary". This allows us to hold work experience constant and focus on demographic and academic drivers.
+* **Result:** This processed sample includes approximately 1.37 million records, providing a robust foundation for econometric analysis.
+
+&lt;!-- 3rd slide --&gt;
+
+---
+background-image: url("Slide3.png")
+background-size: cover
+background-position: center
+class: center, middle
+
+&lt;div style="padding-top: 60px;"&gt;
+  &lt;h1 style="color: black; font-size: 48px; margin-bottom: 10px;"&gt;Cleaning &amp; Processing&lt;/h1&gt;
+  
+  &lt;p style="font-size: 26px; color: #333; margin-bottom: 20px;"&gt;
+    &lt;strong&gt;Initial State:&lt;/strong&gt; 3,000,000 rows (Raw FOIA Aggregation)
+  &lt;/p&gt;
+
+  &lt;div style="display: flex; flex-direction: column; align-items: center; gap: 20px;"&gt;
+    &lt;img src="summary/Picture1.png" style="width: 80%;" /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+???
+
+### Presentation Script (Rubric Alignment):
+
+* **Data Retrieval (15%):** I retrieved individual-level records from the ICE FOIA Library, specifically the 2023-ICFO-43657 release.
+* **Aggregation:** I merged 13 separate Excel parts to build this longitudinal dataset.
+* **Tractability (15%):** The raw data initially contained 3,000,000 rows, many of which were duplicates or outside the target scope. To make the data tractable, I:
+    1. **Deduplication:** Removed redundant records across the 13 merged files.
+    2. **Filtering:** Focused on the 2019–2022 window, reducing the set to a manageable 1.37M records.
+    3. **Feature Selection:** Dropped high-noise columns like "Employer Name" to hold professional experience constant.
+
+&lt;!-- 4th slide --&gt;
+
+---
+background-image: url("Slide3.png")
+background-size: cover
+background-position: center
+class: center
+
+&lt;div style="padding-top: 60px;"&gt;
+&lt;h1 style="color: black; font-size: 48px; margin-bottom: 10px;"&gt;Total Observations&lt;/h1&gt;
+
+&lt;p style="font-size: 26px; color: #333; margin-bottom: 25px;"&gt;
+Narrowing the focus to unique Post-Completion OPT records
+&lt;/p&gt;
+
+&lt;div style="display: flex; flex-direction: column; align-items: center; gap: 20px;"&gt;
+&lt;img src="summary/obs.png" style="width: 70%; border: 1px solid #ccc; box-shadow: 0px 4px 10px rgba(0,0,0,0.1);" /&gt;
+
+  &lt;p style="margin-bottom: 5px;"&gt;
+    &lt;strong&gt;Initial Unique IDs:&lt;/strong&gt; 405,089 (Includes pre-completion OPT)
+  &lt;p style="margin-bottom: 5px;"&gt;
+    &lt;strong&gt;Final Clean Sample:&lt;/strong&gt; 217,931 unique international students
+  &lt;p style="color: #23373b; font-weight: bold; font-size: 20px;"&gt;
+    Consistency: Verified unique ID counts across data states.
+  &lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+???
+&lt;!-- 5th slide --&gt;
+
+---
+background-image: url("Slide3.png")
+background-size: cover
+background-position: center
+class: center
+
+&lt;div style="display: flex; flex-direction: column; align-items: center; gap: 15px;"&gt;
+&lt;img src="graphs/output_72_0.png" style="width: 55%; border: 1px solid #ccc; box-shadow: 0px 4px 10px rgba(0,0,0,0.1);" /&gt;
+&lt;img src="graphs/output_73_0.png" style="width: 55%; border: 1px solid #ccc; box-shadow: 0px 4px 10px rgba(0,0,0,0.1);" /&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+???
+
+
+### Presentation Script (Rubric Strategy):
+
+* **Tractability (15%):** While the raw data spans from 2004 to the present, I intentionally limited this analysis to the **2019–2022** window. 
+* **Data Volume:** Data for 2023 was excluded from the final trend analysis because the volume of recorded completions was significantly lower than previous years, which could skew the interpreted results.
+* **Trend Observation:** As seen in the line chart, STEM participation peaked in 2021 before a moderate decline, while Non-STEM participation showed a steady, significant increase through 2022. 
+* **Sample Integrity:** This 4-year window captures the primary shift in OPT participation during and immediately following the global pandemic, providing the most relevant data for current stakeholder implications.
+
+&lt;!-- 6th slide --&gt;
+
+---
+background-image: url("Slide3.png")
+background-size: cover
+background-position: center
+class: center
+
+&lt;div style="padding-top: 60px;"&gt;
+  &lt;h1 style="color: black; font-size: 48px; margin-bottom: 10px;"&gt;Total OPT Status Distribution&lt;/h1&gt;
+
+  &lt;div style="display: flex; flex-direction: column; align-items: center; gap: 15px;"&gt;
+    &lt;img src="graphs/output_77_0.png" style="width: 55%; border: 1px solid #ccc; box-shadow: 0px 4px 10px rgba(0,0,0,0.1);" /&gt;
+    
+    &lt;div style="width: 80%; background: rgba(255,255,255,0.7); padding: 15px; border-radius: 10px; text-align: left; font-size: 14px; line-height: 1.4;"&gt;
+        &lt;li&gt;&lt;strong&gt;Risk Focus:&lt;/strong&gt; The 2.3% "Terminated" rate (~4,179 records) provides the primary variance for our risk modeling.&lt;/li&gt;
+        &lt;li&gt;&lt;strong&gt;Data Integrity:&lt;/strong&gt; "Active" and "Deactivated" statuses are retained to ensure a comprehensive view of the 2019–2022 window.&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+???
+
+---
+background-image: url("Slide3.png")
+background-size: cover
+background-position: center
+class: top
+
+&lt;div style="padding-top: 60px;"&gt;
+  &lt;h1 style="color: black; font-size: 48px; margin-bottom: 10px;"&gt;Correlation Heatmap&lt;/h1&gt;
+
+  &lt;div style="display: flex; flex-direction: column; align-items: center; gap: 15px;"&gt;
+    &lt;img src="graphs/output_96_0.png" style="width: 70%; border: 1px solid #ccc; box-shadow: 0px 4px 10px rgba(0,0,0,0.1);" /&gt;
+
+---
+background-image: url("Slide3.png")
+background-size: cover
+background-position: center
+class: top
+
+&lt;div style="padding-top: 60px; padding-left: 50px; padding-right: 50px;"&gt;
+  &lt;h1 style="color: black; font-size: 48px; margin-bottom: 14px;"&gt;
+    Geography
+  &lt;/h1&gt;
+
+  &lt;div style="display: flex; flex-direction: column; align-items: center; gap: 14px;"&gt;
+    &lt;img src="graphs/output_87_0.png"
+         style="width: 90%;
+                border-radius: 12px;
+                border: 1px solid rgba(0,0,0,0.12);
+                box-shadow: 0px 6px 16px rgba(0,0,0,0.12);" /&gt;
+
+
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+???
+Explain:
+- We show top countries to keep the chart readable.
+- Avoid stereotyping: these are descriptive patterns, not causal.
+- Small groups can look extreme; focus on big categories.
+
+    
+---
+background-image: url("Slide3.png")
+background-size: cover
+background-position: center
+class: top
+
+&lt;div style="padding-top: 60px;"&gt;
+  &lt;h1 style="color: black; font-size: 48px; margin-bottom: 10px;"&gt;Educational&lt;/h1&gt;
+
+  &lt;div style="display: flex; flex-direction: column; align-items: center; gap: 15px;"&gt;
+    &lt;img src="graphs/output_81_0.png" style="width: 70%; border: 1px solid #ccc; box-shadow: 0px 4px 10px rgba(0,0,0,0.1);" /&gt;
+    
+    
+---
+background-image: url("Slide3.png")
+background-size: cover
+background-position: center
+class: top    
+&lt;div style="padding-top: 60px;"&gt;
+  &lt;h1 style="color: black; font-size: 48px; margin-bottom: 10px;"&gt;By Degree Level&lt;/h1&gt;
+  
+&lt;img src="graphs/output_88_0.png" style="width: 70%; border: 1px solid #ccc; box-shadow: 0px 4px 10px rgba(0,0,0,0.1);" /&gt;    
+
+
+---
+background-image: url("Slide3.png")
+background-size: cover
+background-position: center
+class: top
+
+&lt;div style="padding-top: 40px; padding-left: 50px; text-align: left;"&gt;
+  &lt;h1 style="color: black; font-size: 38px; border-bottom: 2px solid #23373b; display: inline-block;"&gt;
+    Stakeholders
+  &lt;/h1&gt;
+
+  &lt;ul style="font-size: 18px; line-height: 1.45; margin-top: 22px; width: 85%;"&gt;
+    &lt;li style="margin-bottom: 12px;"&gt;
+      &lt;strong&gt;International students:&lt;/strong&gt; Helps set expectations about OPT outcomes and highlights groups that may need stronger advising and compliance support.
+    &lt;/li&gt;
+    &lt;li style="margin-bottom: 12px;"&gt;
+      &lt;strong&gt;Schools / DSOs:&lt;/strong&gt; Identify patterns in terminations to improve communication, reporting reminders, and targeted workshops by major/region.
+    &lt;/li&gt;
+    &lt;li style="margin-bottom: 12px;"&gt;
+      &lt;strong&gt;Employers:&lt;/strong&gt; Encourages better compliance with OPT reporting timelines and STEM OPT requirements (e.g., E-Verify, evaluations).
+    &lt;/li&gt;
+    &lt;li style="margin-bottom: 12px;"&gt;
+      &lt;strong&gt;Policymakers:&lt;/strong&gt; Descriptive evidence can flag whether termination concentrates in specific groups, motivating audits of administrative barriers.
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;strong&gt;Researchers:&lt;/strong&gt; Builds a base for deeper work (adding job timelines, unemployment days, employer changes) to move from EDA to explanation.
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+
+???
+Talk track:
+- This project is useful for advising + policy discussion, but must be communicated responsibly.
+
+
+---
+background-image: url("Slide3.png")
+background-size: cover
+background-position: center
+class: top
+
+&lt;div style="padding-top: 40px; padding-left: 50px; text-align: left;"&gt;
+  &lt;h1 style="color: black; font-size: 38px; border-bottom: 2px solid #23373b; display: inline-block;"&gt;
+    Societal, Legal, and Ethical
+  &lt;/h1&gt;
+  
+  &lt;ul style="font-size: 18px; line-height: 1.45; margin-top: 22px; width: 85%;"&gt;
+    &lt;li style="margin-bottom: 12px;"&gt;
+      &lt;strong&gt;Privacy &amp; re-identification:&lt;/strong&gt; Even with anonymized FOIA data, combining &lt;em&gt;country × major × school/state&lt;/em&gt; can make small groups identifiable.
+    &lt;/li&gt;
+    &lt;li style="margin-bottom: 12px;"&gt;
+      &lt;strong&gt;Fairness &amp; stigma risk:&lt;/strong&gt; Termination is rare (~2%), so subgroup rates can look extreme for small samples. Results should not be used to stereotype countries or majors.
+    &lt;/li&gt;
+    &lt;li style="margin-bottom: 12px;"&gt;
+      &lt;strong&gt;Legal/regulatory context:&lt;/strong&gt; “TERMINATED” may reflect reporting/compliance issues or SEVIS updates—not necessarily student effort or academic quality.
+    &lt;/li&gt;
+    &lt;li style="margin-bottom: 12px;"&gt;
+      &lt;strong&gt;COVID cohort effects:&lt;/strong&gt; 2020–2021 outcomes were shaped by pandemic labor-market shocks, so patterns may not generalize to other periods.
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;strong&gt;Correlation ≠ causation:&lt;/strong&gt; Financial indicators and termination risk are descriptive associations in EDA; causal claims require additional controls and design.
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+
+???
+Termination is weakly correlated with everything
+	•	The correlation between termination_flag and all financial variables is between −0.03 and 0.03.
+	•	That is extremely small.
+	•	This suggests no strong linear relationship between financial capacity and termination.
+-&gt; Termination does not appear to be directly driven by tuition levels or funding sources.
+- Being in a STEM field alone does not strongly predict termination in a simple linear sense.
+- Financial variables are moderately correlated with each other:
+	•	Higher tuition → more institutional or external funding.
+	•	Students relying on personal funds rely less on school funding.
+
+So the financial system structure is logical.
+	•	Termination is likely driven by non-financial factors
+	•	Possibly employment timing, reporting compliance, visa processing issues, or administrative factors
+
+---
+background-image: url("Slide3.png")
+background-size: cover
+background-position: center
+class: center, middle
+
+&lt;div style="color: black; font-size: 48px; font-weight: 700;"&gt;
+  Thanks for Listening!
+&lt;/div&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
