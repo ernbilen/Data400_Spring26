@@ -140,18 +140,19 @@ chicagoDates <- cbind(chicagoDates[1:4],chicagoDates[6:9])
 
 CutYorkDates <- newYorkDates[1:38,]
 
-meanDifferentials <- data.frame("Cities" = c("New York", "New York","Boston", "Boston","Chicago","Chicago"),
+meanDifferentials <- data.frame("Cities" = c("New York", "New York","Boston", "Boston","Chicago","Chicago","Total","Total"),
                                 "Mean Differentials" = c(
                                   mean(CutYorkDates$`Mean Differential`),
                                   mean(CutYorkDates$`Median Differential`),
                                   mean(bostonDates$`Mean Differential`),
                                   mean(bostonDates$`Median Differential`),
                                   mean(chicagoDates$`Mean Differential`),
-                                  mean(chicagoDates$`Median Differential`)
-                                ), "Mode" = c("Mean","Median","Mean","Median","Mean","Median"))
+                                  mean(chicagoDates$`Median Differential`),
+                                  mean(allDates$`Mean Differential`),
+                                  mean(allDates$`Median Differential`)
+                                ), "Mode" = c("Mean","Median","Mean","Median","Mean","Median","Mean","Median"))
 
 allDates <- rbind(CutYorkDates, bostonDates, chicagoDates)
 allDates <- arrange(allDates, Date)
 
-mean(allDates$`Mean Differential`)
-mean(allDates$`Median Differential`)
+write.csv(meanDifferentials, file = '/Users/benjaminfox/Desktop/Data400_Spring26/data/Final Charts For Mini Project Presentation/meanDifferentials.csv')

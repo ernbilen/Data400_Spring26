@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>The Influence of Tours on Local Public Transport</title>
+    <title>The Influence of Concert Tours on Local Public Transport</title>
     <meta charset="utf-8" />
     <meta name="author" content="Benjamin J. Fox" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -12,7 +12,7 @@
 class: center, middle, inverse, title-slide
 
 .title[
-# The Influence of Tours on Local Public Transport
+# The Influence of Concert Tours on Local Public Transport
 ]
 .subtitle[
 ## ——————
@@ -99,8 +99,148 @@ class: center, middle
 
 --
 
-1. The city that runs the trains
+1. The city that runs it all.
 
+--
+
+2. The artists + management
+
+--
+
+3. You, the concertgoer
+
+---
+class: center, middle, inverse
+
+# The Concert Tours Used as a Case Study
+--
+
+## Sticking to tours within the 2020s
+---
+# Those being...
+--
+
+1. *Taylor Swift's Eras Tour*
+
+--
+
+2. *Coldplay's Music of the Spheres Tour*
+
+--
+
+3. *Ed Sheeran's Mathematics Tour*
+
+--
+
+4. *Bruce Springsteen's 2023-2025 Tour*
+
+--
+
+5. *The Weeknd's After Hours Til Dawn Tour*
+
+--
+
+6. *Harry Styles' Love On Tour*
+
+--
+
+7. *P!NK's Summer Carnival*
+
+--
+
+8. *Beyoncé's Renaissance World Tour*
+
+--
+
+9. *Metallica's M72 World Tour*
+
+---
+class: inverse, middle, center
+
+# *Data Time*
+---
+### Boston Data
+
+|servicedate |line                    | estimated_boardings|
+|:-----------|:-----------------------|-------------------:|
+|2020-06-22  |Fairmount               |                 157|
+|2020-06-22  |Fitchburg               |                 486|
+|2020-06-22  |Framingham/Worcester    |                  33|
+|2020-06-22  |Franklin/Foxboro        |                 276|
+|2020-06-22  |Greenbush               |                 176|
+|2020-06-22  |Haverhill               |                 332|
+|2020-06-22  |Kingston                |                 410|
+|2020-06-22  |Lowell                  |                 421|
+|2020-06-22  |Middleborough/Lakeville |                 601|
+|2020-06-22  |Needham                 |                  55|
+---
+### New York Data
+
+|Date       |Total     |Total Percent |
+|:----------|:---------|:-------------|
+|03/01/2020 |2,212,965 |97%           |
+|03/02/2020 |5,329,915 |96%           |
+|03/03/2020 |5,481,103 |98%           |
+|03/04/2020 |5,498,809 |99%           |
+|03/05/2020 |5,496,453 |99%           |
+|03/06/2020 |5,189,447 |93%           |
+|03/07/2020 |2,814,637 |92%           |
+|03/08/2020 |2,120,656 |93%           |
+|03/09/2020 |4,973,513 |89%           |
+|03/10/2020 |4,867,818 |87%           |
+---
+### Chicago Data
+
+|service_date |day_type |bus     |rail_boardings |total_rides |
+|:------------|:--------|:-------|:--------------|:-----------|
+|01/01/2001   |U        |297,192 |126,455        |423,647     |
+|01/02/2001   |W        |780,827 |501,952        |1,282,779   |
+|01/03/2001   |W        |824,923 |536,432        |1,361,355   |
+|01/04/2001   |W        |870,021 |550,011        |1,420,032   |
+|01/05/2001   |W        |890,426 |557,917        |1,448,343   |
+|01/06/2001   |A        |577,401 |255,356        |832,757     |
+|01/07/2001   |U        |375,831 |169,825        |545,656     |
+|01/08/2001   |W        |985,221 |590,706        |1,575,927   |
+|01/09/2001   |W        |978,377 |599,905        |1,578,282   |
+|01/10/2001   |W        |984,884 |602,052        |1,586,936   |
+---
+class: inverse, center, middle
+
+# Reframing the data based on concert dates
+---
+# New York as an Example
+
+
+|Date       |Artist       |Venue                 | Transit.Total| Yearly.Average| Yearly.Median|
+|:----------|:------------|:---------------------|-------------:|--------------:|-------------:|
+|2021-10-03 |Harry Styles |Madison Square Garden |       3292980|        4163171|       4104865|
+|2021-10-04 |Harry Styles |Madison Square Garden |       5457688|        4163171|       4104865|
+|2021-10-16 |Harry Styles |Madison Square Garden |       3969413|        4163171|       4104865|
+|2021-10-30 |Harry Styles |Madison Square Garden |       3879157|        4163171|       4104865|
+|2021-10-31 |Harry Styles |Madison Square Garden |       3377067|        4163171|       4104865|
+---
+# The Actually Important Table
+--
+
+|Cities   | Mean.Differentials|Mode   |
+|:--------|------------------:|:------|
+|New York |        -349806.794|Mean   |
+|New York |        -741226.461|Median |
+|Boston   |           5303.094|Mean   |
+|Boston   |          -8738.200|Median |
+|Chicago  |          -3482.155|Mean   |
+|Chicago  |         -58245.440|Median |
+|Total    |        -159923.496|Mean   |
+|Total    |        -359006.090|Median |
+---
+class: inverse, middle, center
+
+# *Huh*
+---
+class: inverse, middle, center
+
+# The Limits of the Data
+---
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
