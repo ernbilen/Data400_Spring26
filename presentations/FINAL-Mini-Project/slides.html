@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Environmental Risk and Health Burden in Kentucky Counties</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Anisha Choudhury" />
+    <meta name="date" content="2026-02-17" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Environmental Risk and Health Burden in Kentucky Counties
+]
+.author[
+### Anisha Choudhury
+]
+.date[
+### 2026-02-17
+]
+
+---
+
+
+
+
+class: center, middle
+#Research Question
+To what extent are industrial air emissions and asthma-related emergency visits concentrated in Kentucky, and do socioeconomic factors play a role? 
+
+---
+### Main Analysis:
+- Examines whether environmental exposure (industrial air emissions) and respiratory health outcomes (asthma) are geographically concentrated in the same Kentucky counties.
+- And whether socioeconomic help factors explain some of the differences between counties high emission levels. 
+
+**Datasets used (2018–2022)**:
+1. Toxic Release Inventory (TRI): County-level total air emissions, facility counts, hazardous air pollutants (HAPs). 
+2. Asthma: County-level emergency department visits for asthma.
+3. CDC Social Vulnerability Index (SVI): County-level socioeconomic and demographic vulnerability indicators including poverty, housing burden, education, disability, minority status, and overall Ranking Percentile index. 
+
+---
+### Number of TRI Facilities 
+&lt;img src="charts/Facilities-by-County.png" width="70%" style="display: block; margin: auto;" /&gt;
+- Establishes where industrial activity is concentrated.
+- Counties with more facilities represent greater potential sources of airborne emissions.
+
+---
+
+### Top Emitting facilities
+.pull-left[
+&lt;img src="charts/top-air-emitting-counties.png" width="90%"&gt;
+]
+
+.pull-right[
+&lt;img src="charts/top-emitting-facilities.png" width="100%"&gt;
+]
+
+- First graph: matches with Jefferson emitting the most. 
+- Second graph: Shows that a small number of facilities account for disproportionately large emissions such as in Ohio County which has 8 facilities compared to Jefferson's 71 but at the same time has the biggest facility in KY, emitting 7 million pounds. 
+
+---
+### Air Pollutants
+&lt;img src="charts/Air-Pollutants.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;div style="font-size: 85%;"&gt;
+Demonstrates that emissions are dominated by chemicals such as sulfuric acid, ammonia, and hydrochloric acid, which contribute to airway inflammation and PM2.5 formation. 
+
+- Sulfuric acid (acid aerosols including mists): Strong respiratory irritant; Causes airway inflammation; Linked to asthma attacks; Fine acid particles can penetrate lungs
+- Ammonia: Irritates airways, Reacts in atmosphere to form secondary particulate matter (PM2.5), PM2.5 is strongly associated with asthma
+- Hydrochloric acid (acid aerosols including mists), Strong respiratory irritant, can trigger bronchospasm
+&lt;div&gt;
+---
+### Asthma Burden – Jefferson County Case Study
+
+.pull-left[
+&lt;img src="charts/Asthma-level.png" width="100%"&gt;
+]
+
+.pull-right[
+&lt;img src="charts/jeff-asthma-level.png" width="100%"&gt;
+]
+
+- Left graph shows cumulative asthma emergency visit counts among KY counties from 2008–2022
+- Right shows Jefferson County Asthma over the years from 2015-2022.
+---
+### Jefferson County: Chemical Trends
+&lt;img src="charts/trend-jeff-pollutant.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;div style="font-size: 83%;"&gt;
+- From years 2008–2022, asthma emergency visits in Jefferson show a declining trend as seen before.  
+- Emissions of ammonia, sulfuric acid, and hydrochloric acid decline or stabilize from 2018 to 2022.  
+- These chemicals are either respiratory irritants themselves or precursors to PM2.5, which is strongly linked to asthma exacerbations.  
+- As emissions diminish, so too does the potential for airborne irritants to trigger asthma responses among residents.  
+- While asthma outcomes are influenced by additional factors (healthcare access, housing conditions, smoking prevalence), the consistent drop in these pollutants provides a plausible environmental explanation for improving asthma trends over time.
+&lt;div&gt;
+
+---
+### Merged Analysis: Emissions, Asthma, and Social Vulnerability
+
+.pull-left[
+![](charts/SVI.png)
+]
+
+.pull-right[
+
+- **Jefferson County**: Highest industrial air emissions and most TRI facilities in KY, with consistently high asthma reports.  
+- **SVI (~0.6)**: Moderate vulnerability — high emissions without extreme socioeconomic disadvantage.  
+- **Other high-emission counties**: Often higher SVI but lower asthma, suggesting environmental exposure may overlap more with social vulnerability elsewhere.
+
+]
+
+---
+### Emissions &amp; SVI Comparisons
+.pull-left[
+&lt;img src="charts/housing.png" width="80%"&gt;
+]
+.pull-right[
+&lt;img src="charts/poverty.png" width="80%"&gt;
+]
+.pull-left[
+&lt;img src="charts/minority.png" width="80%"&gt;
+]
+.pull-right[
+&lt;img src="charts/employment.png" width="80%"&gt;
+]
+
+---
+### To wrap up,
+- Industrial air emissions in Kentucky are geographically concentrated, with counties such as Jefferson appearing among the highest emitters and highest asthma-related emergency visit rates
+
+- However, this  is not consistent statewide: several counties emitting above the median level of industrial air pollutants also fall into the High Social Vulnerability Index (SVI) categories, yet do not exhibit similarly elevated asthma-related emergency visits.
+
+- Within high-emission counties, those with High SVI scores are distinguished by greater socioeconomic vulnerability
+
+- One possible explanation for this pattern is differential access to healthcare and diagnostic services: counties with high emissions and high vulnerability may face barriers to asthma detection or treatment, while lower-vulnerability counties such as Jefferson may report higher asthma incidence due to greater access to medical care and reporting infrastructure.
+
+---
+class: center, middle
+background-color: "#1c5253"
+
+## Thanks for listening!
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,148 @@
+---
+title: "Environmental Risk and Health Burden in Kentucky Counties"
+author: "Anisha Choudhury"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r xaringan-theme, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+
+style_mono_accent(,
+  base_color = "#3e2f5b", 
+  background_color = "#F8F9FA",
+  header_font_google = google_font("Josefin Sans"),
+  text_font_google   = google_font("Montserrat", "300", "300i"),
+  code_font_google   = google_font("Fira Mono")
+)
+
+```
+
+class: center, middle
+#Research Question
+To what extent are industrial air emissions and asthma-related emergency visits concentrated in Kentucky, and do socioeconomic factors play a role? 
+
+---
+### Main Analysis:
+- Examines whether environmental exposure (industrial air emissions) and respiratory health outcomes (asthma) are geographically concentrated in the same Kentucky counties.
+- And whether socioeconomic help factors explain some of the differences between counties high emission levels. 
+
+**Datasets used (2018–2022)**:
+1. Toxic Release Inventory (TRI): County-level total air emissions, facility counts, hazardous air pollutants (HAPs). 
+2. Asthma: County-level emergency department visits for asthma.
+3. CDC Social Vulnerability Index (SVI): County-level socioeconomic and demographic vulnerability indicators including poverty, housing burden, education, disability, minority status, and overall Ranking Percentile index. 
+
+---
+### Number of TRI Facilities 
+```{r echo=FALSE, out.width="70%",fig.align="center"}
+knitr::include_graphics("charts/Facilities-by-County.png")
+```
+- Establishes where industrial activity is concentrated.
+- Counties with more facilities represent greater potential sources of airborne emissions.
+
+---
+
+### Top Emitting facilities
+.pull-left[
+<img src="charts/top-air-emitting-counties.png" width="90%">
+]
+
+.pull-right[
+<img src="charts/top-emitting-facilities.png" width="100%">
+]
+
+- First graph: matches with Jefferson emitting the most. 
+- Second graph: Shows that a small number of facilities account for disproportionately large emissions such as in Ohio County which has 8 facilities compared to Jefferson's 71 but at the same time has the biggest facility in KY, emitting 7 million pounds. 
+
+---
+### Air Pollutants
+```{r echo=FALSE, out.width="40%",fig.align="center"}
+knitr::include_graphics("charts/Air-Pollutants.png")
+```
+<div style="font-size: 85%;">
+Demonstrates that emissions are dominated by chemicals such as sulfuric acid, ammonia, and hydrochloric acid, which contribute to airway inflammation and PM2.5 formation. 
+
+- Sulfuric acid (acid aerosols including mists): Strong respiratory irritant; Causes airway inflammation; Linked to asthma attacks; Fine acid particles can penetrate lungs
+- Ammonia: Irritates airways, Reacts in atmosphere to form secondary particulate matter (PM2.5), PM2.5 is strongly associated with asthma
+- Hydrochloric acid (acid aerosols including mists), Strong respiratory irritant, can trigger bronchospasm
+<div>
+---
+### Asthma Burden – Jefferson County Case Study
+
+.pull-left[
+<img src="charts/Asthma-level.png" width="100%">
+]
+
+.pull-right[
+<img src="charts/jeff-asthma-level.png" width="100%">
+]
+
+- Left graph shows cumulative asthma emergency visit counts among KY counties from 2008–2022
+- Right shows Jefferson County Asthma over the years from 2015-2022.
+---
+### Jefferson County: Chemical Trends
+```{r echo=FALSE, out.width="65%",fig.align="center"}
+knitr::include_graphics("charts/trend-jeff-pollutant.png")
+```
+<div style="font-size: 83%;">
+- From years 2008–2022, asthma emergency visits in Jefferson show a declining trend as seen before.  
+- Emissions of ammonia, sulfuric acid, and hydrochloric acid decline or stabilize from 2018 to 2022.  
+- These chemicals are either respiratory irritants themselves or precursors to PM2.5, which is strongly linked to asthma exacerbations.  
+- As emissions diminish, so too does the potential for airborne irritants to trigger asthma responses among residents.  
+- While asthma outcomes are influenced by additional factors (healthcare access, housing conditions, smoking prevalence), the consistent drop in these pollutants provides a plausible environmental explanation for improving asthma trends over time.
+<div>
+
+---
+### Merged Analysis: Emissions, Asthma, and Social Vulnerability
+
+.pull-left[
+![](charts/SVI.png)
+]
+
+.pull-right[
+
+- **Jefferson County**: Highest industrial air emissions and most TRI facilities in KY, with consistently high asthma reports.  
+- **SVI (~0.6)**: Moderate vulnerability — high emissions without extreme socioeconomic disadvantage.  
+- **Other high-emission counties**: Often higher SVI but lower asthma, suggesting environmental exposure may overlap more with social vulnerability elsewhere.
+
+]
+
+---
+### Emissions & SVI Comparisons
+.pull-left[
+<img src="charts/housing.png" width="80%">
+]
+.pull-right[
+<img src="charts/poverty.png" width="80%">
+]
+.pull-left[
+<img src="charts/minority.png" width="80%">
+]
+.pull-right[
+<img src="charts/employment.png" width="80%">
+]
+
+---
+### To wrap up,
+- Industrial air emissions in Kentucky are geographically concentrated, with counties such as Jefferson appearing among the highest emitters and highest asthma-related emergency visit rates
+
+- However, this  is not consistent statewide: several counties emitting above the median level of industrial air pollutants also fall into the High Social Vulnerability Index (SVI) categories, yet do not exhibit similarly elevated asthma-related emergency visits.
+
+- Within high-emission counties, those with High SVI scores are distinguished by greater socioeconomic vulnerability
+
+- One possible explanation for this pattern is differential access to healthcare and diagnostic services: counties with high emissions and high vulnerability may face barriers to asthma detection or treatment, while lower-vulnerability counties such as Jefferson may report higher asthma incidence due to greater access to medical care and reporting infrastructure.
+
+---
+class: center, middle
+background-color: "#1c5253"
+
+## Thanks for listening!
+
+
