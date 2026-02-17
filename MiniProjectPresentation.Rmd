@@ -232,7 +232,7 @@ class: center, middle, inverse
 
 # *Takeaways*
 ---
-class: center, middle, inverse
+class: center, middle
 background-image: url(https://daily.jstor.org/wp-content/uploads/2017/12/traffic_jam_1050x700.jpg)
 
 # Maybe the data does show how influential concerts are
