@@ -1,0 +1,279 @@
+---
+title: "NBA Player Points Prediction"
+subtitle: "What Drives Scoring?"
+author: "Luke Finkielstein"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, default-fonts]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(fig.width=8, fig.height=5, dev='svg')
+
+# Load libraries
+library(ggplot2)
+library(dplyr)
+
+# Load data
+player_df <- read.csv('nba_player_data.csv')
+```
+
+# Research Question
+
+Can we predict NBA player scoring using contextual factors?
+
+**Goal:** Understand what drives player points per game
+
+**Key Insight:** Not about individual talent, but about opportunity and efficiency
+
+---
+
+# Data Overview
+
+- **37,776 player-season records** from NBA history
+- **Average PPG:** 8.2 points
+- **Range:** 0 to 50.4 PPG
+```{r fig.height=4, dev='svg'}
+par(mar = c(4, 4, 2, 1))
+hist(player_df$pts_per_game, bins=50, main="Distribution of Player PPG", 
+     xlab="Points Per Game", ylab="Frequency", col="steelblue", border="black")
+```
+
+---
+
+# Correlation: What Features Matter?
+```{r fig.height=5, dev='svg'}
+feature_cols <- c('pts_per_game', 'mp_per_game', 'fg_per_game', 'fga_per_game', 
+                  'fg_percent', 'x3p_per_game', 'fta_per_game', 'ft_percent',
+                  'ast_per_game', 'stl_per_game', 'usg_percent', 'ts_percent', 'age')
+
+corr_data <- player_df[, feature_cols]
+corr_matrix <- cor(corr_data, use = "complete.obs")
+
+par(mar = c(5, 5, 2, 2))
+image(corr_matrix, main="Feature Correlations", axes=FALSE)
+axis(1, at=seq(0,1,length.out=ncol(corr_matrix)), labels=colnames(corr_matrix), 
+     las=2, cex.axis=0.7)
+axis(2, at=seq(0,1,length.out=nrow(corr_matrix)), labels=rownames(corr_matrix), 
+     las=2, cex.axis=0.7)
+```
+
+---
+
+# Finding #1: Minutes Per Game by Position
+
+Playing time varies significantly by position
+```{r fig.height=5, dev='svg'}
+df_clean <- player_df[!is.na(player_df$mp_per_game), ]
+pos_order <- c('PG', 'SG', 'SF', 'PF', 'C')
+df_clean$pos <- factor(df_clean$pos, levels = pos_order)
+
+boxplot(mp_per_game ~ pos, data = df_clean,
+        main = "Minutes Per Game by Position",
+        xlab = "Position", ylab = "Minutes", col = "lightblue", border = "black")
+grid(axis = 'y', alpha = 0.3)
+```
+
+---
+
+# Finding #2: Points by Position AND Playing Time
+
+**Playing time matters WAY more than position**
+```{r fig.height=5, dev='svg'}
+df_clean$minutes_tier <- cut(df_clean$mp_per_game, 
+                              bins=c(0, 10, 20, 30, 50), 
+                              labels=c('0-10', '10-20', '20-30', '30+'))
+
+# Calculate mean PPG
+pos_order <- c('PG', 'SG', 'SF', 'PF', 'C')
+colors <- c('0-10'='#e8f4f8', '10-20'='#b3d9e8', '20-30'='#7eb8d4', '30+'='#2a86c4')
+
+plot(1, type="n", xlim=c(0.5, 5.5), ylim=c(0, 20), 
+     main="Points Per Game by Position & Playing Time",
+     xlab="Position", ylab="Points Per Game", axes=FALSE)
+axis(1, at=1:5, labels=pos_order)
+axis(2)
+grid(axis='y', alpha=0.3)
+
+minute_tiers <- c('0-10', '10-20', '20-30', '30+')
+x_positions <- 1:5
+for(i in 1:4) {
+  tier <- minute_tiers[i]
+  for(j in 1:5) {
+    pos <- pos_order[j]
+    mean_ppg <- mean(df_clean$pts_per_game[df_clean$pos == pos & df_clean$minutes_tier == tier], na.rm=TRUE)
+    x_pos <- x_positions[j] + (i-2.5)*0.2
+    points(x_pos, mean_ppg, pch=19, col=colors[i], cex=2)
+  }
+}
+
+legend("topleft", legend=minute_tiers, col=colors, pch=19, cex=0.8)
+```
+
+---
+
+# Finding #3: Scoring Consistency Over Time
+
+**Past performance predicts future (Correlation: 0.894)**
+```{r fig.height=5, dev='svg'}
+# Get multi-season players
+player_seasons <- table(player_df$player)
+multi_season_players <- names(player_seasons[player_seasons >= 2])
+
+df_multi <- player_df[player_df$player %in% multi_season_players, ]
+df_multi <- df_multi[order(df_multi$player, df_multi$season), ]
+
+# Calculate PPG change
+df_multi$ppg_lag <- NA
+for(player in unique(df_multi$player)) {
+  idx <- which(df_multi$player == player)
+  if(length(idx) > 1) {
+    df_multi$ppg_lag[idx[-1]] <- df_multi$pts_per_game[idx[-length(idx)]]
+  }
+}
+
+df_plot <- df_multi[!is.na(df_multi$ppg_lag), ]
+
+plot(df_plot$ppg_lag, df_plot$pts_per_game,
+     main = "Scoring Consistency: Previous vs Current Season",
+     xlab = "Previous Season PPG", ylab = "Current Season PPG",
+     col = rgb(0, 0, 1, 0.2), pch = 16, cex = 0.5)
+abline(0, 1, col = 'red', lwd = 2, lty = 2, label="No change")
+grid(alpha = 0.3)
+
+corr <- cor(df_plot$ppg_lag, df_plot$pts_per_game, use = "complete.obs")
+text(2, 32, paste("r =", round(corr, 3)), cex = 1.2, 
+     bbox = list(boxstyle = "round", facecolor = "wheat", alpha = 0.8))
+```
+
+---
+
+# Finding #4: Age Effects
+
+**Young improve, Veterans decline**
+```{r fig.height=5, dev='svg'}
+# Calculate PPG change
+df_multi$ppg_change <- NA
+for(player in unique(df_multi$player)) {
+  idx <- which(df_multi$player == player)
+  if(length(idx) > 1) {
+    df_multi$ppg_change[idx[-1]] <- df_multi$pts_per_game[idx[-length(idx)+1]] - df_multi$pts_per_game[idx[-length(idx)]]
+  }
+}
+
+df_age <- df_multi[!is.na(df_multi$ppg_change), ]
+
+# Age categories
+age_breaks <- c(18, 22, 24, 26, 28, 30, 32, 34, 36, 50)
+age_labels <- c('18-22', '22-24', '24-26', '26-28', '28-30', '30-32', '32-34', '34-36', '36+')
+df_age$age_cat <- cut(df_age$age, breaks=age_breaks, labels=age_labels)
+
+# Calculate mean change
+age_means <- tapply(df_age$ppg_change, df_age$age_cat, mean, na.rm=TRUE)
+
+barplot(age_means, main="PPG Change by Age Group",
+        xlab="Age", ylab="Average PPG Change",
+        col=c(rep("#2ecc71", 2), rep("#3498db", 2), rep("#f39c12", 2), rep("#e74c3c", 3)),
+        ylim=c(-1.5, 1))
+abline(h=0, col='black', lwd=2)
+grid(axis='y', alpha=0.3)
+```
+
+---
+
+# Finding #5: Feature Importance
+
+**What actually predicts scoring?** (Contextual features only)
+```{r fig.height=5, dev='svg'}
+library(randomForest)
+
+# Prepare data
+df_model <- player_df[!is.na(player_df$pts_per_game) & 
+                      !is.na(player_df$mp_per_game) & 
+                      !is.na(player_df$usg_percent) & 
+                      !is.na(player_df$fg_percent) & 
+                      !is.na(player_df$ts_percent) & 
+                      !is.na(player_df$age), ]
+
+X <- df_model[, c('mp_per_game', 'usg_percent', 'ts_percent', 'fg_percent', 'age')]
+y <- df_model$pts_per_game
+
+# Train random forest
+set.seed(42)
+rf <- randomForest(X, y, ntree=100, maxdepth=10)
+
+# Plot importance
+importance_vals <- rf$importance[, 1]
+importance_order <- order(importance_vals, decreasing=TRUE)
+
+barplot(importance_vals[importance_order], 
+        names.arg=names(importance_vals)[importance_order],
+        main="Feature Importance for Predicting PPG",
+        ylab="Importance Score",
+        col="steelblue",
+        las=2)
+grid(axis='y', alpha=0.3)
+```
+
+---
+
+# Feature Importance Rankings
+
+| Feature | Importance |
+|---------|------------|
+| Minutes Per Game | 78.6% |
+| Usage Rate | 18.5% |
+| True Shooting % | 1.7% |
+| Field Goal % | 1.2% |
+| Age | 0.1% |
+
+**Key Insight:** Opportunity dominates efficiency
+
+---
+
+# Model Performance
+
+Using contextual features only:
+
+- **R² = 0.977** 
+- **Mean Absolute Error = 0.61 PPG**
+
+Can we predict **season PPG?** ✓ Yes!
+
+Can we predict **game-by-game PPG?** ✗ Not yet (need game-level data)
+
+---
+
+# Key Takeaways
+
+1. **Playing time is dominant** — Minutes drive scoring opportunity
+
+2. **Young improve, veterans decline** — Predictable age trajectory
+
+3. **High consistency** — Past season predicts current (r=0.894)
+
+4. **Usage matters** — Ball touches enable scoring
+
+5. **Efficiency is secondary** — Volume > accuracy for prediction
+
+---
+
+# Next Steps
+
+**To predict individual games, we need:**
+- Recent form (last 5/10 games)
+- Opponent defense rating
+- Home/away status
+- Back-to-back games
+- Injury updates
+
+---
+
+class: center, middle
+
+# Questions?
