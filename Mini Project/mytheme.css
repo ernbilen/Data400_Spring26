@@ -1,0 +1,27 @@
+/* Remove slide number */
+.remark-slide-number {
+  display: none !important;
+}
+
+/* Remove metropolis header bar */
+.remark-slide-content::before {
+  display: none !important;
+}
+
+/* Remove possible top strip */
+.remark-slide-content {
+  border-top: none !important;
+  background-color: transparent !important;
+}
+
+/* Remove footer line if exists */
+.remark-slide-content::after {
+  display: none !important;
+}
+
+/* Clean typography */
+.remark-slide-content {
+  font-size: 20px;
+  line-height: 1.6;
+  color: #2a2a2a;
+}
