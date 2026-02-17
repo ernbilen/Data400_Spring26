@@ -80,62 +80,60 @@ chicagoByYear <- summarise(group_by(doubleTrain, substr(`Service Date`, 1, 4)),
 colnames(chicagoByYear) <- c("Year", "Mean Transit", "Median Transit")
 
 ###Making final date charts before doing a wee bit of analysis
-blankVector <- c(1:nrow(bostonDates))
+blankVector <- c(1:nrow(chicagoDates))
 
 #Ensuring dates are built well
-bostonDates$Date <- ymd(bostonDates$Date)
-bostonDates <- arrange(bostonDates, Date)
+chicagoDates$Date <- ymd(chicagoDates$Date)
+chicagoDates <- arrange(chicagoDates, Date)
 
 #which(boston_rail_by_day$servicedate %in% bostonDates$Date[6])
 
 #Building Basic Columns
 for (i in blankVector){
-  replaceRow <- which(boston_rail_by_day$servicedate %in% bostonDates$Date[i])
+  replaceRow <- which(doubleTrain$`Service Date` %in% chicagoDates$Date[i])
   
-  blankVector[i] <- boston_rail_by_day$sum_boardings[replaceRow]
+  blankVector[i] <- doubleTrain$Total[replaceRow]
 }
 
 for (i in blankVector){
-  yur <- substr(bostonDates$Date[i], 1, 4)
+  yur <- substr(chicagoDates$Date[i], 1, 4)
   blankVector[i] <- yur
 }
 
-bostonDates <- cbind(bostonDates,blankVector)
-
-bostonDates <- bostonDates[1:5]
+chicagoDates <- cbind(chicagoDates,blankVector)
 
 #Switch case loop
 for (i in blankVector){
-  the <- switch(bostonDates$Year[i],
-                "2020" = bostonByYear$`Mean Transit`[1],
-                "2021" = bostonByYear$`Mean Transit`[2],
-                "2022" = bostonByYear$`Mean Transit`[3],
-                "2023" = bostonByYear$`Mean Transit`[4],
-                "2024" = bostonByYear$`Mean Transit`[5],
-                "2025" = bostonByYear$`Mean Transit`[6])
+  the <- switch(chicagoDates$Year[i],
+                "2020" = chicagoByYear$`Mean Transit`[1],
+                "2021" = chicagoByYear$`Mean Transit`[2],
+                "2022" = chicagoByYear$`Mean Transit`[3],
+                "2023" = chicagoByYear$`Mean Transit`[4],
+                "2024" = chicagoByYear$`Mean Transit`[5],
+                "2025" = chicagoByYear$`Mean Transit`[6])
   
   blankVector[i] <- the
 }
 
 for (i in blankVector){
-  and <- switch(bostonDates$Year[i],
-                "2020" = bostonByYear$`Median Transit`[1],
-                "2021" = bostonByYear$`Median Transit`[2],
-                "2022" = bostonByYear$`Median Transit`[3],
-                "2023" = bostonByYear$`Median Transit`[4],
-                "2024" = bostonByYear$`Median Transit`[5],
-                "2025" = bostonByYear$`Median Transit`[6])
+  and <- switch(chicagoDates$Year[i],
+                "2020" = chicagoByYear$`Median Transit`[1],
+                "2021" = chicagoByYear$`Median Transit`[2],
+                "2022" = chicagoByYear$`Median Transit`[3],
+                "2023" = chicagoByYear$`Median Transit`[4],
+                "2024" = chicagoByYear$`Median Transit`[5],
+                "2025" = chicagoByYear$`Median Transit`[6])
   
   blankVector[i] <- and
 }
 
 #Mutate the differentials
-bostonDates <- bostonDates %>% 
+chicagoDates <- chicagoDates %>% 
   mutate(meanDifferential = `Transit Total` - `Yearly Average`,
          medianDifferential = `Transit Total` - `Yearly Median`)
 
-colnames(bostonDates) <- c("Date", "Artist", "Venue", "Transit Total", "Year", 
+colnames(chicagoDates) <- c("Date", "Artist", "Venue", "Transit Total", "Year", 
                            "Yearly Average", "Yearly Median",
                            "Mean Differential", "Median Differential")
 
-bostonDates <- cbind(bostonDates[1:4],bostonDates[6:9])
+chicagoDates <- cbind(chicagoDates[1:4],chicagoDates[6:9])
