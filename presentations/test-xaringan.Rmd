@@ -1,0 +1,18 @@
+---
+title: "Test slide"
+subtitle: "⚔<br/>with xaringan"
+author: "TU"
+institute: "Dickinson College"
+date: "2026/01/23 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+
+---
+class: center, middle
+
+# This is Tu's test slide

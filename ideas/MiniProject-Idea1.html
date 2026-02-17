@@ -1,0 +1,29 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>MiniProject-Idea1</title><style></style></head><body id="preview">
+<h1 class="code-line" data-line-start=0 data-line-end=1 ><a id="What_health_searches_are_gaining_attention_in_each_state_according_to_Google_Trends_How_does_this_interest_associate_with_statelevel_obesity_rate_0"></a>What health searches are gaining attention in each state, according to Google Trends? How does this interest associate with state-level obesity rate?</h1>
+<h3 class="code-line" data-line-start=1 data-line-end=2 ><a id="_by_Tu_Tong__1"></a><em>by Tu Tong</em></h3>
+<h2 class="code-line" data-line-start=3 data-line-end=4 ><a id="Data_Sources_3"></a>Data Sources</h2>
+<p class="has-line-data" data-line-start="5" data-line-end="6">For this mini project, I plan to use Google Trends (<a href="https://trends.google.com/trends">https://trends.google.com/trends</a>) search engine to retrieve time series data of different terms by different states in the U.S. Specifically, I would use relevant search terms (list not finalized) to collect data:</p>
+<ul>
+<li class="has-line-data" data-line-start="7" data-line-end="9">
+<p class="has-line-data" data-line-start="7" data-line-end="8">Diet: “Cheap food&quot;, “organic food&quot;, “supplements&quot;, “healthy foods”, “nutrition”, “calorie&quot;, “vegetable&quot;, “low carb”, “protein.&quot;</p>
+</li>
+<li class="has-line-data" data-line-start="9" data-line-end="11">
+<p class="has-line-data" data-line-start="9" data-line-end="10">Behavioral: “gym near me&quot;, “weight loss&quot;, “exercises at home&quot;, “meal prep.”</p>
+</li>
+</ul>
+<p class="has-line-data" data-line-start="11" data-line-end="12">For the obesity rate, I am thinking of either using Prevalence of Obesity Based on Self- Reported Weight and Height by State, which is provided in csv file by <a href="https://www.cdc.gov/obesity/data-and-statistics/adult-obesity-prevalence-maps.html">CDC Adult Obesity Prevalence Maps</a>, or simply the obesity rate that is available on <a href="https://www.statista.com/statistics/378988/us-obesity-rate-by-state/#:~:text=Data%20for%20obesity%20rates%20by%20state%20show,mostly%20found%20in%20the%20Southern%20United%20States.">Statista</a>. The two sources here are both from 2024.</p>
+<p class="has-line-data" data-line-start="13" data-line-end="14">After exploratory data analysis, I would use an ML model to predict obesity rates using people’s interest in health. My features would be the frequency of those searches by state, and the obesity relevance (obesity rate) is the variable I want to predict.</p>
+<h2 class="code-line" data-line-start=15 data-line-end=16 ><a id="Data_Retrieval_15"></a>Data Retrieval</h2>
+<p class="has-line-data" data-line-start="16" data-line-end="17">At the moment, I am finalizing what keywords would be relevant to my topic before retrieving the data. I am consider to look at the data for multiple years.</p>
+<h2 class="code-line" data-line-start=18 data-line-end=19 ><a id="Model_18"></a>Model</h2>
+<p class="has-line-data" data-line-start="20" data-line-end="21">I am considering using either Random Forest or XGBoost to predict obesity based on the frequencies of the search terms mentioned above.</p>
+<h2 class="code-line" data-line-start=24 data-line-end=25 ><a id="Implications_for_stakeholders_24"></a>Implications for stakeholders</h2>
+<p class="has-line-data" data-line-start="26" data-line-end="27">Results from this project will help people who work in healthcare (CDC, health policymakers) understand more about how health interest relates to outcomes. This would help understand what health trends are gaining popularity within each state. Additionally, we can see if awareness/trends can impact health behaviors and outcomes.</p>
+<h2 class="code-line" data-line-start=30 data-line-end=31 ><a id="Ethical_legal_societal_implications_30"></a>Ethical, legal, societal implications</h2>
+<p class="has-line-data" data-line-start="32" data-line-end="33">What contributes to health outcome improvements is really hard to decide, as health is influenced by social and economic context. While studies in this area often focus on external factors, this project concentrates on the expressed interest and curiosity one has in terms of health. This project uses machine learning to help with prediction and to determine if social interests in health from people can signify outcomes or not. The result would reveal relevancy and correlation, instead of causal inference. Google Trends data is aggregated data; therefore, the result from this project does not indicate individual behaviors or responsibility, instead, it provides a look into social trends related to health.</p>
+<hr>
+<h2 class="code-line" data-line-start=35 data-line-end=36 ><a id="License_35"></a>License</h2>
+<p class="has-line-data" data-line-start="37" data-line-end="38">MIT</p>
+<p class="has-line-data" data-line-start="39" data-line-end="40"><strong>Free Software, Hell Yeah!</strong></p>
+
+</body></html>
