@@ -1,0 +1,164 @@
+---
+title: "Mini Project"
+author: "Amelia Kim"
+date: "2026/02/17 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_light(
+  base_color = "#1f3a66",     # navy
+  header_font_google = google_font("Josefin Sans"),
+  text_font_google   = google_font("Inter", "300", "300i"),
+  code_font_google   = google_font("Fira Mono")
+)
+```
+# Introduction
+
+- Project motivation  
+- Research question  
+- Why it matters  
+
+---
+
+# Polymarket
+- An online prediction market for real-world event outcomes
+- Users trade contracts whose prices reflect implied probabilities
+- Typically framed as binary outcome questions (e.g., Yes/No)
+- **Buy or Sell ”Yes” or “No” shares:** The price of a share reflects the market’s implied probability (e.g., $0.70 = 70%). You can trade in/out before the deadline.
+- Markets settle based on real-world outcomes
+- Regulated by Commodity Futures Trading Commission (CFTC)
+
+<div style="text-align: center;">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Company_Logo_Polymarket.png" width="500px">
+</div>
+
+---
+
+# Data
+
+- Data source  
+- Number of observations  
+- Key variables  
+
+---
+
+# Polymarket Data
+
+```{r, echo=FALSE}
+library(DT)
+
+nfl_volume <- data.frame(
+  NFL_Team = c(
+    "Arizona Cardinals","Atlanta Falcons","Baltimore Ravens","Buffalo Bills",
+    "Carolina Panthers","Chicago Bears","Cincinnati Bengals","Cleveland Browns",
+    "Dallas Cowboys","Denver Broncos","Detroit Lions","Green Bay Packers",
+    "Houston Texans","Indianapolis Colts","Jacksonville Jaguars","Kansas City Chiefs",
+    "Las Vegas Raiders","Los Angeles Chargers","Los Angeles Rams","Miami Dolphins",
+    "Minnesota Vikings","New England Patriots","New Orleans Saints","New York Giants",
+    "New York Jets","Philadelphia Eagles","Pittsburgh Steelers","San Francisco 49ers",
+    "Seattle Seahawks","Tampa Bay Buccaneers","Tennessee Titans","Washington Commanders"
+  ),
+  Volume_USD = c(
+    42048003, 9516223, 3538126, 6163891, 60236454, 10640594, 39998043, 51375599,
+    14853069, 9185428, 3076939, 4023623, 9002497, 7256584, 7933650, 3590300,
+    50242114, 4419467, 9230677, 64086196, 11351131, 17884421, 48283193, 37490995,
+    57232072, 3519418, 6299106, 7603437, 15295581, 9903532, 70848160, 7968300
+  )
+)
+
+nfl_volume$Volume_USD <- format(nfl_volume$Volume_USD, big.mark = ",")
+
+datatable(
+  nfl_volume,
+  options = list(
+    pageLength = 10,
+    lengthChange = FALSE,
+    dom = "tp"
+  )
+)
+
+```
+
+---
+# NFL Team Performance
+
+```{r, echo=FALSE}
+library(DT)
+
+team_performance <- data.frame(
+  Team_Name = c(
+    "Arizona Cardinals","Atlanta Falcons","Baltimore Ravens","Buffalo Bills",
+    "Carolina Panthers","Chicago Bears","Cincinnati Bengals","Cleveland Browns",
+    "Dallas Cowboys","Denver Broncos","Detroit Lions","Green Bay Packers",
+    "Houston Texans","Indianapolis Colts","Jacksonville Jaguars","Kansas City Chiefs",
+    "Las Vegas Raiders","Los Angeles Chargers","Los Angeles Rams","Miami Dolphins",
+    "Minnesota Vikings","New England Patriots","New Orleans Saints","New York Giants",
+    "New York Jets","Philadelphia Eagles","Pittsburgh Steelers","San Francisco 49ers",
+    "Seattle Seahawks","Tampa Bay Buccaneers","Tennessee Titans","Washington Commanders"
+  ),
+  Games_Won = c(3, 8, 8, 13, 8, 12, 6, 5, 7, 15, 9, 9, 13, 8, 13, 6,
+                3, 11, 14, 7, 9, 17, 6, 4, 3, 11, 10, 13, 17, 8, 3, 5),
+  Games_Played = c(17, 17, 17, 19, 18, 19, 17, 17, 17, 19, 17, 18, 19,
+                   17, 18, 17, 17, 18, 20, 17, 17, 21, 17, 17, 17, 18,
+                   18, 19, 20, 17, 17, 17)
+)
+
+# Create Win %
+
+team_performance$Win_Pct <- 
+  round(100 * team_performance$Games_Won / team_performance$Games_Played, 2)
+
+
+datatable(
+  team_performance,
+  options = list(
+    pageLength = 10,     # 10 rows per page
+    lengthChange = FALSE,
+    dom = "tp"           # table + pagination only
+  )
+)
+```
+
+---
+# Combined Data
+
+```{r, fig.height=4, dev='svg'}
+nfl_volume$Volume_USD <- as.numeric(gsub(",", "", nfl_volume$Volume_USD))
+combined_nfl <- merge(nfl_volume, team_performance, by.x = "NFL_Team", by.y = "Team_Name")
+combined_nfl
+```
+---
+# Exploratory Data Analysis
+```{r,fig.height=4, dev='svg'}
+cor(combined_nfl$Volume_USD,
+    combined_nfl$Win_Pct)
+```
+--
+```{r}
+plot(combined_nfl$Volume_USD, combined_nfl$Win_Pct, pch = 19,col = "#23395b", xlab = "Trading Volume (USD)", ylab = "Win Percentage")
+abline(lm(Win_Pct ~ Volume_USD, data = combined_nfl),col = "lightblue",lwd = 2)
+```
+
+
+---
+# Results
+
+- Interpretation of coefficients  
+- Model performance  
+- Key takeaway  
+
+---
+# Citations
+- [NFL Team Data](https://premium.pff.com/nfl/teams/2025/REGPO)
+
+- [Polymarket Data](https://polymarket.com/event/super-bowl-champion-2026-731/will-the-seattle-seahawks-win-super-bowl-2026)
+
+

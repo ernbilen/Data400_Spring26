@@ -1,0 +1,302 @@
+---
+title: "Mini Project: Polymarket Liquidity & NFL Performance"
+author: "Amelia Kim"
+date: "2026/02/17 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_light(
+  base_color = "#1f3a66",
+  header_font_google = google_font("Josefin Sans"),
+  text_font_google   = google_font("Inter", "300", "300i"),
+  code_font_google   = google_font("Fira Mono")
+)
+```
+
+
+# Introduction
+
+### Research Focus
+
+**Question:**  
+Do NFL teams with higher Polymarket trading volume exhibit higher win percentages?
+
+### Motivation
+
+- Prediction markets reflect crowd beliefs  
+- Trading volume may proxy:
+  - Attention  
+  - Popularity  
+  - Information flow  
+- Does market interest relate to actual team performance?
+
+---
+
+# About Polymarket
+
+- Online prediction market for real-world events  
+- Contracts trade between $0 and $1  
+- Price ≈ implied probability  
+- Markets settle based on real outcomes  
+- Regulated by the **CFTC**
+
+<div style="text-align: center;">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Company_Logo_Polymarket.png" width="400px">
+</div>
+
+---
+
+# Data Overview
+
+### Polymarket Data
+- Super Bowl 2026 futures market  
+- 32 NFL teams  
+- Total trading volume (USD)
+
+### NFL Performance Data
+- Games Won  
+- Games Played  
+- Calculated Win %
+
+---
+
+# Polymarket Data
+
+```{r, echo=FALSE}
+library(DT)
+
+nfl_volume <- data.frame(
+  NFL_Team = c(
+    "Arizona Cardinals","Atlanta Falcons","Baltimore Ravens","Buffalo Bills",
+    "Carolina Panthers","Chicago Bears","Cincinnati Bengals","Cleveland Browns",
+    "Dallas Cowboys","Denver Broncos","Detroit Lions","Green Bay Packers",
+    "Houston Texans","Indianapolis Colts","Jacksonville Jaguars","Kansas City Chiefs",
+    "Las Vegas Raiders","Los Angeles Chargers","Los Angeles Rams","Miami Dolphins",
+    "Minnesota Vikings","New England Patriots","New Orleans Saints","New York Giants",
+    "New York Jets","Philadelphia Eagles","Pittsburgh Steelers","San Francisco 49ers",
+    "Seattle Seahawks","Tampa Bay Buccaneers","Tennessee Titans","Washington Commanders"
+  ),
+  Volume_USD = c(
+    42048003, 9516223, 3538126, 6163891, 60236454, 10640594, 39998043, 51375599,
+    14853069, 9185428, 3076939, 4023623, 9002497, 7256584, 7933650, 3590300,
+    50242114, 4419467, 9230677, 64086196, 11351131, 17884421, 48283193, 37490995,
+    57232072, 3519418, 6299106, 7603437, 15295581, 9903532, 70848160, 7968300
+  )
+)
+
+datatable(nfl_volume,
+          options = list(pageLength = 10,
+                         lengthChange = FALSE,
+                         dom = "tp"))
+```
+
+---
+
+# NFL Team Performance
+
+```{r, echo=FALSE}
+team_performance <- data.frame(
+  Team_Name = nfl_volume$NFL_Team,
+  Games_Won = c(3,8,8,13,8,12,6,5,7,15,9,9,13,8,13,6,
+                3,11,14,7,9,17,6,4,3,11,10,13,17,8,3,5),
+  Games_Played = c(17,17,17,19,18,19,17,17,17,19,17,18,19,
+                   17,18,17,17,18,20,17,17,21,17,17,17,18,
+                   18,19,20,17,17,17)
+)
+
+team_performance$Win_Pct <- 
+  round(100 * team_performance$Games_Won / team_performance$Games_Played, 2)
+
+datatable(team_performance,
+          options = list(pageLength = 10,
+                         lengthChange = FALSE,
+                         dom = "tp"))
+```
+
+---
+
+# Combined Dataset
+
+```{r, echo=FALSE}
+
+combined_nfl <- merge(nfl_volume,team_performance, by.x = "NFL_Team", by.y = "Team_Name")
+
+datatable(combined_nfl,
+          options = list(pageLength = 6,
+                         lengthChange = FALSE,
+                         dom = "tp"))
+
+```
+
+---
+
+# Exploratory Data Analysis
+
+### Summary Statistics
+
+```{r, echo=FALSE}
+summary(combined_nfl[, c("Volume_USD","Win_Pct")])
+```
+
+---
+
+# Distribution of Trading Volume
+
+```{r, echo=FALSE}
+hist(combined_nfl$Volume_USD,
+     col = "#1f3a66",
+     main = "Distribution of Polymarket Trading Volume",
+     xlab = "Volume (USD)")
+```
+
+---
+
+# Distribution of Win Percentage
+
+```{r, echo=FALSE}
+hist(combined_nfl$Win_Pct,
+     col = "lightblue",
+     main = "Distribution of Win Percentage",
+     xlab = "Win %")
+```
+
+---
+
+# Correlation
+
+```{r, echo=FALSE}
+cor(combined_nfl$Volume_USD,
+    combined_nfl$Win_Pct)
+```
+
+Interpretation:
+- Measures linear association
+- Range: -1 to 1
+
+---
+# Correlation Heatmap
+
+```{r, echo=FALSE, fig.width=12, fig.height=8}
+# Select numeric variables
+numeric_data <- combined_nfl[, c("Volume_USD", "Games_Won", 
+                                 "Games_Played", "Win_Pct")]
+
+# Compute correlation matrix
+corr_matrix <- cor(numeric_data)
+
+# Create heatmap
+heatmap(corr_matrix,
+        col = colorRampPalette(c("#1f3a66", "white", "lightblue"))(20),
+        scale = "none",
+        margins = c(8,8),
+        main = "Correlation Heatmap")
+```
+---
+
+# Scatterplot: Volume vs Win %
+
+```{r, echo=FALSE}
+plot(combined_nfl$Volume_USD,
+     combined_nfl$Win_Pct,
+     pch = 19,
+     col = "#1f3a66",
+     xlab = "Trading Volume (USD)",
+     ylab = "Win Percentage")
+
+abline(lm(Win_Pct ~ Volume_USD,
+          data = combined_nfl),
+       col = "lightblue",
+       lwd = 2)
+```
+
+---
+
+# Regression Model
+
+```{r, echo=FALSE}
+model <- lm(Win_Pct ~ Volume_USD,
+            data = combined_nfl)
+
+summary(model)
+```
+
+---
+
+# Key Findings
+
+- Weak / moderate / strong correlation?  
+- Does higher trading volume predict higher win %?  
+- Is the relationship statistically significant?
+
+---
+## Implications
+#### Societal
+
+- Prediction markets may influence fan perception and media narratives  
+- High trading volume could reflect popularity rather than true team strength  
+- Public markets may amplify hype cycles around certain teams  
+
+--
+
+#### Ethical Implications
+- Access inequality: participation requires crypto & technical literacy  
+- Market participation may not represent the broader population  
+- Risk of misinterpreting market volume as “true probability”  
+- Potential for herd behavior and overreaction  
+
+--
+
+#### Legal Implications
+
+- Sports-related prediction markets operate under CFTC oversight  
+- Regulatory status of sports betting varies by state  
+- Questions remain about:
+  - Market manipulation  
+  - Insider information  
+  - Jurisdictional legality  
+
+--
+
+## Research Limitations
+
+- Small sample size (32 teams)  
+- Single-season snapshot  
+- Volume may proxy attention, not information  
+- Correlation does not imply causation  
+
+---
+# Limitations
+
+- Only 32 teams (small sample size)  
+- Single season snapshot  
+- Volume may reflect popularity, not information  
+- Polymarket sports legality varies by jurisdiction  
+- Market participation may not represent entire betting population  
+
+---
+
+# Conclusion
+
+- Liquidity may capture attention effects  
+- Relationship appears (strong / weak / insignificant)  
+- Future work:
+  - Add multiple seasons  
+  - Include implied probabilities  
+  - Control for market size or fan base  
+
+---
+
+# Citations
+
+- NFL Team Data: https://premium.pff.com/nfl/teams/2025/REGPO  
+- Polymarket Market Data: https://polymarket.com/event/super-bowl-champion-2026-731
+
