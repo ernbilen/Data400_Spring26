@@ -149,3 +149,9 @@ meanDifferentials <- data.frame("Cities" = c("New York", "New York","Boston", "B
                                   mean(chicagoDates$`Mean Differential`),
                                   mean(chicagoDates$`Median Differential`)
                                 ), "Mode" = c("Mean","Median","Mean","Median","Mean","Median"))
+
+allDates <- rbind(CutYorkDates, bostonDates, chicagoDates)
+allDates <- arrange(allDates, Date)
+
+mean(allDates$`Mean Differential`)
+mean(allDates$`Median Differential`)
