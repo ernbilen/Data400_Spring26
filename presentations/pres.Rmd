@@ -1,0 +1,287 @@
+---
+title: "Data 400 Mini Project"
+subtitle: "Do firm characteristics in 2024 explain cross-sectional stock returns in 2025?"
+author: "Will Ferris"
+output:
+  xaringan::moon_reader:
+    seal: false
+    nature:
+      ratio: "16:9"
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      
+---
+```{css, echo=FALSE}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+:root{
+  --bg0:#070a14;
+  --bg1:#0b1020;
+  --panel: rgba(255,255,255,0.07);
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.70);
+  --accent: #7dd3fc;
+  --accent2:#c4b5fd;
+}
+
+.remark-slide-content{
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(1100px 800px at 12% 15%, rgba(125,211,252,0.18), transparent 60%),
+    radial-gradient(900px 700px at 88% 18%, rgba(196,181,253,0.16), transparent 62%),
+    linear-gradient(180deg, var(--bg0), var(--bg1));
+  font-size: 26px;
+  line-height: 1.25;
+  padding: 34px 44px;
+}
+
+h1,h2,h3{ font-weight: 800; letter-spacing: -0.02em; }
+h2{ color: var(--accent); }
+
+.placeholder{
+  border-radius: 18px;
+  padding: 18px;
+  background: rgba(255,255,255,0.06);
+  border: 2px dashed rgba(255,255,255,0.28);
+  color: rgba(255,255,255,0.74);
+  text-align: center;
+}
+.placeholder.tall{
+  min-height: 260px;
+  display: grid;
+  place-items: center;
+}
+```
+
+---
+class: center, middle, title-slide
+
+# Data 400 Mini Project
+## Firm characteristics (2024) → stock returns (2025)
+### Will Ferris
+
+<div class="subtitle-note">
+S&P 500 + Russell 2000
+</div>
+
+---
+
+# Research question & why it’s tractable
+
+**Question:** Do firm characteristics measured in **2024** help explain differences in stock returns during **2025**?
+
+**Why tractable:**
+- Clear unit of analysis: firm (ticker) + annual/price-based outcomes
+- Predictors are standard fundamentals / risk measures (value, profitability, leverage, size, volatility)
+- Clean time ordering: **2024 predictors → 2025 outcomes** (limits look-ahead bias)
+
+---
+
+# Data & sample (what’s in the dataset)
+
+.pull-left[
+**Universe:** Combined S&P 500 + Russell 2000 constituents
+
+**Key fields:**
+- Prices: 2024-01-01, 2024-12-31, 2025-12-31
+- Fundamentals (2024): Market cap, P/E, P/B, ROE, ROA, leverage, liquidity, EV/EBITDA
+- Classification: GICS Sector
+]
+
+
+.pull-right[
+<img src="datadictionary.png" width="80%">
+]
+
+---
+
+# Data Retrieval & Cleaning
+
+.pull-left[
+**Data Source:** 
+- Bloomberg Terminal in Althouse
+- Excel Export
+- Python
+
+**Cleaning:**
+- Standardization
+- Feature Engineering
+- Outliers
+]
+
+.pull-right[
+<img src="retrieval.png" width="100%">
+<img src="cleaning.png" width="100%">
+
+
+]
+
+---
+class: section-slide, center, middle
+
+# Exploratory Data Analysis
+
+<div class="subtitle-note">
+Distributions · Outliers · Size & sector patterns
+</div>
+
+---
+
+# EDA 1 & 2 — Distribution of 2025 returns, Top and Bottom Performers
+.pull-left[
+<img src="distret.png" width="100%">
+
+]
+.pull-right[
+<img src="tb1.png" width="100%">
+
+]
+
+---
+
+# EDA 3 — Size effect (quintile sorts)
+
+.pull-left[
+
+**Approach:** Bucket firms into market-cap quintiles using `ln_mktcap`
+
+**What to look for:**
+- Mean vs median differences (outliers vs typical firm)
+- Whether the relationship looks monotonic
+
+<div class="speaker-note">
+Say: “Small firms can have higher averages because a few names explode; medians tell you what a typical firm did.”
+</div>
+]
+
+.pull-right[
+<img src="sizequint.png" width="100%">
+]
+
+
+---
+
+# EDA 4 — Sector return differences
+
+<img src="sector.png" width="80%">
+
+
+---
+
+# Model 1 — Baseline regression
+
+.pull-left[
+- Volatility (2024) positively associated with 2025 returns (p < 0.01)
+- Size (ln mktcap): + & significant
+- Leverage (Debt/Equity): - & significant
+- R² ≈ 3.8%
+
+- Riskier firms earned higher returns in 2025
+- Larger firms outperformed after controlling for other traits
+- Higher leverage correlated with weaker forward performance
+]
+
+.pull-right[
+
+<img src="reg1.png" width="100%">
+
+
+]
+
+---
+
+# Model 3 — Sector fixed effects
+
+.pull-left[
+**Why:** Compare firms against a sector baseline to reduce sector-year noise
+**Add:** `C(GICS Sector)` to the regression
+
+- Increase R² to 8.0%
+- Volatility (+), size (+), leverage (–) remain significant
+- Value (book-to-market) weakens
+- Some return variation is clearly sector-driven
+- Volatility & Leverage remain important
+- The value effect is partially absorbed by industry structure
+
+]
+.pull-right[
+<img src="reg3.png" width="100%">
+]
+
+---
+
+# Results synthesis (what mattered most)
+
+.pull-left[
+**Most consistent correlates in this dataset:**
+1) **2024 volatility** → higher 2025 returns (risk rewarded)  
+2) **Size (ln mktcap)** → positive association in this sample  
+3) **Leverage (Debt/Equity)** → negative association  
+4) **Value (book-to-market)** shows in baseline, weaker once sector controls enter  
+]
+
+.pull-right[
+<img src="coefcorr.png" width="80%">
+]
+
+---
+
+# Implications for stakeholders (who should care?)
+
+**Investors**
+- Outliers dominate means → diversification matters
+- Sector-neutral screens help avoid “sector-year” confusion
+- Leverage exposure may be a hidden risk
+
+**Corporate leaders**
+- Higher leverage correlates with weaker forward outcomes here
+- Capital structure affects resilience and investor perception
+
+**Risk teams**
+- Volatility signal suggests risk-taking was rewarded in 2025
+- Stress-test—these relationships can flip across regimes
+
+---
+
+# Ethical, legal, societal implications
+
+.pull-left[
+
+### Promotes Transparent Investing
+- Links fundamentals to outcomes  
+- Reduces speculation and hype  
+
+### Encourages Responsible Risk
+- Leverage associated with weaker returns  
+- Supports sustainable balance sheets  
+
+]
+
+.pull-right[
+
+### Enables Fair Comparisons
+- Sector controls prevent misleading conclusions  
+
+### Legal & Professional Responsibility
+- Proper Bloomberg data use  
+- No look-ahead bias  
+- Findings presented as associations, not guarantees  
+
+]
+
+---
+
+class: center, middle, section-slide
+
+# Final takeaway
+
+<div class="big-quote">
+In this dataset, the most stable 2024 correlates of 2025 returns were<br/>
+<b>volatility</b>, <b>size</b>, and <b>leverage</b> — and <b>sector context</b> changed interpretation.
+</div>
+
+<div class="subtitle-note">
+Questions?
+</div>
