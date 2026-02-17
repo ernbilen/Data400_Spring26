@@ -137,3 +137,15 @@ colnames(chicagoDates) <- c("Date", "Artist", "Venue", "Transit Total", "Year",
                            "Mean Differential", "Median Differential")
 
 chicagoDates <- cbind(chicagoDates[1:4],chicagoDates[6:9])
+
+CutYorkDates <- newYorkDates[1:38,]
+
+meanDifferentials <- data.frame("Cities" = c("New York", "New York","Boston", "Boston","Chicago","Chicago"),
+                                "Mean Differentials" = c(
+                                  mean(CutYorkDates$`Mean Differential`),
+                                  mean(CutYorkDates$`Median Differential`),
+                                  mean(bostonDates$`Mean Differential`),
+                                  mean(bostonDates$`Median Differential`),
+                                  mean(chicagoDates$`Mean Differential`),
+                                  mean(chicagoDates$`Median Differential`)
+                                ), "Mode" = c("Mean","Median","Mean","Median","Mean","Median"))
