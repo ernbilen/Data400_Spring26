@@ -1,7 +1,8 @@
 | Item      | weight |
 | ----------- | ----------- |
-| Tractable data | 20% |
-| Data retrieval | 20% |
-| Exploratory Data Analysis | 20% |
-| Implications for stakeholders | 20% |
-| Ethical, legal, societal implications | 20% |
+| Tractable data | 15% |
+| Data retrieval | 15% |
+| Exploratory Data Analysis (EDA) | 15% |
+| Implications for stakeholders | 15% |
+| Ethical, legal, societal implications | 15% |
+| Engagement and originality | 25% |
