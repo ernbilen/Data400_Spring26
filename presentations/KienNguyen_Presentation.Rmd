@@ -1,0 +1,264 @@
+---
+title: "Project Presentation"
+subtitle: "Kien Nguyen — DATA 400"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(knitr)
+```
+
+---
+class: center, middle
+
+# Outline
+
+.pull-left[
+### 01 &nbsp; Project Overview
+### 02 &nbsp; Data & Methodology
+]
+.pull-right[
+### 03 &nbsp; Exploratory Data Analysis
+### 04 &nbsp; Implications & Conclusion
+]
+
+---
+class: inverse, center, middle
+
+
+# Project Overview
+
+---
+
+# Project Overview
+
+.pull-left[
+### 🔍 Research Topic
+Interstate waste flows into Pennsylvania: how much trash PA imports, who sends it (especially NJ), and what that means for PA's landfill capacity.
+]
+
+.pull-right[
+### 🎯 Purpose
+- Quantify PA imports (tons + origin states)
+- Explain NJ's dominance in PA-bound waste
+- Identify hotspot counties/facilities receiving imports
+- Evaluate capacity risk
+]
+
+---
+class: inverse, center, middle
+
+
+# Data & Methodology
+
+---
+
+# Data
+
+.center[
+```{r, echo=FALSE, out.width="75%"}
+# ================================================
+# 📌 IMAGE SLOT — Slide 6
+# Place your image file here:
+#   - File name: "slide6_data_table.png"
+#   - What it shows: Data table screenshot from pa.gov
+#   - Put the file in the SAME folder as this .Rmd
+# ================================================
+knitr::include_graphics("slide6_data_table.png")
+```
+]
+
+.center[*Data Source: pa.gov*]
+
+---
+
+# Dataset
+
+.pull-left[
+```{r, echo=FALSE, out.width="100%"}
+# ================================================
+# 📌 IMAGE SLOT — Slide 7, LEFT image
+# File name: "slide7_left.png"
+# What it shows: Dataset overview / left chart
+# ================================================
+knitr::include_graphics("slide7_left.png")
+```
+]
+
+.pull-right[
+```{r, echo=FALSE, out.width="100%"}
+# ================================================
+# 📌 IMAGE SLOT — Slide 7, RIGHT image
+# File name: "slide7_right.png"
+# What it shows: Dataset detail / right chart
+# ================================================
+knitr::include_graphics("slide7_right.png")
+```
+]
+
+---
+
+# Dataset
+
+.pull-left[
+```{r, echo=FALSE, out.width="100%"}
+# ================================================
+# 📌 IMAGE SLOT — Slide 8, LEFT image
+# File name: "slide8_left.png"
+# What it shows: Larger dataset table (left side)
+# ================================================
+knitr::include_graphics("slide8_left.png")
+```
+]
+
+.pull-right[
+```{r, echo=FALSE, out.width="100%"}
+# ================================================
+# 📌 IMAGE SLOT — Slide 8, RIGHT image
+# File name: "slide8_right.png"
+# What it shows: Smaller dataset table (right side)
+# ================================================
+knitr::include_graphics("slide8_right.png")
+```
+]
+
+---
+class: inverse, center, middle
+
+
+# Exploratory Data Analysis
+
+---
+
+# Prominent Waste Exporter to PA
+
+.pull-left[
+```{r, echo=FALSE, out.width="100%"}
+# ================================================
+# 📌 IMAGE SLOT — Slide 10, LEFT image
+# File name: "slide10_left.png"
+# What it shows: Larger map/chart of waste exporters
+# ================================================
+knitr::include_graphics("slide10_left.png")
+```
+]
+
+.pull-right[
+```{r, echo=FALSE, out.width="100%"}
+# ================================================
+# 📌 IMAGE SLOT — Slide 10, RIGHT image
+# File name: "slide10_right.png"
+# What it shows: Smaller supporting chart
+# ================================================
+knitr::include_graphics("slide10_right.png")
+```
+]
+
+---
+
+# NJ → PA Deep Dive: Trends, Composition, and Dependence
+
+.pull-left[
+```{r, echo=FALSE, out.width="100%"}
+# ================================================
+# 📌 IMAGE SLOT — Slide 11, LEFT image
+# File name: "slide11_left.png"
+# What it shows: Main NJ→PA trend chart (top-left)
+# ================================================
+knitr::include_graphics("slide11_left.png")
+```
+]
+
+.pull-right[
+```{r, echo=FALSE, out.width="100%"}
+# ================================================
+# 📌 IMAGE SLOT — Slide 11, RIGHT image
+# File name: "slide11_right.png"
+# What it shows: Supporting chart (top-right)
+# ================================================
+knitr::include_graphics("slide11_right.png")
+```
+]
+
+---
+
+# NJ → PA Deep Dive *(continued)*
+
+.center[
+```{r, echo=FALSE, out.width="60%"}
+# ================================================
+# 📌 IMAGE SLOT — Slide 11, BOTTOM image
+# File name: "slide11_bottom.png"
+# What it shows: Bottom-center chart on composition/dependence
+# ================================================
+knitr::include_graphics("slide11_bottom.png")
+```
+]
+
+---
+
+# Capacity Pressure Hotspots Across Pennsylvania Counties
+
+.center[
+```{r, echo=FALSE, out.width="78%"}
+# ================================================
+# 📌 IMAGE SLOT — Slide 12
+# File name: "slide12_map.png"
+# What it shows: Map of PA county capacity pressure hotspots
+# ================================================
+knitr::include_graphics("slide12_map.png")
+```
+]
+
+---
+
+# Risk Quadrants: Where Pressure and Import Reliance Overlap
+
+.center[
+```{r, echo=FALSE, out.width="65%"}
+# ================================================
+# 📌 IMAGE SLOT — Slide 13
+# File name: "slide13_quadrant.png"
+# What it shows: Risk quadrant scatter plot
+# ================================================
+knitr::include_graphics("slide13_quadrant.png")
+```
+]
+
+---
+
+# Implications
+
+.pull-left[
+### 👥 Stakeholders
+- **PA DEP / state policymakers:** monitor high-pressure counties and plan for import shocks (especially NJ)
+- **Landfill operators & haulers:** diversify contracts and build contingency plans around top receiving sites
+]
+
+.pull-right[
+### 🌍 Ethical & Societal
+- **Long-run sustainability:** avoid short-term revenue incentives that encourage overreliance on out-of-state waste
+- **Environmental burden & fairness:** import-heavy counties may face more truck traffic, odors, noise, and emissions — ensure impacted communities share benefits
+]
+
+---
+
+# Implications *(continued)*
+
+### ⚖️ Legal & Governance
+- **Interstate waste rules:** imports are legal under interstate commerce — policy levers are mainly fees, reporting, and permitting, not outright bans
+
+---
+class: inverse, center, middle
+
+# Thank You for Listening!
+
+**Kien Nguyen — DATA 400**
