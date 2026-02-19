@@ -1,0 +1,241 @@
+---
+title: "Data 400 Mini Project" 
+subtitle: "Technology Policies in U.S. Public Schools" 
+author: "Tommy Eaton"
+institute: "RStudio"
+date: "2026/02/16"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: ["default", "duke-blue"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: top
+
+## Technology Policies in U.S. Schools
+
+### Cell Phones • AI • Digital Literacy  
+
+.center[<img src="img/MapCellPhoneBans.png" style="width:80%;" />]
+
+
+**Research Question:** How do U.S. public schools differ in their policies on cell‑phone usage, AI usage, and digital literacy instruction? How are these differences explained by school characteristics such as region, grade level, locale, poverty level, school size, and student demographics?
+---
+#Dataset: 
+
+#####National Center for Education Statistics (NCES School Pulse Panel (SPP)) dataset which contains data from a survey taken nationwide during the 2024 year. The survery is from a sample of 4,000 public elementary, middle, high and combined-grade schools. [National Center for Education Statistics](https://nces.ed.gov/surveys/spp/results.asp)
+
+
+.center[
+<img src="img/NCESSTATS.png" style="width:72%;" />
+]
+---
+#Variables in the NCES Dataset:
+
+.pull-left[
+- **Region:** Reported in SPP as Northeast, Midwest, South, and West.
+- **Locale (school location or urbanicity):** Reported in SPP as city, suburban, town, or rural.
+- **School level:** Reported in SPP as elementary, middle/combined, and high/secondary.
+- **School size:** Reported in SPP as 0 to 299, 300 to 499, 500 to 999, and ≥1000 students.
+- **Poverty:** Reported in SPP as low or high poverty, based on the Income-to-Poverty Ratio (IPR).
+]
+
+.pull-right[
+- **Percent students of color:** ≤25%, 25–75%, or ≥75% students of color.
+- **Description:** The survey question asked to respondents.
+- **Category:** The response option selected by respondents.
+- **Dec24 Pct:** Percentage of respondents selecting each answer.
+- **Dec24 SE:** Standard error of the percentages.
+]
+---
+# Tractable Data:
+
+####<span style="color: #1B1F3B;"><strong>NCES School Pulse Panel dataset is a collection of a national survey answers from a variety of schools and a variety of studies in education, the one we will be using is directed towards technology in school.</strong></span>
+ 
+
+####<span style="color: #1B1F3B;"><strong>**Analyzing four policy domains from this national survey dataset:**</strong></span>
+
+.pull-left[
+- **Cell‑phone policy presence**  
+- **Cell‑phone strictness**]
+.pull-right[
+- **AI policy presence**  
+- **Digital literacy instruction**]  
+.center[
+<img src="img/CartoonCellPhone.jpg" style="width:50%;" />
+]
+---
+#Data Retrieval: 
+
+###Download Excel File From NCES Website:
+
+<img src="img/ExcelData.png" style="width:90%;" />
+
+---
+##Download valuable data from Excel:
+<img src="img/CreatingDataset.png" style="width:80%;" />
+---
+#Cleaning the Dataset: 
+
+.center[
+#### The Dataset contains 9,456 rows x 7 columns, we need to remove extra data and null or missing values
+]
+<img src="img/SchoolDF.png" style="width:80%;" />
+---
+###Before and After of Data Cleaning:
+**Before:**
+
+<img src="img/SchoolDFcnt.png" style="width:60%;" />
+
+**After:**
+
+<img src="img/SchoolDF1cnt.png" style="width:60%;" />
+
+---
+##Data Cleaning cont. 
+###Organizing + Categorizing Questions:
+.pull-left[
+<img src="img/SchoolDF1cat.png" style="width:100%;" />
+]
+.pull-right[
+<img src="img/SchoolDF1org.png" style="width:100%;" />
+]
+---
+###Exploratory Data Analysis: Cell-Phone Policy 
+<img src="img/SchoolDF1CPPEDA.png" style="width:100%;" />
+---
+###Exploratory DA: AI Policy 
+<img src="img/SchoolDF1AIEDA.png" style="width:100%;" />
+---
+###Exploratory DA: Digital-Literacy Policy 
+<img src="img/SchoolDF1DLEDA.png" style="width:100%;" />
+---
+###Exploratory DA: Cell-Phone Policy/Presence 
+<img src="img/SchoolDF1CPFQEDA.png" style="width:100%;" />
+---
+###Exploratory DA: AI Policy/Presence 
+<img src="img/SchoolDF1AIFQEDA.png" style="width:100%;" />
+---
+###Exploratory DA: Digtal-Literacy Policy/Presence 
+<img src="img/SchoolDF1DLQFAEDA.png" style="width:100%;" />
+---
+###Exploratory DA: Cell-Phone Heatmap 
+<img src="img/SchoolDF1CPhmEDA.png" style="width:100%;" />
+---
+###Exploratory DA: AI Heatmap
+<img src="img/SchoolDF1AIhmEDA.png" style="width:100%;" />
+---
+###Exploratory DA: Digital-Literacy Heatmap
+<img src="img/SchoolDF1DLhmEDA.png" style="width:100%;" />
+---
+###Exploratory DA: Cell-Phone Ranked Bar-Chart
+.pull-left[
+<img src="img/SchoolDF1RankedY.png" style="width:100%;" />]
+.pull-right[
+<img src="img/SchoolDF1RankedN.png" style="width:100%;" />]
+---
+###Exploratory DA: AI Ranked Bar-Chart
+.pull-left[
+<img src="img/AIrankedY.png" style="width:100%;" />]
+.pull-right[
+<img src="img/AIrankedN.png" style="width:100%;" />]
+---
+###Exploratory DA: Dig-Lit Ranked Bar-Chart
+.pull-left[
+<img src="img/DLrankedY.png" style="width:100%;" />]
+.pull-right[
+<img src="img/DLrankedN.png" style="width:100%;" />]
+---
+#Four Models: 
+###Preditors for these models:
+- The subgroups (Region, Locale, School Level, School Size, Poverty Level, Percent Students of Color)
+###Models 1 & 2
+- **Model 1:** Binary Logistics Regression, Predicting whether a school subgroup has a cell‑phone policy (Yes/No) using a categorical variable I created called "HasPolicy".
+- **Model 2:** Multinomial Logistic Regression, Predicting which strictness in terms of cell-phone policy (0–4) a subgroup (predictors) falls into using a categorical variable "StrictnessCode"
+
+
+###Models 3 & 4
+- **Model 3:** Binary Logistic Regression, Predicting whether a subgroup has an AI policy (Yes/No) using a categorical variable "HasAIPolicy"
+- **Model 4:** Binary Logistic Regression, Predicts whether a subgroup offers digital literacy instruction (Yes/No) using a categorical variable "HasDLInstruction"
+---
+##Outcomes of Models: Disappointing
+.pull-left[
+###Models had the same output:
+- Returned Coefficients ≈ 0 
+- p‑values ≈ 1.000 
+- Pseudo R² ≈ 0 
+- Log‑Likelihood identical to the null model.]
+
+.pull-right[
+###What does this mean?
+- None of the subgroup predictors explained any variation in any of the four policy outcomes.
+
+- Subgroups showed no predictive relationship with Cell‑phone policy presence, Cell‑phone policy strictness, AI policy presence and Digital literacy instruction.]
+---
+#Why did this happen?
+###Dataset:
+- Not on individual‑level — it is subgroup‑level aggregated percentages thus creating many limitations for our models.
+
+- Uniformity across subgroups: The outcomes (policy presence, strictness, AI policy, digital literacy) are distributed almost identically across all subgroups, so the predictors we are using cannot differentiate them.
+
+- Due to the structural constraints that our aggregated data brings, it shows that no matter what statistical or machine‑learning model we use (logistic, ordinal, multinational, random forest, bagging, boosting) none can find subgroup differences that do not exist in the underlying data we are using from the NCES survey.
+---
+#What we Learned: 
+- Subgroup characteristics do not explain differences in policy presence, strictness, AI policy adoption, or digital literacy instruction.
+
+- Technology policies in schools do vary, but not in ways that align with demographic or structural subgroup characteristics we are analyzing.
+
+- Vizualizations do show the actual distribution of policy outcomes, highlight smaller patterns that models cannot capture due to aggregation and allow us to compare subgroups visually even when statistical models show no predictive power. 
+---
+#Implications for Stakeholders:
+
+.pull-left[
+###Parents:
+- Parents should use this information to focus on policy quality, and enforcement, rather than demographic factors.
+###Teachers: 
+- In terms of cell phone policies, Teachers follow the rules of the district, they can use this information to properly inform themselves on the growth and changing enviorment of policies on technology.
+
+- AI policies are rare everywhere for now, teachers may need to rely on their own professional judgment and school‑level guidance on how to approach and deal with AI.]
+
+.pull-right[
+###Students:
+- Students should understand that differences in policy enforcement are local decisions, not demographic inequities. Students should use these findings to advocate for clearer and more concrete policies.
+###Administrators:
+- Administrators should use this information to maintain this minimal difference in subgroups for these policies, and shift their focus to the implementation proccess of these policies in schools.]
+---
+#Ethical Considerations: 
+
+###Shift in focus:
+-The ethical considerations of cell phone, AI and Digital literacy polices and instruction will shift from are certain groups in schools affected by these polices, to how these polices affect students on an individual level  academically, socially and emotionally.
+
+- The ethical dilemma I started with was is it ethical to restrict student access to their phones during the school day? 
+
+- Due to my findings it appears that schools across the country say yes, but the impact on the students overall health is unclear. 
+---
+##Legal & Societal Considerations:
+
+.pull-left[
+###Legal:
+- Does restricting phones could limit a student’s ability to contact family in emergencies? 
+
+- Could schools face liability if a student cannot reach their family during an emergency due to a strict policy?
+
+- If these policies are a detriment to students overall health, will that change the current dominance in policies in schools legally?]
+
+.pull-right[
+###Societal:
+- These policies are reshaping student experiences in schools across the entire U.S. educational system.
+
+- Overall the biggest societal implication for these policies is the students and how it is affecting them similar to the ethical implications. 
+
+- Students are the next generation in our society, we need to apporach these policies in the correct way in order to limit the negative affects they can have on the students overall health and well-being. ]
+---
+#Thank you!
+---
+
+
+
+

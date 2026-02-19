@@ -1,0 +1,60 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Tommy Eaton Data 400.md</title><style></style></head><body id="preview">
+<h1 class="code-line" data-line-start=0 data-line-end=1 ><a id="Tommy_Eaton_Data_400_Idea_1_Document_0"></a>Tommy Eaton Data 400 Idea 1 Document:</h1>
+<h1 class="code-line" data-line-start=2 data-line-end=3 ><a id="Research_Question_2"></a>Research Question:</h1>
+<ul>
+<li class="has-line-data" data-line-start="4" data-line-end="6">Do high school cellphone policies improve student academic performance measured through graduation rates, attendance and engagement between 2023 and 2025?</li>
+</ul>
+<h1 class="code-line" data-line-start=6 data-line-end=7 ><a id="1_Tractable_Data_6"></a>1. Tractable Data:</h1>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Data location</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NCES School Pulse Panel (SPP)</td>
+<td>Nationally available cellphone policy data including whether a school has a cell phone policy, types of policy, school characteristics, attendance/behavior indicators, State and District Identifiers.</td>
+</tr>
+<tr>
+<td>The EdFacts Data Collection</td>
+<td>Provides nationwide, school level data on attendance, chronic absenteeism, graduation rates, and assessment performance.</td>
+</tr>
+</tbody>
+</table>
+<h3 class="code-line" data-line-start=12 data-line-end=13 ><a id="Why_am_I_using_two_different_datasets_12"></a>Why am I using two different datasets?</h3>
+<ul>
+<li class="has-line-data" data-line-start="14" data-line-end="15">There is not a single database that includes the three inportant varibles that I want to use in my model which is school cell phone policies, graduation rates of students and assessment performace.</li>
+<li class="has-line-data" data-line-start="15" data-line-end="16">The School Pulse Panel is the only nationwide dataset that directly measures cellphone policy adoption and enforcement at the school level.</li>
+<li class="has-line-data" data-line-start="16" data-line-end="17">EdFacts is the only nationwide, standardized dataset that includes school level academic performance indicators for every public school in the U.S.</li>
+<li class="has-line-data" data-line-start="17" data-line-end="18">Because GPA is unavailable nationwide, I will use graduation rates, attendance, chronic absenteeism, and assessment performance as standardized academic outcome measures.</li>
+<li class="has-line-data" data-line-start="18" data-line-end="19">I am also going to have to focus on a few specific states because the EdFacts data is by state. So I will pick 2 states with cell phonbe policies and 2 without.</li>
+</ul>
+<h1 class="code-line" data-line-start=22 data-line-end=23 ><a id="2_Data_Retrieval_22"></a>2. Data Retrieval:</h1>
+<ul>
+<li class="has-line-data" data-line-start="23" data-line-end="24">SPP Retrieval: Download the annual SSP files from NCES website from 2023-2025 and only extract the variables  Cellphone policy indicators and School identifiers. <a href="https://nces.ed.gov/surveys/spp/results.asp">NCES School Pulse Panel</a></li>
+<li class="has-line-data" data-line-start="24" data-line-end="26">EDFacts Retrieval: Download the Annual EdFacts files from the EDFACTS website from 2023-2025 and only extract the variables attendance, chronic absenteeism, graduation rates, assessment performance and demographics. <a href="https://www.ed.gov/search?search_api_fulltext=Data&amp;aggregated_field%5Bmin%5D=&amp;aggregated_field%5Bmax%5D=&amp;facet_topic%5B2297%5D=2297&amp;sort_bef_combine=search_api_relevance_DESC&amp;page=1">EDFacts</a></li>
+</ul>
+<h1 class="code-line" data-line-start=26 data-line-end=27 ><a id="3_Specification_of_the_Model_26"></a>3. Specification of the Model:</h1>
+<ul>
+<li class="has-line-data" data-line-start="28" data-line-end="29">I will Be using a Difference in Differences Model that compares schools that have cellphone policies to those who do not and how these policies effect graduation rates, assessment performance and attendence.</li>
+<li class="has-line-data" data-line-start="29" data-line-end="31">A baseline or other forms of a DiD model is the simplest and best way to estimate whether cellphone policies cause changes in graduation rates, attendance, and assessment performance by comparing how schools who have or dont have cell phone policies change the acedemic performace of their students over time.</li>
+</ul>
+<h1 class="code-line" data-line-start=31 data-line-end=32 ><a id="4_Implications_for_Stakeholders_31"></a>4. Implications for Stakeholders:</h1>
+<ul>
+<li class="has-line-data" data-line-start="32" data-line-end="33">The topic of cellphone bans is relatively new and their is very minimal data on how it effects students academic performace. Study’s on this topic are more focused on student engagement, cyberbullying, use of AI/cheating, overall health and well being of students health.</li>
+<li class="has-line-data" data-line-start="33" data-line-end="34">The stakeholders for my project are Parents, Teachers, Students and Administrators of schools in the united states either with or without cell phone policies.</li>
+<li class="has-line-data" data-line-start="34" data-line-end="35">Parents can use the information from my project to help properly inform them on their decision making it terms of whether or not they support these policies in schools and whether these policies are beneficial to their children while in school.</li>
+<li class="has-line-data" data-line-start="35" data-line-end="36">Teachers can use the information from my project to help show them whether or not these cell phone policies are beneficial or detrimental to their students as well as their classroom enviorment. As well as inform them to whether or not they should support these policies in schools.</li>
+<li class="has-line-data" data-line-start="36" data-line-end="37">Students can use the information from my project to inform them on the outcomes of these policies because they are at the center of these policies. Specifically whether they are positive or negative impacts and whether or not they need to do something to address this by talking to parents, teachers or administrators.</li>
+<li class="has-line-data" data-line-start="37" data-line-end="39">Administrators can use the information from my project to inform them on whether or not the policies that they put into place are effective and the solution to the problem they are trying to address or if they need to try and address the problems another way.</li>
+</ul>
+<h1 class="code-line" data-line-start=39 data-line-end=40 ><a id="5_Ethical_Legal_and_Societal_implications_39"></a>5. Ethical, Legal and Societal implications:</h1>
+<ul>
+<li class="has-line-data" data-line-start="40" data-line-end="41">The main ethical implications of this project is to show if these policies are actually beneficial for the students in these schools academically. Through other studies it has been shown that these policies are beneficial for the other issues including student engagement, cyberbullying, use of AI/cheating, overall health and well being of students health. All of these issues are all trying to address the same ethical dilemma which is it ethical to prevent a student access to their cellphone during the school day, and with so many stakeholders involved it is a very  difficult question to answer.</li>
+<li class="has-line-data" data-line-start="41" data-line-end="42">Legal implications would be is it possible to make these cell phone policies a federal mandate, because as of now they are only state or district wide so it is the state or districts decision. Another legal implication would be do these cellphone policies put the school in danger legally if a stuudent is unable to contact their parents in a time of need.</li>
+<li class="has-line-data" data-line-start="42" data-line-end="43">Societal Implications would be this project could show how effective or ineffective these cell phone policies are academically for students and could impact how schools across the united states address their students and cell phones in their schools.</li>
+</ul>
+
+</body></html>
