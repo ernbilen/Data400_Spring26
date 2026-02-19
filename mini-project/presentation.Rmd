@@ -1,0 +1,225 @@
+---
+title: "How does Social Media relate to Mental Health"
+author: "Hoa Ly"
+institute: "Dickinson College"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+library(xaringanthemer)
+library(tidyverse)
+```
+class:center, middle
+#Research Question
+
+Can social media behaviors predict mental health symptoms?
+
+---
+<style>
+.custom-spacing {
+  line-height: 1.8;
+}
+</style>
+
+<div class="custom-spacing">
+#Data Overview
+
+- This project use dataset from Kaggle. 
+- Dataset consists of: 
+  - Age
+  - Gender
+  - Relationship status
+  - Occupation
+  - Social media behavior patterns
+  - Mental health self-report measures of 481 participants.
+
+<div>
+---
+<style>
+.custom-spacing {
+  line-height: 1.8;
+}
+</style>
+
+<div class="custom-spacing">
+#Target Variable
+
+**Mental Health Score** 
+
+Average of: 
+- Depressed mood
+- Worries
+- Sleep issues
+- Difficulty concentrating
+- Interest fluctuation
+
+**Higher score = worse symptoms**
+
+<div>
+---
+#Modeling Approach
+
+Data cleaning and processing
+
+80/20 Train-Test split
+
+5-fold cross validation
+
+**Model used:**
+
+1.Multiple Linear Regression
+
+2.Random Forest Regressor
+
+**Evaluation metrics:**
+- R^2
+
+- MAE
+
+- RMSE
+---
+#Model performance
+
+**Multiple Linear Regression**
+
+- Test R^2: 0.402
+
+- MAE: 0.647
+
+- RMSE: 0.794
+
+- CV Mean R²: ~ 0.33
+
+**Random Forest Regression**
+
+- Test R²: 0.405
+
+- MAE: 0.643
+
+- RMSE: 0.792
+
+- CV Mean R²: ~ 0.378
+
+---
+#Most important predictors
+```{r dev='svg'}
+importance_data <- tibble(
+  feature = c(
+    "Age",
+    "Distracted by Social Media",
+    "Social Comparison",
+    "Restless Without Social Media",
+    "Validation Seeking"
+  ),
+  importance = c(0.195, 0.177, 0.144, 0.098, 0.056)
+)
+
+importance_data <- importance_data %>%
+  mutate(feature = fct_reorder(feature, importance))
+
+ggplot(importance_data, aes(x = importance, y = feature)) +
+  geom_col() +
+  labs(
+    x = "Feature Importance (Random Forest)",
+    y = NULL,
+    title = "Top Predictors of Mental Health Score"
+  ) +
+  theme_minimal(base_size = 20) +
+  theme(
+    plot.title = element_text(size = 16),
+    axis.title.x = element_text(size = 14)
+)
+```
+---
+#Key Findings
+<style>
+.custom-spacing {
+  line-height: 1.8;
+}
+</style>
+
+<div class="custom-spacing">
+
+<div style="font-size: 35px;font-weight: bold;text-align: center;">
+"HOW social media is used matters more than HOW MUCH it is used."
+</div>
+
+- Compulsive use patterns are strong predictors
+
+- Social comparison strongly associated with worse outcomes
+
+- Platform choice was not among strongest predictors
+<div>
+---
+#Interpratation
+<style>
+.custom-spacing {
+  line-height: 1.8;
+}
+</style>
+
+<div class="custom-spacing">
+Worse mental health scores are associated with:
+
+- Using social media in a distracting way
+
+- Frequently comparing oneself to others
+
+- Seeking validation through likes/comments
+
+- Feeling restless without checking apps
+
+Time spent alone was not the strongest driver.
+<div>
+---
+#Implications for Stakeholders
+
+<style>
+.custom-spacing {
+  line-height: 1.8;
+}
+</style>
+
+<div class="custom-spacing">
+**Students**
+
+- Focus on reducing comparison and validation cycles
+
+**Universities**
+
+- Promote digital well-being education
+
+**Social Media Platforms**
+
+- Reconsider design features that amplify comparison
+
+**Mental Health Professionals**
+
+- Ask about usage behaviors, not just screen time
+<div>
+---
+#Conclusion
+
+
+<style>
+.custom-spacing {
+  line-height: 1.8;
+}
+</style>
+
+<div class="custom-spacing">
+- Social media behaviors moderately predict mental health symptoms
+
+- Behavioral patterns matter more than platform choice
+
+- Compulsive and comparison-driven usage show strongest associations
+<div>
