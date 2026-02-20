@@ -1,0 +1,40 @@
+/* ===== Academic Title Slide ===== */
+
+.title-slide {
+  background-color: #f8f9fa;
+  color: #1a1a1a;
+}
+
+.title-slide h1 {
+  color: #003366;
+  font-weight: 600;
+}
+
+.title-slide h2, 
+.title-slide h3 {
+  color: #444444;
+}
+
+/* ===== General Slide Styling ===== */
+
+.remark-slide-content {
+  background-color: white;
+  color: #222222;
+  font-size: 20px;
+  line-height: 1.5;
+}
+/* Force styling for the default xaringan title slide */
+.remark-slide-content.title-slide {
+  background-color: #f8f9fa;
+  color: #1a1a1a;
+}
+
+.remark-slide-content.title-slide h1 {
+  color: #003366;
+  font-weight: 600;
+}
+
+.remark-slide-content.title-slide h2,
+.remark-slide-content.title-slide h3 {
+  color: #444444;
+}

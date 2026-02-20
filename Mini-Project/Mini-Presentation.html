@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>The Impact of 2025 ICE Enforcement Intensity on Employment across Industries</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Phuong Hoang" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/htmltools-fill/fill.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/plotly-binding/plotly.js"></script>
+    <script src="libs/typedarray/typedarray.min.js"></script>
+    <script src="libs/jquery/jquery.min.js"></script>
+    <link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
+    <link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+    <script src="libs/plotly-main/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# The Impact of 2025 ICE Enforcement Intensity on Employment across Industries
+]
+.subtitle[
+## *****************************************
+]
+.author[
+### Phuong Hoang
+]
+.institute[
+### Dickinson College
+]
+
+---
+
+
+
+# Motivation
+.pull-left[In January 2025, the federal administration under President Trump signaled a renewed emphasis on interior immigration enforcement and deportation operations.
+
+
+
+Policy shifts at the federal level may affect:
+- ICE enforcement intensity,
+- Labor market participation of immigrant workers,
+- Employment outcomes in sectors that rely heavily on immigrant labor.
+
+
+Industries differ significantly in their exposure to immigrant labor supply.
+
+
+Different States also differ significantly in the level of ICE presence/enforcement.
+]
+
+--
+.pull-right[&lt;center&gt;
+&lt;img src="arrest_count.png" style="width: 100%;" /&gt;
+&lt;/center&gt;]
+
+
+---
+class: center, middle
+# ICE Heatmap
+<div class="plotly html-widget html-fill-item" id="htmlwidget-740e00cd30733aa90003" style="width:100%;height:576px;"></div>
+<script type="application/json" data-for="htmlwidget-740e00cd30733aa90003">{"x":{"visdat":{"5c95278927f5":["function () ","plotlyVisDat"]},"cur_data":"5c95278927f5","attrs":{"5c95278927f5":{"locationmode":"USA-states","locations":{},"z":{},"text":["Alabama<br><b>Total arrests:<\/b> 3504<br>Female: 382<br>Male: 3120","Alaska<br><b>Total arrests:<\/b> 54<br>Female: 10<br>Male: 44","Arizona<br><b>Total arrests:<\/b> 7325<br>Female: 904<br>Male: 6413","Arkansas<br><b>Total arrests:<\/b> 2750<br>Female: 180<br>Male: 2569","California<br><b>Total arrests:<\/b> 20442<br>Female: 2832<br>Male: 17607","Colorado<br><b>Total arrests:<\/b> 3707<br>Female: 426<br>Male: 3202","Connecticut<br><b>Total arrests:<\/b> 634<br>Female: 70<br>Male: 544","Delaware<br><b>Total arrests:<\/b> 518<br>Female: 10<br>Male: 508","Florida<br><b>Total arrests:<\/b> 23456<br>Female: 2314<br>Male: 20882","Georgia<br><b>Total arrests:<\/b> 9279<br>Female: 1065<br>Male: 8116","Hawaii<br><b>Total arrests:<\/b> 194<br>Female: 31<br>Male: 163","Idaho<br><b>Total arrests:<\/b> 651<br>Female: 14<br>Male: 637","Illinois<br><b>Total arrests:<\/b> 4207<br>Female: 510<br>Male: 3693","Indiana<br><b>Total arrests:<\/b> 2874<br>Female: 235<br>Male: 2639","Iowa<br><b>Total arrests:<\/b> 1135<br>Female: 43<br>Male: 1092","Kansas<br><b>Total arrests:<\/b> 1544<br>Female: 82<br>Male: 1443","Kentucky<br><b>Total arrests:<\/b> 1991<br>Female: 157<br>Male: 1832","Louisiana<br><b>Total arrests:<\/b> 3992<br>Female: 503<br>Male: 3482","Maine<br><b>Total arrests:<\/b> 230<br>Female: 4<br>Male: 226","Maryland<br><b>Total arrests:<\/b> 3399<br>Female: 416<br>Male: 2964","Massachusetts<br><b>Total arrests:<\/b> 5446<br>Female: 547<br>Male: 4891","Michigan<br><b>Total arrests:<\/b> 2642<br>Female: 177<br>Male: 2463","Minnesota<br><b>Total arrests:<\/b> 2190<br>Female: 154<br>Male: 2033","Mississippi<br><b>Total arrests:<\/b> 1863<br>Female: 80<br>Male: 1781","Missouri<br><b>Total arrests:<\/b> 1806<br>Female: 183<br>Male: 1612","Montana<br><b>Total arrests:<\/b> 70<br>Female: 1<br>Male: 69","Nebraska<br><b>Total arrests:<\/b> 1246<br>Female: 94<br>Male: 1152","Nevada<br><b>Total arrests:<\/b> 2155<br>Female: 100<br>Male: 2055","New Hampshire<br><b>Total arrests:<\/b> 244<br>Female: 14<br>Male: 230","New Jersey<br><b>Total arrests:<\/b> 6250<br>Female: 559<br>Male: 5626","New Mexico<br><b>Total arrests:<\/b> 1853<br>Female: 309<br>Male: 1544","New York<br><b>Total arrests:<\/b> 7528<br>Female: 835<br>Male: 6634","North Carolina<br><b>Total arrests:<\/b> 3372<br>Female: 220<br>Male: 3122","North Dakota<br><b>Total arrests:<\/b> 203<br>Female: 11<br>Male: 192","Ohio<br><b>Total arrests:<\/b> 2560<br>Female: 177<br>Male: 2374","Oklahoma<br><b>Total arrests:<\/b> 3469<br>Female: 210<br>Male: 3226","Oregon<br><b>Total arrests:<\/b> 657<br>Female: 89<br>Male: 554","Pennsylvania<br><b>Total arrests:<\/b> 5267<br>Female: 194<br>Male: 5068","Rhode Island<br><b>Total arrests:<\/b> 489<br>Female: 49<br>Male: 438","South Carolina<br><b>Total arrests:<\/b> 3104<br>Female: 221<br>Male: 2882","South Dakota<br><b>Total arrests:<\/b> 299<br>Female: 9<br>Male: 290","Tennessee<br><b>Total arrests:<\/b> 5764<br>Female: 635<br>Male: 5098","Texas<br><b>Total arrests:<\/b> 57346<br>Female: 6761<br>Male: 50570","Utah<br><b>Total arrests:<\/b> 3447<br>Female: 196<br>Male: 3250","Vermont<br><b>Total arrests:<\/b> 32<br>Female: 5<br>Male: 27","Virginia<br><b>Total arrests:<\/b> 6698<br>Female: 1291<br>Male: 5406","Washington<br><b>Total arrests:<\/b> 2297<br>Female: 333<br>Male: 1959","West Virginia<br><b>Total arrests:<\/b> 664<br>Female: 32<br>Male: 631","Wisconsin<br><b>Total arrests:<\/b> 988<br>Female: 69<br>Male: 918","Wyoming<br><b>Total arrests:<\/b> 405<br>Female: 26<br>Male: 376"],"hovertemplate":"%{text}<extra><\/extra>","colorscale":[[0,"blue"],[0.5,"yellow"],[1,"darkred"]],"zmin":0,"zmax":1,"colorbar":{"title":"Percentile"},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"choropleth"},"5c95278927f5.1":{"locationmode":"USA-states","locations":{},"z":{},"text":{},"hovertemplate":"%{text}<extra><\/extra>","colorscale":[[0,"blue"],[0.5,"yellow"],[1,"darkred"]],"zmin":0,"zmax":1,"colorbar":{"title":"Percentile"},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scattergeo","mode":"text","hoverinfo":"skip","textfont":{"size":10},"inherit":true}},"layout":{"margin":{"b":0,"l":0,"t":40,"r":0},"geo":{"scope":"usa"},"title":{"text":"ICE Arrest Counts by State (2025)"},"updatemenus":[{"type":"buttons","direction":"right","x":0.02,"y":1.1000000000000001,"buttons":[{"label":"Total","method":"restyle","args":[{"z":[[0.7142857142857143,0.020408163265306121,0.89795918367346939,0.5714285714285714,0.95918367346938771,0.73469387755102045,0.22448979591836735,0.20408163265306123,0.97959183673469385,0.93877551020408168,0.061224489795918366,0.24489795918367346,0.77551020408163263,0.59183673469387754,0.32653061224489793,0.36734693877551022,0.44897959183673469,0.75510204081632648,0.10204081632653061,0.65306122448979587,0.81632653061224492,0.55102040816326525,0.48979591836734693,0.42857142857142855,0.38775510204081631,0.040816326530612242,0.34693877551020408,0.46938775510204084,0.12244897959183673,0.8571428571428571,0.40816326530612246,0.91836734693877553,0.63265306122448983,0.081632653061224483,0.53061224489795922,0.69387755102040816,0.26530612244897961,0.79591836734693877,0.18367346938775511,0.61224489795918369,0.14285714285714285,0.83673469387755106,1,0.67346938775510201,0,0.87755102040816324,0.51020408163265307,0.2857142857142857,0.30612244897959184,0.16326530612244897]],"text":[["Alabama<br><b>Total arrests:<\/b> 3504<br>Female: 382<br>Male: 3120","Alaska<br><b>Total arrests:<\/b> 54<br>Female: 10<br>Male: 44","Arizona<br><b>Total arrests:<\/b> 7325<br>Female: 904<br>Male: 6413","Arkansas<br><b>Total arrests:<\/b> 2750<br>Female: 180<br>Male: 2569","California<br><b>Total arrests:<\/b> 20442<br>Female: 2832<br>Male: 17607","Colorado<br><b>Total arrests:<\/b> 3707<br>Female: 426<br>Male: 3202","Connecticut<br><b>Total arrests:<\/b> 634<br>Female: 70<br>Male: 544","Delaware<br><b>Total arrests:<\/b> 518<br>Female: 10<br>Male: 508","Florida<br><b>Total arrests:<\/b> 23456<br>Female: 2314<br>Male: 20882","Georgia<br><b>Total arrests:<\/b> 9279<br>Female: 1065<br>Male: 8116","Hawaii<br><b>Total arrests:<\/b> 194<br>Female: 31<br>Male: 163","Idaho<br><b>Total arrests:<\/b> 651<br>Female: 14<br>Male: 637","Illinois<br><b>Total arrests:<\/b> 4207<br>Female: 510<br>Male: 3693","Indiana<br><b>Total arrests:<\/b> 2874<br>Female: 235<br>Male: 2639","Iowa<br><b>Total arrests:<\/b> 1135<br>Female: 43<br>Male: 1092","Kansas<br><b>Total arrests:<\/b> 1544<br>Female: 82<br>Male: 1443","Kentucky<br><b>Total arrests:<\/b> 1991<br>Female: 157<br>Male: 1832","Louisiana<br><b>Total arrests:<\/b> 3992<br>Female: 503<br>Male: 3482","Maine<br><b>Total arrests:<\/b> 230<br>Female: 4<br>Male: 226","Maryland<br><b>Total arrests:<\/b> 3399<br>Female: 416<br>Male: 2964","Massachusetts<br><b>Total arrests:<\/b> 5446<br>Female: 547<br>Male: 4891","Michigan<br><b>Total arrests:<\/b> 2642<br>Female: 177<br>Male: 2463","Minnesota<br><b>Total arrests:<\/b> 2190<br>Female: 154<br>Male: 2033","Mississippi<br><b>Total arrests:<\/b> 1863<br>Female: 80<br>Male: 1781","Missouri<br><b>Total arrests:<\/b> 1806<br>Female: 183<br>Male: 1612","Montana<br><b>Total arrests:<\/b> 70<br>Female: 1<br>Male: 69","Nebraska<br><b>Total arrests:<\/b> 1246<br>Female: 94<br>Male: 1152","Nevada<br><b>Total arrests:<\/b> 2155<br>Female: 100<br>Male: 2055","New Hampshire<br><b>Total arrests:<\/b> 244<br>Female: 14<br>Male: 230","New Jersey<br><b>Total arrests:<\/b> 6250<br>Female: 559<br>Male: 5626","New Mexico<br><b>Total arrests:<\/b> 1853<br>Female: 309<br>Male: 1544","New York<br><b>Total arrests:<\/b> 7528<br>Female: 835<br>Male: 6634","North Carolina<br><b>Total arrests:<\/b> 3372<br>Female: 220<br>Male: 3122","North Dakota<br><b>Total arrests:<\/b> 203<br>Female: 11<br>Male: 192","Ohio<br><b>Total arrests:<\/b> 2560<br>Female: 177<br>Male: 2374","Oklahoma<br><b>Total arrests:<\/b> 3469<br>Female: 210<br>Male: 3226","Oregon<br><b>Total arrests:<\/b> 657<br>Female: 89<br>Male: 554","Pennsylvania<br><b>Total arrests:<\/b> 5267<br>Female: 194<br>Male: 5068","Rhode Island<br><b>Total arrests:<\/b> 489<br>Female: 49<br>Male: 438","South Carolina<br><b>Total arrests:<\/b> 3104<br>Female: 221<br>Male: 2882","South Dakota<br><b>Total arrests:<\/b> 299<br>Female: 9<br>Male: 290","Tennessee<br><b>Total arrests:<\/b> 5764<br>Female: 635<br>Male: 5098","Texas<br><b>Total arrests:<\/b> 57346<br>Female: 6761<br>Male: 50570","Utah<br><b>Total arrests:<\/b> 3447<br>Female: 196<br>Male: 3250","Vermont<br><b>Total arrests:<\/b> 32<br>Female: 5<br>Male: 27","Virginia<br><b>Total arrests:<\/b> 6698<br>Female: 1291<br>Male: 5406","Washington<br><b>Total arrests:<\/b> 2297<br>Female: 333<br>Male: 1959","West Virginia<br><b>Total arrests:<\/b> 664<br>Female: 32<br>Male: 631","Wisconsin<br><b>Total arrests:<\/b> 988<br>Female: 69<br>Male: 918","Wyoming<br><b>Total arrests:<\/b> 405<br>Female: 26<br>Male: 376"]]},[1]]},{"label":"Female","method":"restyle","args":[{"z":[[0.7142857142857143,0.091836734693877556,0.89795918367346939,0.51020408163265307,0.97959183673469385,0.75510204081632648,0.30612244897959184,0.091836734693877556,0.95918367346938771,0.91836734693877553,0.20408163265306123,0.15306122448979592,0.79591836734693877,0.65306122448979587,0.24489795918367346,0.34693877551020408,0.44897959183673469,0.77551020408163263,0.020408163265306121,0.73469387755102045,0.81632653061224492,0.47959183673469385,0.42857142857142855,0.32653061224489793,0.53061224489795922,0,0.38775510204081631,0.40816326530612246,0.15306122448979592,0.83673469387755106,0.67346938775510201,0.87755102040816324,0.61224489795918369,0.12244897959183673,0.47959183673469385,0.59183673469387754,0.36734693877551022,0.55102040816326525,0.26530612244897961,0.63265306122448983,0.061224489795918366,0.8571428571428571,1,0.5714285714285714,0.040816326530612242,0.93877551020408168,0.69387755102040816,0.22448979591836735,0.2857142857142857,0.18367346938775511]],"text":[["Alabama<br><b>Female arrests:<\/b> 382<br>Total: 3504<br>Male: 3120","Alaska<br><b>Female arrests:<\/b> 10<br>Total: 54<br>Male: 44","Arizona<br><b>Female arrests:<\/b> 904<br>Total: 7325<br>Male: 6413","Arkansas<br><b>Female arrests:<\/b> 180<br>Total: 2750<br>Male: 2569","California<br><b>Female arrests:<\/b> 2832<br>Total: 20442<br>Male: 17607","Colorado<br><b>Female arrests:<\/b> 426<br>Total: 3707<br>Male: 3202","Connecticut<br><b>Female arrests:<\/b> 70<br>Total: 634<br>Male: 544","Delaware<br><b>Female arrests:<\/b> 10<br>Total: 518<br>Male: 508","Florida<br><b>Female arrests:<\/b> 2314<br>Total: 23456<br>Male: 20882","Georgia<br><b>Female arrests:<\/b> 1065<br>Total: 9279<br>Male: 8116","Hawaii<br><b>Female arrests:<\/b> 31<br>Total: 194<br>Male: 163","Idaho<br><b>Female arrests:<\/b> 14<br>Total: 651<br>Male: 637","Illinois<br><b>Female arrests:<\/b> 510<br>Total: 4207<br>Male: 3693","Indiana<br><b>Female arrests:<\/b> 235<br>Total: 2874<br>Male: 2639","Iowa<br><b>Female arrests:<\/b> 43<br>Total: 1135<br>Male: 1092","Kansas<br><b>Female arrests:<\/b> 82<br>Total: 1544<br>Male: 1443","Kentucky<br><b>Female arrests:<\/b> 157<br>Total: 1991<br>Male: 1832","Louisiana<br><b>Female arrests:<\/b> 503<br>Total: 3992<br>Male: 3482","Maine<br><b>Female arrests:<\/b> 4<br>Total: 230<br>Male: 226","Maryland<br><b>Female arrests:<\/b> 416<br>Total: 3399<br>Male: 2964","Massachusetts<br><b>Female arrests:<\/b> 547<br>Total: 5446<br>Male: 4891","Michigan<br><b>Female arrests:<\/b> 177<br>Total: 2642<br>Male: 2463","Minnesota<br><b>Female arrests:<\/b> 154<br>Total: 2190<br>Male: 2033","Mississippi<br><b>Female arrests:<\/b> 80<br>Total: 1863<br>Male: 1781","Missouri<br><b>Female arrests:<\/b> 183<br>Total: 1806<br>Male: 1612","Montana<br><b>Female arrests:<\/b> 1<br>Total: 70<br>Male: 69","Nebraska<br><b>Female arrests:<\/b> 94<br>Total: 1246<br>Male: 1152","Nevada<br><b>Female arrests:<\/b> 100<br>Total: 2155<br>Male: 2055","New Hampshire<br><b>Female arrests:<\/b> 14<br>Total: 244<br>Male: 230","New Jersey<br><b>Female arrests:<\/b> 559<br>Total: 6250<br>Male: 5626","New Mexico<br><b>Female arrests:<\/b> 309<br>Total: 1853<br>Male: 1544","New York<br><b>Female arrests:<\/b> 835<br>Total: 7528<br>Male: 6634","North Carolina<br><b>Female arrests:<\/b> 220<br>Total: 3372<br>Male: 3122","North Dakota<br><b>Female arrests:<\/b> 11<br>Total: 203<br>Male: 192","Ohio<br><b>Female arrests:<\/b> 177<br>Total: 2560<br>Male: 2374","Oklahoma<br><b>Female arrests:<\/b> 210<br>Total: 3469<br>Male: 3226","Oregon<br><b>Female arrests:<\/b> 89<br>Total: 657<br>Male: 554","Pennsylvania<br><b>Female arrests:<\/b> 194<br>Total: 5267<br>Male: 5068","Rhode Island<br><b>Female arrests:<\/b> 49<br>Total: 489<br>Male: 438","South Carolina<br><b>Female arrests:<\/b> 221<br>Total: 3104<br>Male: 2882","South Dakota<br><b>Female arrests:<\/b> 9<br>Total: 299<br>Male: 290","Tennessee<br><b>Female arrests:<\/b> 635<br>Total: 5764<br>Male: 5098","Texas<br><b>Female arrests:<\/b> 6761<br>Total: 57346<br>Male: 50570","Utah<br><b>Female arrests:<\/b> 196<br>Total: 3447<br>Male: 3250","Vermont<br><b>Female arrests:<\/b> 5<br>Total: 32<br>Male: 27","Virginia<br><b>Female arrests:<\/b> 1291<br>Total: 6698<br>Male: 5406","Washington<br><b>Female arrests:<\/b> 333<br>Total: 2297<br>Male: 1959","West Virginia<br><b>Female arrests:<\/b> 32<br>Total: 664<br>Male: 631","Wisconsin<br><b>Female arrests:<\/b> 69<br>Total: 988<br>Male: 918","Wyoming<br><b>Female arrests:<\/b> 26<br>Total: 405<br>Male: 376"]]},[1]]},{"label":"Male","method":"restyle","args":[{"z":[[0.65306122448979587,0.020408163265306121,0.89795918367346939,0.5714285714285714,0.95918367346938771,0.69387755102040816,0.22448979591836735,0.20408163265306123,0.97959183673469385,0.93877551020408168,0.061224489795918366,0.2857142857142857,0.77551020408163263,0.59183673469387754,0.32653061224489793,0.36734693877551022,0.44897959183673469,0.75510204081632648,0.10204081632653061,0.63265306122448983,0.79591836734693877,0.55102040816326525,0.48979591836734693,0.42857142857142855,0.40816326530612246,0.040816326530612242,0.34693877551020408,0.51020408163265307,0.12244897959183673,0.87755102040816324,0.38775510204081631,0.91836734693877553,0.67346938775510201,0.081632653061224483,0.53061224489795922,0.7142857142857143,0.24489795918367346,0.81632653061224492,0.18367346938775511,0.61224489795918369,0.14285714285714285,0.83673469387755106,1,0.73469387755102045,0,0.8571428571428571,0.46938775510204084,0.26530612244897961,0.30612244897959184,0.16326530612244897]],"text":[["Alabama<br><b>Male arrests:<\/b> 3120<br>Total: 3504<br>Female: 382","Alaska<br><b>Male arrests:<\/b> 44<br>Total: 54<br>Female: 10","Arizona<br><b>Male arrests:<\/b> 6413<br>Total: 7325<br>Female: 904","Arkansas<br><b>Male arrests:<\/b> 2569<br>Total: 2750<br>Female: 180","California<br><b>Male arrests:<\/b> 17607<br>Total: 20442<br>Female: 2832","Colorado<br><b>Male arrests:<\/b> 3202<br>Total: 3707<br>Female: 426","Connecticut<br><b>Male arrests:<\/b> 544<br>Total: 634<br>Female: 70","Delaware<br><b>Male arrests:<\/b> 508<br>Total: 518<br>Female: 10","Florida<br><b>Male arrests:<\/b> 20882<br>Total: 23456<br>Female: 2314","Georgia<br><b>Male arrests:<\/b> 8116<br>Total: 9279<br>Female: 1065","Hawaii<br><b>Male arrests:<\/b> 163<br>Total: 194<br>Female: 31","Idaho<br><b>Male arrests:<\/b> 637<br>Total: 651<br>Female: 14","Illinois<br><b>Male arrests:<\/b> 3693<br>Total: 4207<br>Female: 510","Indiana<br><b>Male arrests:<\/b> 2639<br>Total: 2874<br>Female: 235","Iowa<br><b>Male arrests:<\/b> 1092<br>Total: 1135<br>Female: 43","Kansas<br><b>Male arrests:<\/b> 1443<br>Total: 1544<br>Female: 82","Kentucky<br><b>Male arrests:<\/b> 1832<br>Total: 1991<br>Female: 157","Louisiana<br><b>Male arrests:<\/b> 3482<br>Total: 3992<br>Female: 503","Maine<br><b>Male arrests:<\/b> 226<br>Total: 230<br>Female: 4","Maryland<br><b>Male arrests:<\/b> 2964<br>Total: 3399<br>Female: 416","Massachusetts<br><b>Male arrests:<\/b> 4891<br>Total: 5446<br>Female: 547","Michigan<br><b>Male arrests:<\/b> 2463<br>Total: 2642<br>Female: 177","Minnesota<br><b>Male arrests:<\/b> 2033<br>Total: 2190<br>Female: 154","Mississippi<br><b>Male arrests:<\/b> 1781<br>Total: 1863<br>Female: 80","Missouri<br><b>Male arrests:<\/b> 1612<br>Total: 1806<br>Female: 183","Montana<br><b>Male arrests:<\/b> 69<br>Total: 70<br>Female: 1","Nebraska<br><b>Male arrests:<\/b> 1152<br>Total: 1246<br>Female: 94","Nevada<br><b>Male arrests:<\/b> 2055<br>Total: 2155<br>Female: 100","New Hampshire<br><b>Male arrests:<\/b> 230<br>Total: 244<br>Female: 14","New Jersey<br><b>Male arrests:<\/b> 5626<br>Total: 6250<br>Female: 559","New Mexico<br><b>Male arrests:<\/b> 1544<br>Total: 1853<br>Female: 309","New York<br><b>Male arrests:<\/b> 6634<br>Total: 7528<br>Female: 835","North Carolina<br><b>Male arrests:<\/b> 3122<br>Total: 3372<br>Female: 220","North Dakota<br><b>Male arrests:<\/b> 192<br>Total: 203<br>Female: 11","Ohio<br><b>Male arrests:<\/b> 2374<br>Total: 2560<br>Female: 177","Oklahoma<br><b>Male arrests:<\/b> 3226<br>Total: 3469<br>Female: 210","Oregon<br><b>Male arrests:<\/b> 554<br>Total: 657<br>Female: 89","Pennsylvania<br><b>Male arrests:<\/b> 5068<br>Total: 5267<br>Female: 194","Rhode Island<br><b>Male arrests:<\/b> 438<br>Total: 489<br>Female: 49","South Carolina<br><b>Male arrests:<\/b> 2882<br>Total: 3104<br>Female: 221","South Dakota<br><b>Male arrests:<\/b> 290<br>Total: 299<br>Female: 9","Tennessee<br><b>Male arrests:<\/b> 5098<br>Total: 5764<br>Female: 635","Texas<br><b>Male arrests:<\/b> 50570<br>Total: 57346<br>Female: 6761","Utah<br><b>Male arrests:<\/b> 3250<br>Total: 3447<br>Female: 196","Vermont<br><b>Male arrests:<\/b> 27<br>Total: 32<br>Female: 5","Virginia<br><b>Male arrests:<\/b> 5406<br>Total: 6698<br>Female: 1291","Washington<br><b>Male arrests:<\/b> 1959<br>Total: 2297<br>Female: 333","West Virginia<br><b>Male arrests:<\/b> 631<br>Total: 664<br>Female: 32","Wisconsin<br><b>Male arrests:<\/b> 918<br>Total: 988<br>Female: 69","Wyoming<br><b>Male arrests:<\/b> 376<br>Total: 405<br>Female: 26"]]},[1]]}]}],"scene":{"zaxis":{"title":"z_total"}},"hovermode":"closest","showlegend":false,"legend":{"yanchor":"top","y":0.5}},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"colorbar":{"title":"Percentile","ticklen":2,"len":0.5,"lenmode":"fraction","y":1,"yanchor":"top"},"colorscale":[[0,"blue"],[0.5,"yellow"],[1,"darkred"]],"showscale":true,"locationmode":"USA-states","locations":["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"],"z":[0.7142857142857143,0.020408163265306121,0.89795918367346939,0.5714285714285714,0.95918367346938771,0.73469387755102045,0.22448979591836735,0.20408163265306123,0.97959183673469385,0.93877551020408168,0.061224489795918366,0.24489795918367346,0.77551020408163263,0.59183673469387754,0.32653061224489793,0.36734693877551022,0.44897959183673469,0.75510204081632648,0.10204081632653061,0.65306122448979587,0.81632653061224492,0.55102040816326525,0.48979591836734693,0.42857142857142855,0.38775510204081631,0.040816326530612242,0.34693877551020408,0.46938775510204084,0.12244897959183673,0.8571428571428571,0.40816326530612246,0.91836734693877553,0.63265306122448983,0.081632653061224483,0.53061224489795922,0.69387755102040816,0.26530612244897961,0.79591836734693877,0.18367346938775511,0.61224489795918369,0.14285714285714285,0.83673469387755106,1,0.67346938775510201,0,0.87755102040816324,0.51020408163265307,0.2857142857142857,0.30612244897959184,0.16326530612244897],"text":["Alabama<br><b>Total arrests:<\/b> 3504<br>Female: 382<br>Male: 3120","Alaska<br><b>Total arrests:<\/b> 54<br>Female: 10<br>Male: 44","Arizona<br><b>Total arrests:<\/b> 7325<br>Female: 904<br>Male: 6413","Arkansas<br><b>Total arrests:<\/b> 2750<br>Female: 180<br>Male: 2569","California<br><b>Total arrests:<\/b> 20442<br>Female: 2832<br>Male: 17607","Colorado<br><b>Total arrests:<\/b> 3707<br>Female: 426<br>Male: 3202","Connecticut<br><b>Total arrests:<\/b> 634<br>Female: 70<br>Male: 544","Delaware<br><b>Total arrests:<\/b> 518<br>Female: 10<br>Male: 508","Florida<br><b>Total arrests:<\/b> 23456<br>Female: 2314<br>Male: 20882","Georgia<br><b>Total arrests:<\/b> 9279<br>Female: 1065<br>Male: 8116","Hawaii<br><b>Total arrests:<\/b> 194<br>Female: 31<br>Male: 163","Idaho<br><b>Total arrests:<\/b> 651<br>Female: 14<br>Male: 637","Illinois<br><b>Total arrests:<\/b> 4207<br>Female: 510<br>Male: 3693","Indiana<br><b>Total arrests:<\/b> 2874<br>Female: 235<br>Male: 2639","Iowa<br><b>Total arrests:<\/b> 1135<br>Female: 43<br>Male: 1092","Kansas<br><b>Total arrests:<\/b> 1544<br>Female: 82<br>Male: 1443","Kentucky<br><b>Total arrests:<\/b> 1991<br>Female: 157<br>Male: 1832","Louisiana<br><b>Total arrests:<\/b> 3992<br>Female: 503<br>Male: 3482","Maine<br><b>Total arrests:<\/b> 230<br>Female: 4<br>Male: 226","Maryland<br><b>Total arrests:<\/b> 3399<br>Female: 416<br>Male: 2964","Massachusetts<br><b>Total arrests:<\/b> 5446<br>Female: 547<br>Male: 4891","Michigan<br><b>Total arrests:<\/b> 2642<br>Female: 177<br>Male: 2463","Minnesota<br><b>Total arrests:<\/b> 2190<br>Female: 154<br>Male: 2033","Mississippi<br><b>Total arrests:<\/b> 1863<br>Female: 80<br>Male: 1781","Missouri<br><b>Total arrests:<\/b> 1806<br>Female: 183<br>Male: 1612","Montana<br><b>Total arrests:<\/b> 70<br>Female: 1<br>Male: 69","Nebraska<br><b>Total arrests:<\/b> 1246<br>Female: 94<br>Male: 1152","Nevada<br><b>Total arrests:<\/b> 2155<br>Female: 100<br>Male: 2055","New Hampshire<br><b>Total arrests:<\/b> 244<br>Female: 14<br>Male: 230","New Jersey<br><b>Total arrests:<\/b> 6250<br>Female: 559<br>Male: 5626","New Mexico<br><b>Total arrests:<\/b> 1853<br>Female: 309<br>Male: 1544","New York<br><b>Total arrests:<\/b> 7528<br>Female: 835<br>Male: 6634","North Carolina<br><b>Total arrests:<\/b> 3372<br>Female: 220<br>Male: 3122","North Dakota<br><b>Total arrests:<\/b> 203<br>Female: 11<br>Male: 192","Ohio<br><b>Total arrests:<\/b> 2560<br>Female: 177<br>Male: 2374","Oklahoma<br><b>Total arrests:<\/b> 3469<br>Female: 210<br>Male: 3226","Oregon<br><b>Total arrests:<\/b> 657<br>Female: 89<br>Male: 554","Pennsylvania<br><b>Total arrests:<\/b> 5267<br>Female: 194<br>Male: 5068","Rhode Island<br><b>Total arrests:<\/b> 489<br>Female: 49<br>Male: 438","South Carolina<br><b>Total arrests:<\/b> 3104<br>Female: 221<br>Male: 2882","South Dakota<br><b>Total arrests:<\/b> 299<br>Female: 9<br>Male: 290","Tennessee<br><b>Total arrests:<\/b> 5764<br>Female: 635<br>Male: 5098","Texas<br><b>Total arrests:<\/b> 57346<br>Female: 6761<br>Male: 50570","Utah<br><b>Total arrests:<\/b> 3447<br>Female: 196<br>Male: 3250","Vermont<br><b>Total arrests:<\/b> 32<br>Female: 5<br>Male: 27","Virginia<br><b>Total arrests:<\/b> 6698<br>Female: 1291<br>Male: 5406","Washington<br><b>Total arrests:<\/b> 2297<br>Female: 333<br>Male: 1959","West Virginia<br><b>Total arrests:<\/b> 664<br>Female: 32<br>Male: 631","Wisconsin<br><b>Total arrests:<\/b> 988<br>Female: 69<br>Male: 918","Wyoming<br><b>Total arrests:<\/b> 405<br>Female: 26<br>Male: 376"],"hovertemplate":["%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>"],"zmin":0,"zmax":1,"type":"choropleth","marker":{"line":{"color":"rgba(31,119,180,1)"}},"frame":null},{"locationmode":"USA-states","locations":["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"],"z":[0.7142857142857143,0.020408163265306121,0.89795918367346939,0.5714285714285714,0.95918367346938771,0.73469387755102045,0.22448979591836735,0.20408163265306123,0.97959183673469385,0.93877551020408168,0.061224489795918366,0.24489795918367346,0.77551020408163263,0.59183673469387754,0.32653061224489793,0.36734693877551022,0.44897959183673469,0.75510204081632648,0.10204081632653061,0.65306122448979587,0.81632653061224492,0.55102040816326525,0.48979591836734693,0.42857142857142855,0.38775510204081631,0.040816326530612242,0.34693877551020408,0.46938775510204084,0.12244897959183673,0.8571428571428571,0.40816326530612246,0.91836734693877553,0.63265306122448983,0.081632653061224483,0.53061224489795922,0.69387755102040816,0.26530612244897961,0.79591836734693877,0.18367346938775511,0.61224489795918369,0.14285714285714285,0.83673469387755106,1,0.67346938775510201,0,0.87755102040816324,0.51020408163265307,0.2857142857142857,0.30612244897959184,0.16326530612244897],"text":["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"],"hovertemplate":["%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>"],"colorscale":[[0,"blue"],[0.5,"yellow"],[1,"darkred"]],"zmin":0,"zmax":1,"colorbar":{"title":"Percentile"},"type":"scattergeo","mode":"text","hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"textfont":{"size":10},"marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"line":{"color":"rgba(255,127,14,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+
+---
+class: center, middle
+## Country of birth citizenship with most arrests (2025)
+
+<div class="plotly html-widget html-fill-item" id="htmlwidget-ffb47857cfb2bb6924eb" style="width:100%;height:432px;"></div>
+<script type="application/json" data-for="htmlwidget-ffb47857cfb2bb6924eb">{"x":{"visdat":{"5c95381e141f":["function () ","plotlyVisDat"]},"cur_data":"5c95381e141f","attrs":{"5c95381e141f":{"x":{},"y":{},"text":{},"hovertemplate":"%{text}<extra><\/extra>","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":50,"l":140,"t":60,"r":20},"title":{"text":"Top 10 Birth Citizenship of Arrests (2025)"},"xaxis":{"domain":[0,1],"automargin":true,"title":"Number of Arrests"},"yaxis":{"domain":[0,1],"automargin":true,"title":"","type":"category","categoryorder":"array","categoryarray":["Other","DOMINICAN REPUBLIC","CUBA","ECUADOR","COLOMBIA","NICARAGUA","EL SALVADOR","VENEZUELA","HONDURAS","GUATEMALA","MEXICO"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[87229,31719,24846,14766,10679,7294,6950,5996,5642,3185,26842],"y":["MEXICO","GUATEMALA","HONDURAS","VENEZUELA","EL SALVADOR","NICARAGUA","COLOMBIA","ECUADOR","CUBA","DOMINICAN REPUBLIC","Other"],"text":["<b>MEXICO<\/b><br>Arrests: 87,229<br>Share: 38.7%","<b>GUATEMALA<\/b><br>Arrests: 31,719<br>Share: 14.1%","<b>HONDURAS<\/b><br>Arrests: 24,846<br>Share: 11.0%","<b>VENEZUELA<\/b><br>Arrests: 14,766<br>Share: 6.6%","<b>EL SALVADOR<\/b><br>Arrests: 10,679<br>Share: 4.7%","<b>NICARAGUA<\/b><br>Arrests:  7,294<br>Share: 3.2%","<b>COLOMBIA<\/b><br>Arrests:  6,950<br>Share: 3.1%","<b>ECUADOR<\/b><br>Arrests:  5,996<br>Share: 2.7%","<b>CUBA<\/b><br>Arrests:  5,642<br>Share: 2.5%","<b>DOMINICAN REPUBLIC<\/b><br>Arrests:  3,185<br>Share: 1.4%","<b>Other<\/b><br>Arrests: 26,842<br>Share: 11.9%"],"hovertemplate":["%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>","%{text}<extra><\/extra>"],"type":"bar","orientation":"h","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+class: center, middle
+
+# Research Question
+
+Do increases in state-level ICE arrest intensity disproportionately affect  employment in **immigrant-intensive industries** relative to **less immigrant-dependent industries**?
+---
+# Industry Exposure Design
+
+.pull-left[&lt;center&gt;
+&lt;img src="industry_rank.png" style="width: 100%;" /&gt;
+&lt;/center&gt;]
+--
+.pull-right[**Immigrant-Intensive Industries:**
+- Construction
+- Transportation &amp; Warehousing
+- Utilities
+
+**Less Immigrant-Intensive Industries:**
+- Information
+- Finance &amp; Insurance
+- Educational Services
+
+👉 Industry classification ('immigrant_intense') is created based on documented immigrant labor concentration patterns from [Census Bureau](https://usafacts.org/articles/which-industries-employ-the-most-immigrant-workers/?utm_source=chatgpt.com).
+
+👉 This creates cross-industry exposure variation.]
+
+---
+# Data Retrieval
+.pull-left[
+
+[ICE Enforcement Data](https://www.bls.gov/cew/downloadable-data-files.htm#NAICS_BASED) | Deportation Data Portal (TRAC)
+- Contain county-level arrest and deportation records from 2023 - 2025 (1 table)
+
+[Employment Data](https://www.bls.gov/cew/downloadable-data-files.htm#NAICS_BASED) |  U.S. Bureau of Labor Statistics — QCEW
+- Contain a comprehensive state-level employment data folder (by quarters) for all of 2024 and the first 6 months of 2025. The folder has detailed files for each industry (12 tables)
+
+👉 **Main challenge**: Data comes from two separate sources (13 tables) with no common identifier, requiring extensive cleaning and feature engineering.]
+
+.pull-right[&lt;center&gt;
+&lt;img src="table_structure.png" style="width: 100%;" /&gt;
+&lt;/center&gt;]
+---
+# Data Construction &amp; Feature Engineering
+.pull-left[**Step 1**: Employment Processing (BLS QCEW) &amp; Filtered to state-level observations 
+
+Restricted to:
+
+- Q1 and Q2 of 2024 (January - June)
+
+- Q1 and Q2 of 2025 (January - June)
+
+**Step 2**: ICE Arrest Processing (TRAC)
+
+- Filtered to 2024–2025 only.
+
+- Extracted month from Apprehension Date.
+
+- Restricted to January–June.]
+--
+.pull-right[**Step 3**: Feature Engineering
+
+i/ arrest_rate_per_100k_employed
+
+ii/ Immigrant-Intensive Indicator:
+
+- 1 = Construction, Transportation &amp; Warehousing, Utilities
+
+- 0 = Information, Finance &amp; Insurance, Educational Services
+
+iii/ Log Employment
+
+]
+
+---
+# Final Dataset Structure (Data Tractability)
+.pull-left[&lt;center&gt;
+&lt;img src="final_table.png" style="width: 75%; max-height: 500px;" /&gt;
+&lt;/center&gt;]
+--
+.pull-right[
+Final table has 3816 rows and 10 columns.
+
+Why the data makes Difference-in-Differences feasible:
+
+✔ Monthly time resolution.
+
+✔ State-level geographic identifiers.
+
+✔ Industry-level disaggregation.
+
+✔ Allows construction of a balanced panel dataset.]
+
+---
+## Difference-in-Differences (DiD): What it is &amp; how we use it
+
+.pull-left[
+### What DiD is
+DiD estimates a *causal* effect by comparing how an outcome changes over time in a **treated** group
+relative to a **control** group, before vs. after a policy shock.
+
+Intuition: If treated and control would have continued to move in parallel *absent* the policy,then any post-policy divergence can be attributed to the policy (under assumptions).
+]
+
+.pull-right[
+### How it is used in this project
+- **Outcome (Y):** Monthly employment (by state × industry).
+- **Treatment (D):** ICE arrest intensity (e.g., high vs low, or continuous intensity).
+- **Timing:** Policy/shift begins in **2025** (treatment “turns on” post-2025).
+- **Design:** Compare employment changes in higher-intensity states vs lower-intensity states, controlling for:
+
+  - State fixed effects (time-invariant state differences)
+  - Month fixed effects (national shocks common to all states)
+  ]
+  
+---
+# Difference-in-Differences (DiD) Model
+
+.pull-left[
+&lt;center&gt;
+&lt;img src="model.png" style="width: 90%;" /&gt;
+&lt;/center&gt;
+
+**Where:**
+
+- Y(s,i,t) = log employment in state s, industry i, month t  
+- Treated_s = 1 if state has high arrest intensity  
+- Post_t = 1 for months in 2025 (post-policy period)  
+- γ_s = State fixed effects  
+- δ_t = Month fixed effects  
+- θ_i = Industry fixed effects  
+- β = Difference-in-Differences treatment effect  
+- ε(s,i,t) = Error term  
+]
+
+.pull-right[
+&lt;center&gt;
+&lt;img src="result.png" style="width: 75%;" /&gt;
+&lt;/center&gt;
+
+
+
+Estimated DiD coefficient: **–0.11 log points**
+
+👉 High-arrest-intensity states experienced about  
+**11% lower employment** post-policy  
+relative to low-intensity states.
+
+95% CI includes zero → not statistically significant.
+]
+
+---
+## Are the two industry groups trending similarly?
+
+&lt;center&gt;
+&lt;img src="employment_trend.png" style="width: 75%; max-height: 500px;" /&gt; 
+&lt;/center&gt;
+
+--
+
+YES!...
+
+--
+
+But there is a clear decrease in the employment level in 2025.
+---
+## Is Increased Enforcement Associated with Employment Declines?
+
+&lt;center&gt;
+&lt;img src="correlation.png" style="width: 75%; max-height: 350px;" /&gt; 
+&lt;/center&gt;
+
+Many points sit close to 0 on the Y-axis, even when arrest intensity increased.
+
+👉 This suggests that in many states, increases in arrests were not associated with large employment declines.
+
+
+
+
+---
+# Implications for Stakeholders
+
+
+**Industry &amp; Employers**
+
+- Immigrant-reliant sectors may face labor supply volatility.
+
+- Potential adjustments: wage changes, substitution, automation, or hiring shifts.
+
+- If effects are small → suggests short-run labor market resilience.
+
+**State Policymakers**
+
+- States with immigrant-intensive industries may be more exposed to federal enforcement shifts.
+
+- Sectoral sensitivity could affect regional economic stability.
+
+**Federal Policymakers**
+
+- Immigration enforcement functions not only as legal policy, but as a labor market shock.
+
+**Workers**: job security risk
+
+---
+# Ethical, Legal &amp; Societal Implications
+
+**Ethical Considerations**
+
+- Economic indicators may not capture individual-level disruption.
+
+- Labor stability does not imply absence of human costs.
+
+**Legal &amp; Institutional Dynamics**
+
+- Federal enforcement interacts with state-level labor markets.
+
+- Policy misalignment may generate unintended economic consequences.
+
+**Societal Distribution**
+
+- Effects (if present) may be uneven across industries and regions.
+
+- Raises broader questions about balancing enforcement goals with economic stability.
+
+
+---
+# Limitations &amp; Future Expansion
+
+.pull-left[
+### Limitations
+
+- Limited post-treatment period (only early 2025 data).
+
+- Arrest intensity may not perfectly capture enforcement exposure.
+
+- Potential omitted variable bias (state-level policy differences).
+
+- Parallel trends assumption cannot be fully verified.
+
+- Employment measured at aggregate industry level (not worker-level).
+]
+
+.pull-right[
+### Future Expansion
+
+- Extend dataset as more 2025–2026 data becomes available.
+
+-  Incorporate worker-level microdata (e.g., CPS).
+
+-  Add heterogeneous treatment effects by industry dependence on immigrant labor.
+
+-  Explore lagged effects of enforcement intensity.
+
+-  Use event-study design to test dynamic effects.
+]
+
+---
+
+class: center, middle
+
+# Thank you!
+
+
+&lt;center&gt;
+&lt;img src="dance.gif" style="width: 30%; max-height: 350px;" /&gt; 
+&lt;/center&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false,
+  "ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
