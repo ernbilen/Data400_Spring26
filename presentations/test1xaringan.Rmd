@@ -1,0 +1,21 @@
+---
+title: "Noah's First Cool Slide Show"
+subtitle: "⚔ with xaringan"
+author: "Noah Lape"
+institute: "Dickinson College"
+date: "2026/01/23"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/4/4f/Black_hole_-_Messier_87_crop_max_res.jpg)
+background-size: cover
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
