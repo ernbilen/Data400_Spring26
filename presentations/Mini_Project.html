@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Product-Level Insurance Strategy Across Macroeconomic Cycles</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Michael Pelletier" />
+    <meta name="date" content="2026-02-11" />
+    <script src="Mini_Project_files/header-attrs-2.30/header-attrs.js"></script>
+    <link href="Mini_Project_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="Mini_Project_files/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="Mini_Project_files/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Product-Level Insurance Strategy Across Macroeconomic Cycles
+]
+.subtitle[
+## A Macro-Informed Framework for Strategic Planning
+]
+.author[
+### Michael Pelletier
+]
+.date[
+### 2026-02-11
+]
+
+---
+
+
+
+class: center middle inverse
+
+
+This report quantifies how the  Affiliated channel production varies with a small set of macroeconomic and financial-market conditions using monthly data and transparent, interpretable regression models. The central contribution is a practical set of “macro signals” that can be used to calibrate expectations and diagnose performance variance. The empirical results are consistent with product economics and observable field behavior: (i) single premium deferred annuity (SPDA) production behaves as a rate‑regime product and rises when short‑term interest rates increase materially versus the prior year; (ii) market volatility (VIX) is associated with a meaningful shift in Life mix toward Term; and (iii) Life WNAP is negatively associated with labor-market stress as proxied by the unemployment rate. 
+---
+
+class: incremental
+
+## Project Motivation
+The analysis is performed at the channel level (not the Organizational level). As such, the results should be interpreted as describing how the aggregate Affiliated business tends to move with macro indicators, not which organizations outperformed the environment. A GA-level extension is recommended as a next step.
+
+## Data Used
+
+2.1 Sales outcomes (monthly)
+We use monthly Affiliated production measures, including Life WNAP, Term WNAP, IUL WNAP, total annuity premium, and SPDA premium. From these series, we compute Term share of Life WNAP (Term WNAP divided by total Life WNAP).
+2.2 Macro and market indicators (monthly)
+Macro and market variables are aligned to the same monthly cadence. Core indicators include the unemployment rate, the 2‑year U.S. Treasury yield, the 12‑month change in the 2‑year yield (rate impulse), the 10‑year minus 2‑year yield curve slope, the VIX volatility index (monthly average), AAA credit spreads, and a 12‑month NASDAQ return measure.
+2.3 Model windows
+Because year-over-year change variables require a 12‑month lag, the annuity and SPDA models begin in mid‑2011. The Life and Term-share models are estimated over 2015–2025 due to data availability and consistency in the Life WNAP series.
+
+---
+
+class: incremental
+
+## Methods
+## 3.1 Transformations
+Two transformations are used to make the dependent variables more well-behaved statistically and more interpretable across large regime shifts:
+1. For lumpy positive series (SPDA and annuity premiums), we model a log-based year-over-year change: YoY change (log-based) = 100 × [ ln(1 + xₜ) − ln(1 + xₜ₋₁₂) ]. This approach is common in empirical macro/finance because it reduces the influence of extreme values and behaves sensibly when series can be near zero.
+2. For Term share (bounded between 0 and 1), we use a logit transform: logit(p) = ln(p / (1 − p)).
+3. For Life WNAP (levels), we use log(1 + Life WNAP) to reduce skew and allow interpretation in approximate percentage terms.
+## 3.2 Regression specification
+For each outcome, we estimate an ordinary least squares regression that includes (i) month-of-year fixed effects to control for seasonality, and (ii) a linear time trend to capture slow-moving structural drift (e.g., recruiting base expansion). Macro variables enter as contemporaneous monthly indicators. 
+---
+class: center, middle
+
+class: center, middle
+
+&lt;img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 1.png"
+     style="width:92%;"&gt;
+
+---
+class: center, middle
+
+&lt;img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 2.png"
+     style="width:92%;"&gt;
+
+---
+class: center, middle
+
+&lt;img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 3.png"
+     style="width:92%;"&gt;
+
+---
+class: center, middle
+
+&lt;img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 4.png"
+     style="width:92%;"&gt;
+
+---
+class: center, middle
+
+&lt;img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 5.png"
+     style="width:92%;"&gt;
+---
+class: center, middle
+
+&lt;img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 6.png"
+     style="width:92%;"&gt;
+
+---
+##Ethical Implications
+1. Avoid exploiting vulnerability - Macroeconomic stress (recessions, volatility, unemployment) increases consumer fear. Strategy should inform support — not amplify anxiety to drive sales.
+2. Fair access to protection - Product emphasis shifts across cycles must not unintentionally disadvantage lower-income or financially stressed households.
+3. Transparent positioning - When guarantees or downside protection become more salient, communication must remain clear about costs, tradeoffs, and risks.
+4. Responsible forecasting - Macro-informed projections should guide preparedness — not justify aggressive sales targets detached from client suitability.
+5. Long-term trust over short-term gain - Strategic adjustments across macro regimes should prioritize sustainable client outcomes and reputational integrity.
+---
+class: center, middle
+
+## Thank You  
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "ratio": "16:9",
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
