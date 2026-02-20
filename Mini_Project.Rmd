@@ -1,0 +1,289 @@
+---
+title: "Product-Level Insurance Strategy Across Macroeconomic Cycles"
+subtitle: "A Macro-Informed Framework for Strategic Planning"
+author: "Michael Pelletier"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+    nature:
+      ratio: "16:9"
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+library(ggplot2)
+library(tibble)
+library(tidyr)
+```
+class: incremental
+
+## Research Question
+
+How do macroeconomic conditions influence the sales levels and product mix of life insurance and annuities?
+
+More specifically:
+
+- Do interest rates, labor markets, and volatility
+  systematically affect demand?
+- Are some product types more macro-sensitive than others?
+- Can macro indicators help explain sales increases or declines?
+---
+class: incremental
+
+## Why This Matters
+
+Insurance demand is not static.
+
+Economic conditions influence:
+
+- Household income stability
+- Risk tolerance
+- Savings behavior
+- Preference for guarantees
+
+Understanding these relationships improves
+forecasting, planning, and strategic decision-making.
+---
+class: incremental
+
+## Types of Life Insurance?
+
+Life insurance provides a payment to beneficiaries upon death. Two primary categories:
+
+- **Term Life**
+  - Coverage for a fixed period
+  - Lower cost
+  - Pure protection
+
+- **Permanent Life**
+  - Lifetime coverage
+  - Includes a savings component
+  - Higher premiums
+  - More sensitive to financial market conditions
+---
+class: incremental
+
+## What Are Annuities?
+
+An annuity is a financial product designed to convert savings into income, often for retirement.
+
+Key types:
+
+- **Fixed / Structured Annuities**
+  - Provide guaranteed returns or income
+  - More attractive when interest rates are high
+
+- **SPDA (Single Premium Deferred Annuity)**
+  - One large upfront payment
+  - Growth accumulates until future payout
+  - Highly sensitive to interest rate environments
+---
+class: incremental
+
+## Project Scope
+
+- Channel-level aggregate production
+- Monthly sales data
+- Focus on:
+  - Total Life WNAP
+  - Term share of Life production
+- Directional relationships (not individual organizational performance)
+
+Goal:
+Identify macro-linked demand patterns.
+---
+class: incremental
+
+## Data Overview
+
+### 1. Sales Outcomes (Monthly)
+- Life WNAP  
+- Term WNAP  
+- Total annuity premium  
+- SPDA premium  
+- Term share of Life WNAP
+
+### 2. Macro & Market Indicators (Monthly)
+- Unemployment rate  
+- 2-Year Treasury yield  
+- 12-month rate impulse  
+- Yield curve slope (10Y–2Y)  
+- VIX (volatility)  
+- Inflation measures (CPI)
+---
+class: incremental
+
+## Why This Problem Is Tractable
+
+- Public macro data (FRED) are high-frequency and reliable
+- Sales data are consistently measured monthly
+- Time alignment enables structured regression analysis
+- Transformations ensure statistical stability
+
+Scope is intentionally limited to:
+macro conditions → aggregate demand response
+---
+class: incremental
+
+**Model Windows**
+- Year-over-year variables require 12-month lag
+- Annuity & SPDA models begin: mid-2011
+- Life & Term-share models: 2015–2025
+- Windows selected based on:
+  - Data consistency
+  - Structural comparability
+
+## How Premiums Are Measured
+
+For annuities and large premium products:
+
+- We use year-over-year percentage change
+- Instead of raw dollar amounts
+
+Why?
+
+- Controls for extreme spikes
+- Makes growth rates easier to compare
+- Common practice in economic research
+---
+class: incremental
+
+## Term Share Adjustment
+
+Term share is a percentage (between 0% and 100%).
+
+Because percentages are naturally bounded,
+we apply a standard statistical adjustment
+to make the regression behave properly.
+
+Purpose: Rescaling the percentage so it can be modeled accurately.
+
+## Life Sales Adjustment
+
+Total Life production is highly skewed
+(a few large months can dominate).
+
+We apply a log transformation to:
+
+- Reduce distortion from large spikes
+- Improve stability
+- Allow interpretation in approximate % terms
+
+---
+class: incremental
+
+## Regression Framework
+
+We use a standard statistical method:
+Ordinary Least Squares (OLS).
+
+The model controls for:
+
+- Seasonality (some months are always stronger)
+- Long-term growth trend
+
+Macroeconomic variables are added
+to see whether they move together with sales.
+---
+class: center, middle
+
+class: center, middle
+
+<img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 1.png"
+     style="width:92%;">
+
+---
+class: center, middle
+
+<img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 2.png"
+     style="width:92%;">
+
+---
+class: center, middle
+
+<img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 3.png"
+     style="width:92%;">
+
+---
+class: center, middle
+
+<img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 4.png"
+     style="width:92%;">
+
+---
+class: center, middle
+
+<img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 5.png"
+     style="width:92%;">
+---
+class: center, middle
+
+<img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 6.png"
+     style="width:92%;">
+
+---
+class: incremental
+
+## The Protection Gap in the U.S.
+
+Life insurance and annuities provide financial protection and continuity for families.
+
+Yet:
+
+- Tens of millions of Americans have no life insurance.
+- Many more are underinsured relative to their needs.
+- A large share of households would face hardship
+  within months of losing a primary income earner.
+
+Protection gaps are not evenly distributed —
+they are larger among lower- and middle-income households.
+---
+class: incremental
+
+## Why Macroeconomics Matters for Coverage
+
+Economic stress affects:
+
+- Employment stability
+- Household income
+- Risk tolerance
+- Ability to afford premiums
+
+Historically:
+- Coverage ownership can decline during recessions.
+- Demand shifts during high-volatility periods.
+- Rising rates change the attractiveness of certain products.
+
+Macro conditions influence who stays protected —
+and who drops coverage.
+---
+class: incremental
+
+## Why This Study Is Important
+
+Understanding macro sensitivity allows the channel I am on to:
+
+- Anticipate when protection levels may fall
+- Plan distribution and outreach more effectively
+- Set responsible growth expectations
+- Support households through economic cycles
+
+This is not only a strategic question —
+it is a financial stability question.
+
+Sustainable growth and sustained protection
+should move together.
+---
+class: center, middle
+
+## Thank You  
+
+
