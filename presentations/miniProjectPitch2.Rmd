@@ -1,0 +1,53 @@
+---
+title: "My Other Idea For The Mini Project"
+author: "Benjamin J. Fox"
+date: "2026-02-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, include=FALSE}
+knit_print.data.frame = function(x, ...) {
+  res = paste(c("", "", knitr::kable(x)), collapse = "\n")
+  knitr::asis_output(res)
+}
+
+registerS3method(
+  "knit_print", "data.frame", knit_print.data.frame,
+  envir = asNamespace("knitr")
+)
+```
+# The actual question
+Can one successfully predict the chart trajectory of a song based on where it entered and who's song it is week by week? Most labels want their acts to perform consistently, but due to shifting cultural trends that will nearly never be the case. Still, being able to have some level of accuracy about how consistently successful any given song will be is good for marketing. There are other distinctly musical trends that decide which songs are going to be the singles, but in terms of general performance on this one chart, how much consistency is there?
+
+## Tractibility of the Data
+Luckily, in large part because I am a nerd, I was doing some research into the Billboard Hot 100 throughout the years last semester. Not for any particular project, just for fun, and managed to scrape every single chart up to around September 2025.
+
+```{r, warning=FALSE}
+example_chart <- readxl::read_xlsx('/Users/benjaminfox/Desktop/Billboard Webscraping Data/Every_Billboard_Song.xlsx')
+
+head(example_chart)
+```
+
+Things get a little tricky after that though, since Billboard recently updated their archive such that only Pro subscribers to their magazine can access it. So for the weeks since September-ish, I will go to someone else's Github repository. This repository is stored only in json though, so the disentanglement of it will be trickier. 
+```{r, warning=FALSE}
+#Pulling from the chart in September
+goodDatesLink <- jsonlite::fromJSON("https://raw.githubusercontent.com/mhollingshead/billboard-hot-100/main/date/2025-09-06.json")
+
+pulled_chart <- goodDatesLink$data
+head(pulled_chart)
+```
+Still, I've messed with the data to get it into a nice form before, I can do it again.
+
+## Exploratory Data Analysis
+The big thing for this exploratory analysis is noting how much the artist themself influenced the initial performance of the song they released. Also, when the song entered the chart in the first place. The exact reasoning for this will be explained below, but it is entirely possible that this project will highlight other pieces that are more influential than I initially presumed. Using a linear regression model how influential each identifying factor of the song is.
+
+### The Artist
+Even if you have no idea what to expect from an artist's new single, name recognition is a powerful motivator. A music critic who's done a lot of history work on flop albums, Todd Nathanson aka Todd in the Shadows, noted how this likely influenced the radical under performance of The Carpenters' eighth album passage. By that point in the 70s, The Carpenters had fallen out of fashion hard. While their label could push their marketing harder, that doesn't help if the people who have to buy their music don't want to spend their money on it. 
+
+### Time
+Even if Katy Perry's fourth album Witness hadn't been a horrible mess, it still likely wouldn't have done very well. 2017 was a time where the youth of America didn't want the same sort of bubblegum pop she once offered on Teenage Dream, it was a time when artists like Post Malone got massive hits with songs drearier than one called rockstar should be. September 21, 1991 was when Nirvana's Nevermind came out, and hair metal died right then and there. As time passes, the taste of the people changes, the people don't want the same artists, the same genres. There will be revivals for genres every now and then (see Dua Lipa managing to push a successful disco revival in the 2020s), but regardless, when a song comes out and how much time that artist has been gone can seriously affect the performance of it. You may immediately get a Number One hit like Bruno Mars, or you could flame out despite having the most streamed album of all time like Ed Sheeran. 
+
+## Stakeholders
