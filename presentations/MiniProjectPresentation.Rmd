@@ -1,0 +1,246 @@
+---
+title: "The Influence of Concert Tours on Local Public Transport"
+subtitle: "------------------"
+author: "Benjamin J. Fox"
+institute: "RStudio, Dickinson College"
+date: "2026/02/17"
+output:
+  xaringan::moon_reader:
+    css: ["xaringan-themer.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+```{r xaringan-themer, include = FALSE, warning = FALSE}
+library(xaringanthemer)
+style_mono_accent(
+  base_color = "#aa0077"
+)
+```
+background-image: url(https://www.billboard.com/wp-content/uploads/2024/07/travis-scott-circus-maximus-2024-billboard-1548.jpg)
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+class: inverse, center, middle
+
+# Concerts Are Great
+
+---
+class: inverse
+background-image: url(./highest_grossing_tour_image.png)
+background-size:90% 90%
+
+---
+class: inverse, center, middle
+
+# But who else should benefit?
+
+---
+class: center, middle
+
+# The cities themselves
+
+---
+# What could that refer to?
+--
+
+### Namely sources of local income
+--
+
+1. Hotels
+--
+
+
+2. Restaurants
+--
+
+
+3. Public Facilities
+---
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/1/1f/R211_A_train_approaching_80th_Street_August_2025.jpg)
+background-size: 100% 100%
+class: center, middle, inverse
+
+# Public Transport
+
+---
+class: center, middle, inverse
+
+# Some anecdotal experience
+---
+class: center, middle, inverse
+<img src='./outsideTheGarden.JPG', width = 49%, height = 49%/>
+<img src='./insideTheGarden.JPG', width = 49%, height = 49%/>
+
+---
+class: center, middle, inverse
+<img src='./CrowdBeforeTrain.JPG', width = 49%, height = 49%/>
+<img src='./CrowdInTrain.JPG', width = 49%, height = 49%/>
+
+---
+class: center, middle
+
+# This is why I focused on public transport
+---
+# Stakeholders
+
+--
+
+1. The city that runs it all.
+
+--
+
+2. The artists + management
+
+--
+
+3. You, the concertgoer
+
+---
+class: center, middle, inverse
+
+# The Concert Tours Used as a Case Study
+--
+
+## Sticking to tours within the 2020s
+---
+# Those being...
+--
+
+1. *Taylor Swift's Eras Tour*
+
+--
+
+2. *Coldplay's Music of the Spheres Tour*
+
+--
+
+3. *Ed Sheeran's Mathematics Tour*
+
+--
+
+4. *Bruce Springsteen's 2023-2025 Tour*
+
+--
+
+5. *The Weeknd's After Hours Til Dawn Tour*
+
+--
+
+6. *Harry Styles' Love On Tour*
+
+--
+
+7. *P!NK's Summer Carnival*
+
+--
+
+8. *Beyoncé's Renaissance World Tour*
+
+--
+
+9. *Metallica's M72 World Tour*
+
+---
+class: inverse, middle, center
+
+# *Data Time*
+---
+### Boston Data
+```{r, echo = FALSE, warning = FALSE}
+bussin <- read.csv('/Users/benjaminfox/Desktop/Data400_Spring26/data/Public Transit Fer Mini Project/Boston_Rail.csv')
+
+knitr::kable(head(bussin, 10))
+```
+---
+### New York Data
+```{r, echo = FALSE, warning = FALSE}
+nyah <- read.csv('/Users/benjaminfox/Desktop/Data400_Spring26/data/Public Transit Fer Mini Project/New_York_Rail.csv')
+
+nyah <- nyah[,1:3]
+colnames(nyah) <- c("Date", "Total", "Total Percent")
+
+
+knitr::kable(head(nyah, 10))
+```
+---
+### Chicago Data
+```{r, echo = FALSE, warning = FALSE}
+chickn <- read.csv('/Users/benjaminfox/Desktop/Data400_Spring26/data/Public Transit Fer Mini Project/Chicago_Rail.csv')
+
+knitr::kable(head(chickn, 10))
+```
+---
+class: inverse, center, middle
+
+# Reframing the data based on concert dates
+---
+# New York as an Example
+
+```{r, echo = FALSE, warning = FALSE}
+nyahDate <- read.csv('/Users/benjaminfox/Desktop/Data400_Spring26/data/Final Charts For Mini Project Presentation/newYorkDates.csv')
+
+knitr::kable(head(nyahDate[,2:7], 5))
+```
+---
+# The Actually Important Table
+--
+```{r, echo = FALSE, warning = FALSE}
+proper_table <- read.csv('/Users/benjaminfox/Desktop/Data400_Spring26/data/Final Charts For Mini Project Presentation/meanDifferentials.csv')
+
+knitr::kable(proper_table[,2:4])
+```
+---
+class: inverse, middle, center
+
+# *Huh*
+---
+class: inverse, middle, center
+
+# The Limits of the Data
+---
+<img src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Gillette_Stadium_%28Top_View%29.jpg/1280px-Gillette_Stadium_%28Top_View%29.jpg', width = 49%, height = 49%>
+<img src = 'https://upload.wikimedia.org/wikipedia/commons/9/97/Metlife_stadium.jpg', width = 55%, height = 55%>
+
+**These Places Weren't Made For Public Transport**
+---
+class: middle, center
+
+# Results:
+---
+class: middle, center
+
+# Results: Inconclusive
+---
+# These aren't the only cities that artists travel to.
+
+- Boston
+
+- New York
+
+- Chicago
+---
+class: center, middle
+
+# Publicly available data varies
+---
+class: center, middle, inverse
+
+# *Takeaways*
+---
+class: center, middle
+background-image: url(https://daily.jstor.org/wp-content/uploads/2017/12/traffic_jam_1050x700.jpg)
+
+# Maybe the data does show how influential concerts are
+---
+class: center, middle
+
+# The Ramifications(?)
+---
+class: center, middle, inverse
+
+# Any Questions?
