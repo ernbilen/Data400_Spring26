@@ -1,0 +1,374 @@
+---
+title: "Idea 1 (DATA 400): Weight Training Log"
+subtitle: "Cleaning + Exploratory Data Analysis"
+author: "Andrew Kelley"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  xaringan::moon_reader:
+    self_contained: true
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Dataset: Weightlifting Training Logs
+
+**Source:** Kaggle – Weightlifting Dataset  
+https://www.kaggle.com/datasets/joep89/weightlifting
+
+**What this is:**
+- Personal gym workout logs recorded over **~3 years** using the *Strong* app
+- Each row represents a **set** of an exercise (with weight and reps)
+
+**What’s in the data:**
+- Exercise name
+- Date
+- Weight (lbs)
+- Reps (and sets)
+
+---
+# Contd.
+
+**Important notes:**
+- All weights are in **pounds**
+- Some exercises have **inconsistent names**
+- There are **occasional typos/outliers**
+- Warm-up sets are usually **not included**
+
+**Why it’s useful:**
+- Lets us analyze **training volume, patterns, and trends over time**
+- Good real-world example of **messy data**
+
+
+---
+
+# Data: what I’m analyzing
+
+.pull-left[
+**Data**
+- Weight Training log for 1 person
+
+**Raw shape**
+- 9932 rows × 10 columns
+
+**Time span**
+- 2015-10-23 → 2018-09-29 
+(3 years)
+]
+
+.pull-right[
+**Key raw columns (before cleaning)**
+- Date
+- Workout Name
+- Exercise Name
+- Set Order
+- Weight
+- Reps
+- Distance
+- Seconds
+- Notes
+- Workout Notes
+]
+
+
+
+---
+
+# Initial quality checks
+
+.pull-left[
+From the notebook:
+
+- Checked shape + dtypes
+- Calculated missingness by column
+- Standardized column names
+- Converted `date` to datetime
+]
+
+.pull-right[
+```{python eval=FALSE}
+# Check shape, dtypes, and missing values
+print("Shape:", lift_df_raw.shape)
+print(lift_df_raw.dtypes)
+
+missing_pct = lift_df_raw.isna().mean().sort_values(ascending=False) * 100
+print(missing_pct)
+
+# Standardize column names
+lift_df.columns = [c.strip().lower().replace(" ", "_") for c in lift_df.columns]
+
+# Convert date from object to datetime format
+lift_df["date"] = pd.to_datetime(lift_df["date"], errors="coerce")
+```
+]
+
+---
+
+# Handling missingness
+
+In the notebook, text fields were *almost entirely missing*:
+
+- `workout_notes` ≈ 99.97% missing  
+- `notes` ≈ 99.93% missing
+
+So the cleaning step **dropped columns with mostly missing values** before doing EDA on weights/reps.
+
+
+---
+
+# Un-duplicating text fields
+
+To reduce accidental duplicates in grouping:
+
+- Cleaned/standardized text columns (e.g., consistent casing/whitespace)
+- Converted object columns to categories after cleaning
+
+```{python eval=FALSE}
+# Clean text columns to prevent duplicates
+for col in ["workout_name", "exercise_name"]:
+    lift_df[col] = (
+        lift_df[col].astype(str)
+                   .str.strip()
+                   .str.replace(r"\s+", " ", regex=True)
+    )
+
+# Convert objects to categories
+lift_df["workout_name"]  = lift_df["workout_name"].astype("category")
+lift_df["exercise_name"] = lift_df["exercise_name"].astype("category")
+```
+
+---
+
+# Outliers: flag + review
+
+The notebook flags and prints the biggest weight values.
+
+Example outliers that appeared:
+
+```text
+                    date   workout_name      exercise_name  weight  reps
+4813 2017-02-04 19:03:35        Squat 1    Squat (Barbell)  2956.0     6
+5534 2017-07-24 12:48:01  2 - Shoulders  Rope Never Ending  1000.0     5
+5551 2017-07-28 22:34:27  1 Incline Day  Rope Never Ending  1100.0     5
+```
+
+Then those outliers were removed before creating the final cleaned dataset.
+
+---
+
+# Cleaned dataset
+
+After cleaning + removing outliers:
+
+- **Final shape:** 9929 rows × 16 columns  
+- `date` successfully converted to `datetime64[ns]`  
+- Added derived time fields (month/week) and training metrics (volume)
+
+
+
+---
+
+class: inverse, center, middle
+
+# EDA
+
+---
+
+# Distribution of weight (excluding 0)
+
+![](extracted_images/cell16_out00_a42be94ac7.png)
+
+---
+
+# Distribution of reps (excluding 0)
+
+![](extracted_images/cell17_out00_6983893c74.png)
+
+---
+
+# Training volume over time
+
+**Volume definition used in the notebook:** `volume = weight * reps`
+
+![](extracted_images/cell18_out01_5f80f138c3.png)
+
+---
+# Training volume over time contd.
+
+Example (last 12 months shown in the notebook):
+
+```text
+       month    volume
+24  Oct 2017  488067.5
+25  Nov 2017  584382.5
+26  Dec 2017  460261.0
+27  Jan 2018  546839.5
+28  Feb 2018  507133.0
+29  Mar 2018  354003.5
+30  Apr 2018  469192.5
+31  May 2018  501876.5
+32  Jun 2018  354402.0
+33  Jul 2018  445499.0
+34  Aug 2018  410702.0
+35  Sep 2018  421389.5
+```
+
+---
+
+# Most frequent exercises
+
+Top exercises by number of sets (from the notebook):
+
+```text
+(exercise_name)
+ Squat (Barbell)                    1436
+ Chin Up                            1217
+ Incline Bench Press (Barbell)       779
+ Seated Shoulder Press (Barbell)     660
+ Weighted dips                       627
+ Hammer seated row (CLOSE GRIP)      347
+ Bench Press (Barbell)               320
+ Leg press (hinge )                  289
+ Rear delt fly                       285
+ Squat                               265
+ Bicep Curl (Barbell)                247
+```
+
+
+
+---
+
+# Monthly max weight trend (example lift)
+
+Notebook example: **Squat (Barbell)** monthly max weight with a linear trendline.
+
+![](extracted_images/cell22_out01_27cdece9a5.png)
+
+---
+
+# Squat training frequency
+
+From the notebook (Squat (Barbell)):
+
+- Average squat sets per week: **11.67**
+- Average squat sets per month: **39.89**
+
+--
+
+Recent weeks/months printed in the notebook:
+
+```text
+Average squat sets per week: 11.67
+Average squat sets per month: 39.89
+
+Last 10 weeks of squat sets:
+week
+2018-07-23/2018-07-29     8
+2018-07-30/2018-08-05    17
+2018-08-06/2018-08-12    10
+2018-08-13/2018-08-19    16
+2018-08-20/2018-08-26    10
+2018-08-27/2018-09-02    15
+2018-09-03/2018-09-09    10
+2018-09-10/2018-09-16    17
+2018-09-17/2018-09-23     8
+2018-09-24/2018-09-30    20
+```
+---
+# Squat training frequency contd.
+
+```text
+Last 10 months of squat sets:
+month
+2017-12    57
+2018-01    53
+2018-02    39
+2018-03    33
+2018-04    41
+2018-05    63
+2018-06    51
+2018-07    52
+2018-08    52
+2018-09    63
+```
+
+---
+
+# Correlations between numeric variables
+
+<p style="text-align:center;">
+  <img src="extracted_images/cell24_out00_a9da181234.png" style="width:70%; height:auto;">
+</p>
+
+
+---
+
+Takeaways (from the heatmap values):
+
+- **Weight ↔ Volume:** strong positive correlation (~0.82)  
+- **Weight ↔ Reps:** moderate negative correlation (~-0.39)  
+- **Set order ↔ Weight:** small positive correlation (~0.31)
+
+
+---
+
+class: inverse
+
+# Wrap-up: what this shows so far
+
+- The dataset spans **~3 years** of logged training sets  
+- Cleaning focused on:
+  - reliable numeric fields (weight/reps)
+  - standardizing text labels
+  - removing obvious outliers
+- EDA highlights:
+  - typical weight and rep ranges
+  - volume trends over time
+  - a clear upward trend in squat monthly max
+  - expected relationships among weight/reps/volume
+
+--
+
+**Possible Next Steps:**
+- Break down trends by exercise category
+- Add PR tracking and deload detection rules
+- Build a simple model to predict volume or max-weight trend from recent training
+- Look for more data/track people I know
+
+---
+
+# Implications for Stakeholders
+
+**For the athlete (or coach):**
+- Track **training volume and frequency** to avoid overtraining
+- Identify **progress trends** (e.g., squat max increasing over time)
+- Spot **plateaus or drops** that may suggest fatigue or need for deloads
+
+**For gym programmers / trainers:**
+- See how **exercise selection and frequency** evolve over time
+- Use volume and intensity trends to **adjust programming**
+- Compare **planned vs. actual** training behavior
+
+---
+
+# Ethical, Legal, and Societal Considerations
+
+**Data privacy & consent:**
+- This dataset represents **personal health and fitness behavior**
+- In real applications, such data should be **anonymized and protected**
+- Users should know **how their data is used and shared**
+
+**Societal context:**
+- Fitness data is increasingly used in apps, wearables, and health platforms
+- Raises questions about **surveillance, tracking, and performance pressure**
+- Highlights the need for **responsible, transparent data use** in health-related analytics
