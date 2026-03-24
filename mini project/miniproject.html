@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Netflix Original Show Cancellations After 1 Season</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Delaney Reimer" />
+    <meta name="date" content="2026-02-20" />
+    <script src="miniproject_files/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Netflix Original Show Cancellations After 1 Season
+]
+.subtitle[
+## Mini-Project
+]
+.author[
+### Delaney Reimer
+]
+.date[
+### 2026-02-20
+]
+
+---
+
+
+
+
+
+
+## Project Summary and Data Tractability
+
+This project aims to examine the potential reasons for cancellation of various Netflix original shows after only 1 season. The different aspects I plan to look at include:
+
+- **Viewership Stats** - total hours watched and total watches of the show
+- **Number of Weeks in the Top 10** (if any)
+- **Audience Content Rating** - e.g., TV-PG, TV-MA, etc.
+- **Genre(s)/Categorization**
+
+The first 2 points both relate to the popularity of the series on the platform, both individually (viewership) and comparatively (presence among top 10 most popular shows at a time). 
+
+The third and fourth points both relate to accessibility and breadth of audience: TV-PG shows could be seen by children and adults alike vs. TV-MA shows, and Action &amp; Adventure shows might be more palatable to a wider audience than, say, Crime shows.
+
+---
+
+## Data Retrieval
+
+My data was accumulated from multiple different datasets. I pulled Audience Content Rating from What's On Netflix.
+&lt;img src="/Users/delaneyr/miniproject_files/images/audience.png" style = "width:1100px;height:500px"&gt;
+---
+Then I pulled genre data from 2 different Kaggle datasets.
+![Genres](/Users/delaneyr/miniproject_files/images/genre.png)
+---
+I downloaded top 10 data from Tudum.
+![Top 10](/Users/delaneyr/miniproject_files/images/top10.png)
+---
+Data about viewership stats pulled from the Netflix Engagement Reports was downloaded off of What's On Netflix.
+![Views](/Users/delaneyr/miniproject_files/images/views.png)
+---
+And finally, data about which shows were cancelled vs. ongoing was pulled from 2 different Wikipedia pages.
+&lt;img src="/Users/delaneyr/miniproject_files/images/contcan.png" style = "width:1000px;height:600px"&gt;
+---
+After several merges, I finally had a dataframe containing all of the information I wanted to look at.
+![final](/Users/delaneyr/miniproject_files/images/final.png)
+---
+## Exploratory Data Analysis
+
+### Viewership Distribution
+&lt;img src = "/Users/delaneyr/miniproject_files/images/viewgraphs.png" style = "width:700px;height:450px"&gt;
+---
+### Top 10 Week Distribution
+&lt;img src = "/Users/delaneyr/miniproject_files/images/weekgraphs.png" style = "width:950px;height:550px"&gt;
+---
+### Grouped by Genre
+&lt;img src ="/Users/delaneyr/miniproject_files/images/genregrouped.png" style = "width:1050px;height:550px"&gt;
+---
+### View Distribution by Genre
+
+&lt;img src= "/Users/delaneyr/miniproject_files/images/gengraphs.png" style = "width:870px;height:550px"&gt;
+---
+### View Distribution by Maturity Rating
+
+&lt;img src ="/Users/delaneyr/miniproject_files/images/rategraphs.png" style = "width:1050px;height:550px"&gt;
+---
+## Naive Bayes
+&lt;img src ="/Users/delaneyr/miniproject_files/images/nb.png" style = "width:1050px;height:530px"&gt;
+---
+&lt;img src ="/Users/delaneyr/miniproject_files/images/nbroc.png" style = "width:700px;height:630px"&gt;
+---
+## Numeric LDA
+&lt;img src ="/Users/delaneyr/miniproject_files/images/ldanum.png" style = "width:1280px;height:470px"&gt;
+---
+&lt;img src ="/Users/delaneyr/miniproject_files/images/ldanumroc.png" style = "width:700px;height:630px"&gt;
+---
+## LDA with Maturity
+&lt;img src ="/Users/delaneyr/miniproject_files/images/ldawg.png" style = "width:900px;height:530px"&gt;
+---
+## Full LDA
+&lt;img src ="/Users/delaneyr/miniproject_files/images/lda.png" style = "width:950px;height:530px"&gt;
+---
+&lt;img src ="/Users/delaneyr/miniproject_files/images/ldaroc.png" style = "width:700px;height:630px"&gt;
+---
+## Implications for Stakeholders
+
+- **For owners**: Either confirms the choices they made to cancel or renew a show or gets them to look more closely at why they cancelled a series that may have had potential or greater popularity than they thought.
+
+- **For investors**: Greater insight into where Netflix is focused and if the shows that are cancelled are significantly less popular and profitable than those that are not.
+
+- **For subscribers**: Additional knowledge about what shows may be more likely to get renewed and are safe to get invested in.
+---
+## Ethical/Legal/Societal Implications
+
+- All of this data is publicly available, provided either by Netflix themselves or scraped from Netflix
+
+- Creates greater insight about cancellation process to those that pay for the service
+
+- Furthers research about popularity of certain genres
+
+- Promotes transparency for the viewers about why certain shows are cancelled (since most cancellation announcements do not include the reasoning behind it)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "slideNumberFormat": "%current%",
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "ratio": "16:9",
+  "countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

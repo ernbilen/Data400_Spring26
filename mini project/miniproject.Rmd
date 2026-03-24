@@ -1,0 +1,133 @@
+---
+title: "Netflix Original Show Cancellations After 1 Season"
+subtitle: "Mini-Project"  
+author: 
+  - "Delaney Reimer"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    nature:
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: true
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+  fig.width=9, fig.height=3.5, fig.retina=3,
+  out.width = "100%",
+  cache = FALSE,
+  echo = TRUE,
+  message = FALSE, 
+  warning = FALSE,
+  hiline = TRUE
+)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_duo_accent(
+  primary_color = "#E50914",
+  secondary_color = "#B20710",
+  inverse_header_color = "#141414",
+  background_color = "#141414",
+  text_color = "white",
+  header_font_google = google_font("Bebas Neue"),
+  text_font_google   = google_font("Montserrat", "300", "300i"),
+  code_font_google   = google_font("Fira Mono")
+)
+```
+
+## Project Summary and Data Tractability
+
+This project aims to examine the potential reasons for cancellation of various Netflix original shows after only 1 season. The different aspects I plan to look at include:
+
+- **Viewership Stats** - total hours watched and total watches of the show
+- **Number of Weeks in the Top 10** (if any)
+- **Audience Content Rating** - e.g., TV-PG, TV-MA, etc.
+- **Genre(s)/Categorization**
+
+The first 2 points both relate to the popularity of the series on the platform, both individually (viewership) and comparatively (presence among top 10 most popular shows at a time). 
+
+The third and fourth points both relate to accessibility and breadth of audience: TV-PG shows could be seen by children and adults alike vs. TV-MA shows, and Action & Adventure shows might be more palatable to a wider audience than, say, Crime shows.
+
+---
+
+## Data Retrieval
+
+My data was accumulated from multiple different datasets. I pulled Audience Content Rating from What's On Netflix.
+<img src="/Users/delaneyr/miniproject_files/images/audience.png" style = "width:1100px;height:500px">
+---
+Then I pulled genre data from 2 different Kaggle datasets.
+![Genres](/Users/delaneyr/miniproject_files/images/genre.png)
+---
+I downloaded top 10 data from Tudum.
+![Top 10](/Users/delaneyr/miniproject_files/images/top10.png)
+---
+Data about viewership stats pulled from the Netflix Engagement Reports was downloaded off of What's On Netflix.
+![Views](/Users/delaneyr/miniproject_files/images/views.png)
+---
+And finally, data about which shows were cancelled vs. ongoing was pulled from 2 different Wikipedia pages.
+<img src="/Users/delaneyr/miniproject_files/images/contcan.png" style = "width:1000px;height:600px">
+---
+After several merges, I finally had a dataframe containing all of the information I wanted to look at.
+![final](/Users/delaneyr/miniproject_files/images/final.png)
+---
+## Exploratory Data Analysis
+
+### Viewership Distribution
+<img src = "/Users/delaneyr/miniproject_files/images/viewgraphs.png" style = "width:700px;height:450px">
+---
+### Top 10 Week Distribution
+<img src = "/Users/delaneyr/miniproject_files/images/weekgraphs.png" style = "width:950px;height:550px">
+---
+### Grouped by Genre
+<img src ="/Users/delaneyr/miniproject_files/images/genregrouped.png" style = "width:1050px;height:550px">
+---
+### View Distribution by Genre
+
+<img src= "/Users/delaneyr/miniproject_files/images/gengraphs.png" style = "width:870px;height:550px">
+---
+### View Distribution by Maturity Rating
+
+<img src ="/Users/delaneyr/miniproject_files/images/rategraphs.png" style = "width:1050px;height:550px">
+---
+## Naive Bayes
+<img src ="/Users/delaneyr/miniproject_files/images/nb.png" style = "width:1050px;height:530px">
+---
+<img src ="/Users/delaneyr/miniproject_files/images/nbroc.png" style = "width:700px;height:630px">
+---
+## Numeric LDA
+<img src ="/Users/delaneyr/miniproject_files/images/ldanum.png" style = "width:1280px;height:470px">
+---
+<img src ="/Users/delaneyr/miniproject_files/images/ldanumroc.png" style = "width:700px;height:630px">
+---
+## LDA with Maturity
+<img src ="/Users/delaneyr/miniproject_files/images/ldawg.png" style = "width:900px;height:530px">
+---
+## Full LDA
+<img src ="/Users/delaneyr/miniproject_files/images/lda.png" style = "width:950px;height:530px">
+---
+<img src ="/Users/delaneyr/miniproject_files/images/ldaroc.png" style = "width:700px;height:630px">
+---
+## Implications for Stakeholders
+
+- **For owners**: Either confirms the choices they made to cancel or renew a show or gets them to look more closely at why they cancelled a series that may have had potential or greater popularity than they thought.
+
+- **For investors**: Greater insight into where Netflix is focused and if the shows that are cancelled are significantly less popular and profitable than those that are not.
+
+- **For subscribers**: Additional knowledge about what shows may be more likely to get renewed and are safe to get invested in.
+---
+## Ethical/Legal/Societal Implications
+
+- All of this data is publicly available, provided either by Netflix themselves or scraped from Netflix
+
+- Creates greater insight about cancellation process to those that pay for the service
+
+- Furthers research about popularity of certain genres
+
+- Promotes transparency for the viewers about why certain shows are cancelled (since most cancellation announcements do not include the reasoning behind it)
