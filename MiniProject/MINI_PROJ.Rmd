@@ -1,0 +1,136 @@
+---
+title: "Renewable energy pathways strengthening energy price stability during fuel shock periods"
+author: "Olivia Ngai"
+institute: "Data 400"
+date: "2026/2/17"
+output:
+  xaringan::moon_reader:
+    css: ninjutsu
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+--- 
+class: inverse, bottom, center
+background-image: url(https://www.azom.com/images/Article_Images/ImageForArticle_21371_16457084545525256.jpg)
+
+<div style="color: white;">
+
+### Research Question: Do states with more wind and solar sources show better electricity price stability for consumers during fuel supply shock periods such as during the pandemic, geopolitical conflicts and recessions?
+
+???
+
+Image credit: (https://www.azom.com/images/Article_Images/ImageForArticle_21371_16457084545525256.jpg)
+
+</div>
+---
+# Data Retrieval
+**1. U.S. Energy Information Administration (API request)**
+- *Electricity sales to Ultimate Customers monthly by state from January 2018 to December 2023.*
+- EIA limits requests to 5000 rows at a time I had to fetch data in batches of 5000.
+--
+```{r eval=FALSE, tidy=FALSE}
+price_df = fetch_eia_data_paginated(API_KEY, start="2018-01", end="2023-12")
+```
+--
+
+**2. U.S. Energy Information Administration Historical State Data (Excel)**
+- *Monthly Data from Electric Power Monthly Net Generation by State by Type of Producer by Energy Source (2001 – Present)*
+- Created a function that reads an Excel sheet and puts the data in a DataFrame.
+- Looped through each of the desired sheets and created a combined DataFrame with observations from 2018-2023.
+--
+```{r eval=FALSE, tidy=FALSE}
+all_dfs = []
+sheets = ["2018_Final", "2019_Final", "2020_Final", "2021_Final", "2022_Final", "2023_Final"]
+for sheet_name in sheets:
+        df = read_eia_generation_sheet(FILE, sheet_name)
+```
+---
+#### Electricity sales to Ultimate Customers monthly by state: `price_df`
+<img src="/Users/oliviangai/Desktop/MiniProject/images/Screenshot 2026-02-16 at 8.48.01 PM.png" 
+     alt="Screenshot" 
+     width="800px"
+     style="display: block; margin: auto;">
+---
+#### Monthly Data from Electric Power Monthly Net Generation by State by Type of Producer by Energy Source: `electricity_df`
+<img src="/Users/oliviangai/Desktop/MiniProject/images/Screenshot 2026-02-16 at 8.23.35 PM.png" 
+     alt="Screenshot" 
+     width="800px"
+     style="display: block; margin: auto;">
+     
+---
+# Tractable Data
+### Tidy Data
+--
+
+1. `price_df`
+- Filtered for rows with "residential" in `sectorName` (population of interest is consumers)
+- Removed the `period` column and standardized the date into year-month tabular format
+- Removed regional observations (North East Central, North East Western, etc.) to only include states and US-Total
+--
+
+2. `electricity_df`
+- Filtered for rows with "Total Electric Power Industry" in `TYPE_OF_PRODUCER`
+- Standardized the date into year-month tabular format
+- Pivoted `ENERGY_SOURCE` into separate columns, using `GENERATION_MWH` as the values
+---
+# Merged DataFrame
+- Left joined `electricity_df` and `price_df` on `STATE` and `YEAR_MONTH`
+
+<img src="/Users/oliviangai/Desktop/MiniProject/images/Screenshot 2026-02-16 at 10.50.13 PM.png" 
+     alt="Screenshot" 
+     width="800px"
+     style="display: block; margin: auto;">
+---
+### EDA
+```{r eval=FALSE, tidy=FALSE}
+merged_df['SOLAR_PERCENT'] = (merged_df['Solar Thermal and Photovoltaic'] / merged_df['Total']) * 100
+merged_df['WIND_PERCENT'] = (merged_df['Wind'] / merged_df['Total']) * 100
+```
+<img src="/Users/oliviangai/Desktop/MiniProject/images/Screenshot 2026-02-16 at 11.23.56 PM.png" 
+     alt="Screenshot" 
+     width="800px"
+     style="display: block; margin: auto;">
+---
+```{r eval=require('DT'), tidy=FALSE}
+my_data <- read.csv("/Users/oliviangai/Desktop/MiniProject/annual_renewable_pct.csv")
+DT::datatable(my_data, fillContainer = FALSE, options = list(pageLength = 8, scrollX = TRUE))
+```
+---
+<img src="/Users/oliviangai/Desktop/MiniProject/images/Screenshot 2026-02-17 at 11.29.54 AM.png" 
+     alt="Screenshot" 
+     width="800px"
+     style="display: block; margin: auto;">
+--
+```{r eval=FALSE, tidy=FALSE}
+shock_periods = {
+    'Pre-Shock Baseline': ('2018-01', '2019-12'),
+    'COVID-19 Pandemic': ('2020-03', '2021-06'),
+    'Ukraine War/Energy Crisis': ('2022-02', '2023-12')}
+```
+--
+- electricity prices dip in the winter with the lowest price usually being in December
+---
+### Implications for Stakeholders
+
+- **For Policymakers:** It may be evidence that renewables stabilize prices which strengthens the case for growing Renewable Portfolio Standards and treating clean energy as consumer protection policy during economic crises.
+
+- **For Utilities and Energy Companies:** These findings would inform resource planning toward renewables not just for emissions reductions, but as independence from volatile fossil fuel markets.
+
+- **For Consumers:** Understanding which states have more stable prices helps individuals and businesses make informed decisions about where to live or operate and which utilities company they may choose to go with.
+
+- **For Environmental Advocates:** Adds "price stability" to the list of renewable benefits.
+
+- **For Investors:** Renewable-heavy utilities may be viewed as lower-risk investments during fuel supply shocks.
+
+---
+### Ethical, Legal, and Societal Implications
+
+- **Regulatory Impact:** Findings could strengthen defenses of state Renewable Portfolio Standards against legal challenges.
+
+- **Energy Justice Concerns:** If low-income communities and marginalized groups are concentrated in states with volatile prices, they bear disproportionate burden during energy crises.
+
+- **Consumer Protection:** Evidence could inform legal entities of unfair rate practices of utility companies during emergencies and support consumer advocacy for more stable pricing.
+
+- **Causation vs. Correlation:** This study may reveal some correlation between the long term stability and reduced volatility of incorporating renewable energy into the grid, but it would not prove causation. Other factors (energy efficiency, demand response, market structure) also influence stability—avoiding oversimplified claims that renewables alone guarantee price protection.
