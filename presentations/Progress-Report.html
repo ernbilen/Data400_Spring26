@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Predicting Stock Returns Using Financial Ratios and Sentiment Score</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Will Ferris and Charlie Baughan" />
+    <script src="Progress-Report_files/header-attrs-2.29/header-attrs.js"></script>
+    <link href="Progress-Report_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="Progress-Report_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle
+
+# Predicting Stock Returns Using Financial Ratios and Sentiment Score
+
+### Will Ferris and Charlie Baughan  
+### Data 400
+
+---
+
+# Research Question
+
+
+What drives future stock returns?
+
+Can we use:
+- Financial ratios
+- News sentiment
+- Market signals
+
+to systematically select outperforming stocks?
+
+---
+
+# Data Tractability
+
+.pull-left[
+**Clean and Structured Data Set**
+- Universe: S&amp;P 500  
+- Final sample: 503 companies  
+- 2024 features → 2025 returns (forward-looking)
+
+**Key Variables**
+- Returns, volatility  
+- Valuation (P/E, P/B, earnings yield, B/M)  
+- Profitability &amp; leverage
+- Sentiment (news-based)
+
+]
+
+.pull-right[
+**Why its tractable**
+- Consistent firm level data
+- No missing target values
+- Clean merge across datasets
+- Past analysis showed us key variables for predictive success, which are inlcuded in the new analysis
+]
+
+---
+
+# Data Retrieval
+**Pipeline: Bloomberg → Excel → Python**  
+- Extracted
+  - Price data  
+  - Financial Ratios  
+  - Balance sheet metrics
+  - Sentiment scores
+  
+**Processing**
+- Clean tickers (remove Bloomberg formatting)
+- Filter to S&amp;P 500 only (for old dataset)  
+- Merge all datasets into one master file
+- Remove duplicates &amp; align variables
+
+**Final Datset**
+- 503 firms  
+- 30+ variables  
+- Fully numeric and analysis ready
+
+
+---
+
+# EDA &amp; Signal Discovery
+
+.pull-left[
+.small[
+**Correlation with 2025 returns**
+- Volatility: 0.27  
+- Prior Return: 0.25  
+- Sentiment: 0.15  
+- Book to market: Small positive effect
+
+**Key Insight**
+- Individual Predictors are weak
+- Combined they create meaningful signalling
+
+**Interpretation**
+- Momentum + Risk + Sentiment drive returns
+- Traditional profitability metrics are less useful here
+]
+]
+.pull-right[
+&lt;div style="text-align:center; padding-top:0px;"&gt;
+
+&lt;img src="correlations.png" width="80%" /&gt;
+
+&lt;/div&gt;
+]
+
+---
+
+# Scoring System
+
+.pull-left[
+**Composite Score (sum of the signals standardized z-scores)**
+- 40% volatility  
+- 40% prior return  
+- 20% sentiment  
+
+**Portfolio Sorting (quintiles of score)**
+- Q1: ~0% return
+- Q5: ~33% return
+- Spread: 32.7% (Q5-Q1)
+- T-stat: 5.0 (statistically significant)
+
+**Value-Weighted Inisght**
+- Lower performance vs equal weight - signals stronger in smaller firms
+]
+.pull-right[
+&lt;div style="text-align:center; padding-top:0px;"&gt;
+
+&lt;img src="scores.png" width="80%" /&gt;
+
+&lt;/div&gt;
+]
+
+---
+
+# Threshold System
+**Simple Threshold Rule**
+- Volatility &gt; median  
+- Return &gt; 60th percentile 
+- Sentiment &gt; 0  
+
+**Results**
+- 63 stocks selected
+- Avg return: 31.3%
+- Market avg: 11.7%
+- Hit Rate - 82% positive returns
+
+**Key Takeaways**
+- Simple rules lead to complex model performance
+- More realistic for real world investing
+
+
+---
+
+# Potential Limitations
+
+- Overlooking potential transaction costs
+  - Real world results would likely be lower due to trading frictions
+  
+- Limited time horizon
+  - Model is based on one year of data, additional years will create more consistency and robustness
+  
+- Simplified weighting system
+    - fixed weighting system may not refelct optimal selection criteria, we can implement a ML model to account for more variables and data
+    - Will complexity perform better?
+    
+- Diversification
+  - Since stocks are selected based on our system rather than differences, our selection may be concentrated
+  - We need to look into industry differences to strengthen the portfolio selection and minimize future risk
+
+---
+
+# Future Extensions
+- Next steps:
+  - Use 2025 firm characteristic information to construct a new portfolio for 2026 using our thresholds/quintiles
+  
+- Attempt to create long-short portfolios
+  - Long the top quintile stocks 
+  - Short on bottom quintile stocks
+  
+- Implement machine learning models, which would take away our correlation and implementation of the weights and learn its own weighting
+  - Most likely need more data to do this
+
+---
+
+# Implications For Stakeholders
+
+
+**Investors**
+- Strategy generates alpha vs market
+- Combines behavioral + financial insights
+
+**Companies**
+- Sentiment impacts valuation and performance
+- Media perception matters financially
+
+**Markets**
+- Evidence of:
+  - Momentum effects
+  - Behavioral biases
+
+
+---
+
+# Ethical, Legal, Societal Implications
+**Ethical**
+- News sentiment can influence capital flows 
+- Biased reporting → distorted investment decisions 
+
+**Legal**
+- Data sourced from Bloomberg (licensed, compliant) 
+- No misuse of private information 
+
+**Societal**
+- Increasing reliance on algorithmic investing 
+- Risk of over-automation in financial decisions 
+- Potential amplification of market volatility 
+
+
+---
+
+class: center, middle
+
+# Thank You
+
+## Questions?
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "ratio": "16:9",
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

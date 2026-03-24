@@ -1,0 +1,147 @@
+---
+title: "NFL Fourth Down Agressiveness"
+subtitle: "Data 400 Mini Project"
+author: "Charlie Baughan"
+institute: "Dickinson College"
+date: "2016/12/12 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+# Why Fourth Down Decisions Matter
+
+- NFL games occur in high stakes, high visibility environments
+  - Games regularly attract 15-20 million viewers, with some games reaching much higher
+  
+- Fourth-down choices can swing win probability and expected points.
+
+- Teams face a tradeoff between risk (turnover on downs) and reward (sustaining drives / scoring).
+
+- This project uses play-by-play data to quantify what drives “go for it” decisions.
+
+---
+# Data
+
+- Source: nflverse/nflfastR play by play (public dataset located on GitHub)
+
+  - Insalled as nflreadpy package in python
+  
+- Unit of observation: One NFL Play
+
+- Sample: 25,445 4th down plays from 2020-2025, making it computationally feasible for modeling and EDA
+
+- Key Variables: ydstogo, yardline_100, score_differential, minutes_remaining, wp, play_type which are all cleaned and analytically usable
+
+---
+# Data Retrieval and Feature Engineering
+
+- Dowload nflverse Play-by-Play data from the nflreadpy package
+
+    → Filter (down == 4)  
+
+    → Feature Engineering (`go_for_it`, minutes_remaining)
+
+    → Logistic Regression Dataset cleaning
+
+- Decision Variable:
+  - go_for_it = 1 if play_type is run or pass
+  
+  - go_for_it = 0 if play_type is punt or field goal
+  
+---
+# EDA 1: Macro Trends
+![Graph of 4th down aggressiveness over time](Overtimeaggressiveness.png)
+- We see go-for-it rate increasing over time
+- Consistent with analytic driven decision making being widely adopted across the league
+- Teams appear more willing to accept the risk of going for it for the greater gain in points
+
+---
+# EDA 2: Aggressiveness by Game Situation
+<div style="display:flex; gap:20px; justify-content:center;">
+  <div style="width:48%; text-align:center;">
+    <img src="score.png" style="width:100%;">
+  </div>
+  <div style="width:48%; text-align:center;">
+    <img src="yds.png" style="width:100%;">
+  </div>
+</div>
+- We see that teams are more likely to go for it when losing by more points, and also more likely when they are up big.
+
+- We also see teams are more likely to go for it with less yards to go.
+
+- These graphs confirm our dataset is making sense and agreeing with largely known NFL strategy
+
+---
+#EDA 3: Heat Map
+![Graph of 4th down aggressiveness over time](heatmap.png)
+
+---
+# Preliminary Logistic Model
+
+**Objective:**  
+- Estimate the probability that a team goes for it on fourth down given the game situation.
+
+**Model Type:**  
+- Logistic regression (binary decision: go for it vs kick)
+
+**Model Fit:**  
+- Observations: 25,455 fourth-down plays  
+- Pseudo R² ≈ 0.283 (strong for behavioral decision data)  
+- Model is statistically significant (p < 0.001)
+
+**Key Findings:**  
+- Yards to go has a strong negative effect on aggressiveness  
+- Teams are more aggressive in favorable field position (closer to the end zone)  
+- Higher win probability is associated with more conservative decision-making
+
+---
+# Team Agressiveness
+- Predict expected behavior based on the model, without coach, team or players.
+- Take the actual decision, subtract from the prediction value and get a residual, then aggregate by team.
+![Graph of 4th down aggressiveness over time](teams.png)
+---
+# Implications for Stakeholders
+
+**Coaches & Front Offices**
+- Provides an evidence-based benchmark for fourth-down decision-making  
+- Identifies whether a team(or coach) is overly conservative or aggressive relative to situational expectations  
+
+**Analysts & Broadcasters**
+- Moves discussion beyond hindsight bias (“they should have gone for it”)  
+- Enables more rigorous discussion of coaching decisions using data rather than narrative
+
+**Fans & Media**
+- Encourages data-driven interpretation of coaching decisions  
+- Fourth down aggressiveness directly impacts win probability and game outcomes
+
+---
+# Ethical, Legal, & Societal Implications
+
+**Model Limitations & Misinterpretation**
+- Coaching decisions involve context not captured in the data (injuries, weather, player matchups)
+- Over-reliance on models could oversimplify complex strategic decisions 
+
+**Responsible Use of Analytics**
+- Results should be used as decision support, not as definitive judgments of coaching quality
+- Labeling teams as “bad” or “irrational” based solely on model outputs can be misleading  
+
+**Broader Societal Context**
+- Increased use of sports analytics reflects a larger shift in society to data
+- Findings may influence media narratives, fan perception, and potentially sports betting markets  
+
+**Data Ethics**
+- Uses publicly available nflverse data with no personal or private player information
+
+---
+# Adding to Existing Work
+
+- Existing NFL analytics focus more on the optimal decision
+  - My model does not incorporate Next Gen Stats (player positioning, injuries, separation, acceleration, etc)
+
+- This work focuses on behavior in relation to the mean, looking at what teams actually decide to do
+
+- This work complements advanced analytics to provide a behavioral benchmark for analyzing team and coach aggressiveness and decision making. It can also be extended to player comparisons in the future.

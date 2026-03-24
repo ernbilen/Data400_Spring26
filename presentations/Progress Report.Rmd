@@ -1,0 +1,249 @@
+---
+title: "Predicting Stock Returns Using Financial Ratios and Sentiment Score"
+author: "Will Ferris and Charlie Baughan"
+institute: "Data 400"
+output:
+  xaringan::moon_reader:
+    seal: false
+    nature:
+      ratio: "16:9"
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+header-includes:
+  - |
+    <style>
+    .remark-slide-content {
+      font-size: 22px;
+      padding: 1em 2em;
+    }
+    h1 {
+      font-size: 34px;
+    }
+    .small { font-size: 19px; }
+    .tiny  { font-size: 17px; }
+    </style>
+---
+
+class: center, middle
+
+# Predicting Stock Returns Using Financial Ratios and Sentiment Score
+
+### Will Ferris and Charlie Baughan  
+### Data 400
+
+---
+
+# Research Question
+
+
+What drives future stock returns?
+
+Can we use:
+- Financial ratios
+- News sentiment
+- Market signals
+
+to systematically select outperforming stocks?
+
+---
+
+# Data Tractability
+
+.pull-left[
+**Clean and Structured Data Set**
+- Universe: S&P 500  
+- Final sample: 503 companies  
+- 2024 features → 2025 returns (forward-looking)
+
+**Key Variables**
+- Returns, volatility  
+- Valuation (P/E, P/B, earnings yield, B/M)  
+- Profitability & leverage
+- Sentiment (news-based)
+
+]
+
+.pull-right[
+**Why its tractable**
+- Consistent firm level data
+- No missing target values
+- Clean merge across datasets
+- Past analysis showed us key variables for predictive success, which are inlcuded in the new analysis
+]
+
+---
+
+# Data Retrieval
+**Pipeline: Bloomberg → Excel → Python**  
+- Extracted
+  - Price data  
+  - Financial Ratios  
+  - Balance sheet metrics
+  - Sentiment scores
+  
+**Processing**
+- Clean tickers (remove Bloomberg formatting)
+- Filter to S&P 500 only (for old dataset)  
+- Merge all datasets into one master file
+- Remove duplicates & align variables
+
+**Final Datset**
+- 503 firms  
+- 30+ variables  
+- Fully numeric and analysis ready
+
+
+---
+
+# EDA & Signal Discovery
+
+.pull-left[
+.small[
+**Correlation with 2025 returns**
+- Volatility: 0.27  
+- Prior Return: 0.25  
+- Sentiment: 0.15  
+- Book to market: Small positive effect
+
+**Key Insight**
+- Individual Predictors are weak
+- Combined they create meaningful signalling
+
+**Interpretation**
+- Momentum + Risk + Sentiment drive returns
+- Traditional profitability metrics are less useful here
+]
+]
+.pull-right[
+<div style="text-align:center; padding-top:0px;">
+
+```{r, echo=FALSE, out.width='80%'}
+knitr::include_graphics("correlations.png")
+```
+
+</div>
+]
+
+---
+
+# Scoring System
+
+.pull-left[
+**Composite Score (sum of the signals standardized z-scores)**
+- 40% volatility  
+- 40% prior return  
+- 20% sentiment  
+
+**Portfolio Sorting (quintiles of score)**
+- Q1: ~0% return
+- Q5: ~33% return
+- Spread: 32.7% (Q5-Q1)
+- T-stat: 5.0 (statistically significant)
+
+**Value-Weighted Inisght**
+- Lower performance vs equal weight - signals stronger in smaller firms
+]
+.pull-right[
+<div style="text-align:center; padding-top:0px;">
+
+```{r, echo=FALSE, out.width='80%'}
+knitr::include_graphics("scores.png")
+```
+
+</div>
+]
+
+---
+
+# Threshold System
+**Simple Threshold Rule**
+- Volatility > median  
+- Return > 60th percentile 
+- Sentiment > 0  
+
+**Results**
+- 63 stocks selected
+- Avg return: 31.3%
+- Market avg: 11.7%
+- Hit Rate - 82% positive returns
+
+**Key Takeaways**
+- Simple rules lead to complex model performance
+- More realistic for real world investing
+
+
+---
+
+# Potential Limitations
+
+- Overlooking potential transaction costs
+  - Real world results would likely be lower due to trading frictions
+  
+- Limited time horizon
+  - Model is based on one year of data, additional years will create more consistency and robustness
+  
+- Simplified weighting system
+    - fixed weighting system may not refelct optimal selection criteria, we can implement a ML model to account for more variables and data
+    - Will complexity perform better?
+    
+- Diversification
+  - Since stocks are selected based on our system rather than differences, our selection may be concentrated
+  - We need to look into industry differences to strengthen the portfolio selection and minimize future risk
+
+---
+
+# Future Extensions
+- Next steps:
+  - Use 2025 firm characteristic information to construct a new portfolio for 2026 using our thresholds/quintiles
+  
+- Attempt to create long-short portfolios
+  - Long the top quintile stocks 
+  - Short on bottom quintile stocks
+  
+- Implement machine learning models, which would take away our correlation and implementation of the weights and learn its own weighting
+  - Most likely need more data to do this
+
+---
+
+# Implications For Stakeholders
+
+
+**Investors**
+- Strategy generates alpha vs market
+- Combines behavioral + financial insights
+
+**Companies**
+- Sentiment impacts valuation and performance
+- Media perception matters financially
+
+**Markets**
+- Evidence of:
+  - Momentum effects
+  - Behavioral biases
+
+
+---
+
+# Ethical, Legal, Societal Implications
+**Ethical**
+- News sentiment can influence capital flows 
+- Biased reporting → distorted investment decisions 
+
+**Legal**
+- Data sourced from Bloomberg (licensed, compliant) 
+- No misuse of private information 
+
+**Societal**
+- Increasing reliance on algorithmic investing 
+- Risk of over-automation in financial decisions 
+- Potential amplification of market volatility 
+
+
+---
+
+class: center, middle
+
+# Thank You
+
+## Questions?
