@@ -1,0 +1,535 @@
+---
+title: "DATA400 Mini Project Presentation"
+subtitle: "Analyzing Home Buying Features in Fairfax, VA"
+author:
+  - "Ben Brandt"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    nature:
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: true
+---
+```{r setup, include=FALSE}
+library(reticulate)
+use_python("C:/Users/badba/anaconda3/python.exe", required = TRUE)
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+  fig.width=9, fig.height=3.5, fig.retina=3,
+  out.width = "100%",
+  cache = FALSE,
+  echo = TRUE,
+  message = FALSE, 
+  warning = FALSE,
+  hiline = TRUE
+)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_duo_accent(
+  primary_color = "#1381B0",
+  secondary_color = "#FF961C",
+  inverse_header_color = "#FFFFFF",
+  header_font_google = google_font("Montserrat"),
+  text_font_google = google_font("Open Sans"),
+  code_font_google = google_font("Fira Mono"),
+  base_font_size = "20px",
+  text_font_size = "1rem",
+  header_h1_font_size = "2.5rem",
+  header_h2_font_size = "2rem",
+  header_h3_font_size = "1.5rem"
+)
+```
+
+## Project Overview
+
+.pull-left[
+### **Goal**
+Use web scraping and machine learning to identify the most influential features in determining house prices
+
+### **Approach**
+- Scrape listing data from Realtor.com
+- Perform data preprocessing and EDA
+- Build Random Forest model
+- Analyze feature importances
+]
+
+.pull-right[
+### **Location**
+Fairfax, VA
+
+### **Data Size**
+~200 listings
+
+### **Future Work**
+Expand to additional areas for broader insights
+]
+
+---
+
+## Tractable Data Features
+
+### Key variables identified for price prediction:
+
+.pull-left[
+**Property Characteristics**
+- Number of Bedrooms
+- Number of Bathrooms
+- Square Feet of House
+- Square Feet of Lot
+]
+
+.pull-right[
+**Location & Type**
+- Type of house (single-family, condo, etc.)
+- Postal Code
+]
+
+<br>
+
+.center[*These features are readily available on property listings and likely influence pricing*]
+
+---
+
+## Data Structure
+
+**Additional metadata collected for categorization:**
+
+Property ID, State, City, Sold Price
+
+**Code snippet showing data extraction:**
+
+```{python, include=TRUE, eval=FALSE}
+for prop in results:
+    properties.append({
+        "Property ID": prop.get("property_id"),
+        "List Price": prop.get("list_price"),
+        "Beds": prop["description"].get("beds"),
+        "Baths": prop["description"].get("baths_consolidated"),
+        "Sqft": prop["description"].get("sqft"),
+        "Lot Sqft": prop["description"].get("lot_sqft"),
+        "Type": prop["description"].get("type"),
+        "Sold Price": prop["description"]["sold_price"],
+        "City": prop["location"]["address"].get("city"),
+        "State": prop["location"]["address"].get("state"),
+        "Postal Code": prop["location"]["address"].get("postal_code")})
+```
+
+---
+
+## Sample Dataset
+
+```{python, include=FALSE}
+import pandas as pd
+df = pd.read_csv(r"C:\Users\badba\OneDrive\Spring-2026\DATA400\Mini_Project\realestate_data.csv")
+```
+
+```{python, include=TRUE}
+print(df.head(5))
+```
+
+---
+
+## Data Retrieval Challenges
+
+### **The Challenge**
+Most realtor websites have aggressive bot detection systems
+
+.pull-left[
+**Unsuccessful Attempts**
+- Zillow
+- Homes.com
+- Redfin
+
+*All blocked within seconds*
+]
+
+.pull-right[
+**Successful Solution**
+Used Realtor.com with:
+- **seleniumBase** - simulate browser
+- **BeautifulSoup** - parse HTML
+- **json** - extract structured data
+]
+
+---
+class: inverse, center, middle
+
+# Data Preprocessing
+
+---
+
+## Data Type Transformations
+
+Converting identification variables to categorical types for proper handling
+
+.pull-left[
+### Before Transforming
+```{python, echo=FALSE}
+print(df.dtypes)
+```
+
+```{python, include=FALSE, eval=TRUE}
+def transform_dtypes(df):
+    categorical_cols = ["Property ID", "Type", "City", "State", "Postal Code"]
+    df[categorical_cols] = df[categorical_cols].astype("category")
+    return df
+
+df = transform_dtypes(df)
+```
+]
+
+.pull-right[
+### After Transforming
+```{python, echo=FALSE}
+print(df.dtypes)
+```
+]
+
+---
+
+## Handling Missing Values
+
+**Identify missing data**
+
+```{python}
+print(df.isnull().sum())
+```
+
+---
+
+## Analyzing Categorical Variables
+**Look at Type and Postal Code unique values**
+```{python, echo=FALSE}
+for column in ['Type', 'Postal Code']:
+    num_unique = df[column].nunique()
+    print(f"\n{column} (Unique values = {num_unique})")
+    print(df[column].value_counts().head(5).to_string())
+```
+
+---
+
+## Data Cleaning Strategy
+
+### **Key Insight**
+Properties with type "land" lack beds, baths, and square footage
+
+### **Solution**
+1. Remove "land" category entirely
+2. Fill remaining missing values with median
+
+```{python, include=FALSE, eval=TRUE}
+def remove_fill_data(df):
+    df = df[df['Type'] != 'land'].copy()
+    df['Type'] = df['Type'].cat.remove_unused_categories()
+    numeric_cols = df.select_dtypes(("int64", "float64")).columns
+    for col in numeric_cols:
+        df[col] = df[col].fillna(df[col].median())
+    return df
+
+df = remove_fill_data(df)
+```
+
+---
+class: inverse, center, middle
+
+# Exploratory Data Analysis
+
+---
+
+## Correlation Heatmap
+
+**Examining relationships between numeric variables**
+
+```{python, echo=FALSE, out.width='60%', fig.align='center'}
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+def heat_map(df):
+    numeric_cols = df.select_dtypes(("int64", "float64")).columns
+    numeric_cols = numeric_cols.drop('List Price')
+    corr = df[numeric_cols].corr()
+    plt.figure(figsize=(8,6))
+    sns.heatmap(corr, annot=True, fmt='.2f', cmap='coolwarm', center=0, 
+                square=True, linewidths=1)
+    plt.title('Correlation Heatmap of Numeric Variables', fontsize=14, fontweight='bold')
+    plt.tight_layout()
+    plt.show()
+
+heat_map(df)
+```
+
+---
+
+## Bedroom & Bathroom Distribution
+
+```{python, echo=FALSE, out.width='90%', fig.align='center'}
+def beds_baths_distribution(df):
+    plt.figure(figsize=(12,4))
+    
+    plt.subplot(1,2,1)
+    ax = sns.countplot(data=df, x='Beds', color='#1381B0')
+    plt.title('Distribution of Number of Bedrooms', fontsize=12, fontweight='bold')
+    plt.xlabel('Number of Bedrooms', fontsize=11)
+    plt.ylabel('Frequency', fontsize=11)
+    
+    plt.subplot(1,2,2)
+    ax = sns.countplot(data=df, x='Baths', color='#FF961C')
+    plt.title('Distribution of Number of Bathrooms', fontsize=12, fontweight='bold')
+    plt.xlabel('Number of Bathrooms', fontsize=11)
+    plt.ylabel('Frequency', fontsize=11)
+    
+    plt.tight_layout()
+    plt.show()
+
+beds_baths_distribution(df)
+```
+
+---
+
+## Property Type Distribution
+
+**Distribution of house types after removing "land" category**
+
+```{python, echo=FALSE, out.width='75%', fig.align='center'}
+def type_house_distribution(df):
+    plt.figure(figsize=(9,5))
+    ax = sns.countplot(data=df, x='Type', palette='viridis')
+    plt.title('Distribution of Property Types', fontsize=13, fontweight='bold')
+    plt.xlabel('House Types', fontsize=11)
+    plt.ylabel('Frequency', fontsize=11)
+    plt.xticks(rotation=15)
+    plt.tight_layout()
+    plt.show()
+
+type_house_distribution(df)
+```
+
+---
+
+## List Price Distribution
+
+**Original vs. Log-transformed price distributions**
+
+```{python, echo=FALSE, out.width='90%', fig.align='center'}
+import numpy as np
+
+def list_price_distribution(df):
+    log_list_price = np.log(df['List Price'])
+    
+    plt.figure(figsize=(12,4))
+    
+    plt.subplot(1,2,1)
+    plt.hist(df['List Price'], bins=20, edgecolor='black', color='#1381B0', alpha=0.7)
+    plt.title('Distribution of List Prices', fontsize=12, fontweight='bold')
+    plt.xlabel('Price Listed ($)', fontsize=11)
+    plt.ylabel('Frequency', fontsize=11)
+    
+    plt.subplot(1,2,2)
+    plt.hist(log_list_price, bins=20, edgecolor='black', color='#FF961C', alpha=0.7)
+    plt.title('Distribution of Log List Prices', fontsize=12, fontweight='bold')
+    plt.xlabel('Log Price Listed', fontsize=11)
+    plt.ylabel('Frequency', fontsize=11)
+    
+    plt.tight_layout()
+    plt.show()
+
+list_price_distribution(df)
+```
+
+---
+
+## Square Footage Distribution
+
+```{python, echo=FALSE, out.width='75%', fig.align='center'}
+def square_feet_distribution(df):
+    plt.figure(figsize=(9,5))
+    plt.hist(df['Sqft'], bins=25, edgecolor='black', color='#1381B0', alpha=0.7)
+    plt.title('Distribution of Square Footage', fontsize=13, fontweight='bold')
+    plt.xlabel('Square Feet of House', fontsize=11)
+    plt.ylabel('Frequency', fontsize=11)
+    plt.tight_layout()
+    plt.show()
+
+square_feet_distribution(df)
+```
+
+---
+
+## Lot Size Distribution
+
+```{python, echo=FALSE, out.width='70%', fig.align='center'}
+def lot_size_distribution(df):
+    plt.figure(figsize=(9,5))
+    plt.hist(df['Lot Sqft'].dropna(), bins=25, edgecolor='black', color='#FF961C', alpha=0.7)
+    plt.title('Distribution of Lot Size', fontsize=13, fontweight='bold')
+    plt.xlabel('Square Feet of Lot', fontsize=11)
+    plt.ylabel('Frequency', fontsize=11)
+    plt.tight_layout()
+    plt.show()
+
+lot_size_distribution(df)
+```
+
+.center[*Extreme outliers are likely farms with significantly larger lot sizes*]
+
+---
+class: inverse, center, middle
+
+# Random Forest Model
+
+---
+
+## Model Development
+
+**Preparing data and fitting Random Forest model**
+
+```{python}
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+
+# Encode categorical variables
+df = pd.get_dummies(df, columns=['Type', 'Postal Code'], drop_first=True)
+
+# Define predictors and response
+X = df.drop(['List Price', 'Sold Price', 'Property ID', 'City', 'State'], 
+            axis=1)
+y = df['Sold Price']
+
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, 
+                                                      random_state=42)
+
+# Fit Random Forest
+p = X_train.shape[1]
+m = max(1, p // 3)
+
+
+rf = RandomForestRegressor(n_estimators=500, max_features=m, random_state=42)
+rf.fit(X_train, y_train)
+
+
+```
+
+```{python, include=FALSE}
+feature_imp = pd.DataFrame(
+    {'importance': rf.feature_importances_},
+    index=X_train.columns)
+feature_imp = feature_imp.sort_values(by='importance', ascending=False)
+```
+
+```{python, include=FALSE}
+def aggregate_importances(feature_imp):
+    grouped = {}
+    for feature, row in feature_imp.iterrows():
+        importance = row['importance']
+        if feature.startswith('Postal Code_'):
+            key = 'Postal Code'
+        elif feature.startswith('Type_'):
+            key = 'Type'
+        else:
+            key = feature
+        grouped[key] = grouped.get(key, 0) + importance
+    
+    aggregated = pd.DataFrame.from_dict(grouped, orient='index', 
+                                        columns=['importance'])
+    return aggregated.sort_values(by='importance', ascending=False)
+```
+---
+
+## Feature Importance Results
+
+**What drives home prices in Fairfax, VA?**
+
+```{python, echo=FALSE, out.width='45%', fig.align='center'}
+aggregated = aggregate_importances(feature_imp)
+
+colors = ['#1381B0', '#FF961C', '#2ECC71', '#E74C3C', '#9B59B6', '#F39C12']
+ax = aggregated.plot.pie(y='importance', autopct='%1.1f%%', figsize=(7,7), 
+                          legend=False, ylabel='', startangle=90,
+                          colors=colors,
+                          textprops={'fontsize': 14},  
+                          wedgeprops = {'edgecolor': 'black', 'linewidth': 1.5})
+
+for text in ax.texts:
+    if '%' in text.get_text():
+        text.set_fontsize(9)  
+plt.title("Feature Importances for Home Prices", fontsize=14, fontweight='bold', pad=20)
+plt.tight_layout()
+plt.show()
+```
+
+---
+class: inverse, center, middle
+
+# Implications & Ethics
+
+---
+
+## Implications for Stakeholders
+
+.pull-left[
+### **Home Buyers**
+- Understand which features most impact price
+- Make informed purchasing decisions
+- Prioritize features that matter most
+
+### **Home Sellers**
+- Accurately value their property
+- Set competitive listing prices
+- Identify valuable features to highlight
+]
+
+.pull-right[
+### **Realty Companies**
+- Better understand market dynamics
+- Target marketing efforts effectively
+- Advise clients on pricing strategies
+]
+
+---
+
+## Ethical & Legal Considerations
+
+.pull-left[
+### **Concerns**
+
+**Legal**
+- Likely violates Realtor.com Terms of Service
+- Required bot detection prevention
+
+**Privacy**
+- Addresses excluded from dataset
+- Seller information kept private
+
+**Academic Use Only**
+- No commercial application
+- Purely for learning purposes
+]
+
+.pull-right[
+### **Positive Impact**
+
+**Transparency**
+- Adds layer of transparency to home pricing
+- Empowers informed decisions
+
+**Accessibility**
+- Makes market insights available
+- Helps buyers understand value drivers
+
+**Education**
+- Real-world data science application
+- Demonstrates ethical considerations
+]
+
+---
+class: inverse, center, middle
+
+# Thank you!
+---
