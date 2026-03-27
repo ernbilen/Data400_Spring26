@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>AltData.knit</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle, clear
+background-image: url("slide1.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide2.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide3.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide4.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide5.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide6.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide7.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide8.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide9.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide10.png")
+background-size: contain
+
+---
+class: title-slide, inverse, center, middle
+
+# Seeking Alpha with Alternative Data
+## Using Retail Sentiment to Find an Edge
+
+---
+
+
+
+
+
+# Introduction: The Quest for Alpha
+
+**The Modern Market Landscape**
+* Traditional financial data (earnings, PE ratios, SEC filings) is instantly priced in by institutional algorithms.
+* Generating *Alpha* (excess return) requires finding an edge where others aren't looking.
+
+**The Shift to Alternative Data**
+* Satellite imagery, credit card transactions, and web traffic are the new frontiers for hedge funds.
+* Goal: Exploit **Information Asymmetry** before the broader market reacts.
+
+**Behavioral Inefficiencies**
+* Markets are not perfectly rational. Retail momentum and collective human psychology create measurable, exploitable price distortions.
+
+---
+
+# The Edge in the Echo Chamber
+
+**Why Small Online Forums?**
+* Mega-forums (like mainstream news) are heavily monitored by institutional algorithms and often deal with megacap stocks that are unlikely to move much due to punditry.
+* Niche retail trading communities serve as incubators for chaotic large scale price shifts ($GME, $BYND, $NBIS).
+*Potential market edges may exist but not be scalable meaning large firms responsibly for managing billions or trillions in assets will overlook the ability to make thousands.
+
+**The Hypothesis**
+* By aggregating localized, high-conviction retail sentiment, we can front-run retail momentum before it translates into institutional volume.
+* **The Challenge:** How do we systematically extract structured financial signals from highly unstructured, chaotic internet slang?
+
+---
+
+# Phase 1: Data Acquisition: Scrapping
+
+**The API Problem**
+* The Official Reddit API is heavily rate-limited, expensive, and requires petitioning for a license.
+
+**Scrapping Reddit Trading Communities**
+* Built a custom, asynchronous Python scraper to hit raw `.json` endpoints.
+* **Rolling-Rate-Limit Evasion:** Implemented a fault-tolerant `immortal_request` function that detects `429 Too Many Requests` errors, sleeps dynamically, and mimics human browser headers to bypass Reddit's firewall allowing the script to be robust against errors, internet outages, and sleeping.
+* **Micro-Batching:** Data is saved instantly to local `.csv` files to prevent data loss during long scraping marathons.
+
+**Results**
+* We achieve perfect accuracy when scrapping posts, saving the entirety of titles, body text, comment, date, upvotes, and link to our data repository.
+
+---
+
+# Phase 2: The NLP Bottleneck: User Sentiment
+
+**The Failure of Traditional Methods**
+* Standard NLP libraries (VADER, finBERT) fail at financial slang. (e.g., "This stock is sick" = Negative to VADER, Positive to retail). And "$CMG to the Moon" is unrecognizable by open access institutional tools like finBERT.
+* Regex ticker extraction fails at common words. (e.g., "Sandisk is a strong buy." or "OP is stupid, META is at ATH!").
+
+---
+
+#Phase 2B: The NLP Solution: LLMs
+
+**The Localized LLM Solution**
+* Deployed a locally hosted 14-Billion parameter Large Language Model (Qwen 2.5).
+* **Why Local?** Zero API costs, absolute privacy, and total control over generation constraints (Only Json).
+* The LLM acts as a structured extraction engine, understanding context, detecting sarcasm, and outputting clean JSON `[Ticker, Sentiment]` pairs while aggressively rejecting hallucinations. The 14-Billion parameter model makes less errors then the old traditional sentiment and Regex approach.
+
+**Results**
+* Added to our csv: Sentiment classified as "POSITIVE", "NEGAITVE", or "NEUTRAL"
+* stock ticker symbol ($META, $TSLA, $APPL)
+
+---
+
+# Phase 3: Financial Grounding
+
+**Calculating Market-Relative Alpha**
+* Merging alternative data with empirical market reality using the `yfinance` API.
+
+**The Pipeline**
+1. Read the parsed daily signals from the LLM.
+2. Query Yahoo Finance for the asset's price on the exact date of the post.
+3. Track the asset's trajectory over 1-Day, 1-Week, and 1-Month intervals.
+4. **Benchmark:** Subtract the S&amp;P 500 (SPY) return over the exact same period to isolate the stock's true Alpha.
+
+---
+
+# The Initial Backtest: 100% Returns?
+
+**The "Holy Grail" Miracle**
+* Initial backtests of a 1-Week holding period on "Positive" consensus stocks yielded localized annualized returns exceeding 100%.
+
+**The Setup**
+* Strategy: invest for one week on any ticker with &gt;3 mentions and a positive LLM consensus.
+* Accounted for $10,000 starting capital and a strict 0.5% friction/slippage cost per trade.
+
+&lt;img src="TEMP.png" alt="" width="70%" style="display: block; margin: auto;" /&gt;
+
+*Why did the equity curve look like a straight line up?*
+
+---
+
+# The Reality Check: Statistical Biases
+
+**1. Look-Ahead Bias (The Upvote Problem)**
+* *The Error:* Scraping by "Top of the Year" meant sorting by future outcomes. A stock that went bankrupt had 0 upvotes. A stock that soared 500% got upvoted *after* the fact. 
+* *The Fix:* Forcing the pipeline to scrape strictly chronologically by "New."
+* Originally, we wanted easy access to historical Reddit posts which is why we shied away from "New". Reddit only saves 1000 posts by each tab.
+
+**2. Survivorship Bias (The Bankruptcy Problem)**
+* *The Error:* Yahoo Finance purges delisted/bankrupt companies. The backtest silently dropped these `-100%` losses, artificially inflating the win rate of the "survivors."
+* *The Fix:* Engineered a "Lock-Box" memory system that explicitly penalizes the portfolio with total losses if a tracked ticker disappears from the exchange. Tracking in real-time allows us to track when and if these stocks go bankrupt.
+---
+
+# Future Architecture &amp; Forward-Testing
+
+**Scaling the Operation**
+* Transitioning from historical backfilling to a lightweight, daily Scrape job handled by Windows Task Scheduler.
+* Processing strictly chronological, 48-hour data windows to guarantee zero look-ahead bias.
+
+**Live Forward-Testing (The Ultimate Proof)**
+* Historical backtests are inherently flawed. 
+* **Next Step:** Connecting the output of the Alpha pipeline to the **Alpaca Trading API**.
+* Deploying a "Paper Trading" bot to execute these momentum signals live with fake capital, measuring actual market slippage and real-time execution dynamics before risking a single dollar.
+
+---
+class: center, middle, clear
+background-image: url("slide11.png")
+background-size: contain
+---
+
+class: center, middle, clear
+background-image: url("slide12.png")
+background-size: contain
+---
+
+class: center, middle, clear
+background-image: url("slide13.png")
+background-size: contain
+---
+class: center, middle
+
+# Thank You
+
+**Questions?**
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false,
+  "seal": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
