@@ -1,0 +1,42 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>NBA Player Props Prediction.md</title><style></style></head><body id="preview">
+<h1 class="code-line" data-line-start=0 data-line-end=1 ><a id="Luke_Finkielstein_Mini_Project_Idea_Proposal_2_0"></a>Luke Finkielstein Mini Project Idea Proposal 2:</h1>
+<h1 class="code-line" data-line-start=1 data-line-end=2 ><a id="NBA_Player_Props_Prediction_1"></a>NBA Player Props Prediction</h1>
+<p class="has-line-data" data-line-start="3" data-line-end="4">Research Question: Can we predict NBA player point totals with reasonable accuracy using historical performance, matchup data, and contextual factors?</p>
+<p class="has-line-data" data-line-start="5" data-line-end="6">Approach: Develop a regression model to predict individual player point totals in NBA games using historical player statistics and game context. The model will help identify player prop betting opportunities.</p>
+<h2 class="code-line" data-line-start=7 data-line-end=8 ><a id="Gathering_Tractable_Data_7"></a>Gathering Tractable Data</h2>
+<p class="has-line-data" data-line-start="9" data-line-end="10"><strong>Target:</strong> Individual player point totals per game</p>
+<p class="has-line-data" data-line-start="11" data-line-end="12"><strong>Key Features:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="12" data-line-end="13">Player historical scoring average (season, last 10 games, vs. specific opponents)</li>
+<li class="has-line-data" data-line-start="13" data-line-end="14">Opponent defensive rating (points allowed per game)</li>
+<li class="has-line-data" data-line-start="14" data-line-end="15">Game context (home/away, back-to-back games, rest days)</li>
+<li class="has-line-data" data-line-start="15" data-line-end="16">Player usage rate and minutes played trends</li>
+<li class="has-line-data" data-line-start="16" data-line-end="17">Opponent pace of play</li>
+<li class="has-line-data" data-line-start="17" data-line-end="19">Player injury/availability status</li>
+</ul>
+<p class="has-line-data" data-line-start="19" data-line-end="20"><strong>Data sources:</strong> ESPN, <a href="http://Basketball-reference.com">Basketball-reference.com</a>, <a href="http://NBA.com">NBA.com</a>, Kaggle datasets with historical player-game logs. Feasibility is high—player statistics are publicly available and well-documented.</p>
+<h2 class="code-line" data-line-start=21 data-line-end=22 ><a id="Retrieval__Preparation_21"></a>Retrieval &amp; Preparation</h2>
+<p class="has-line-data" data-line-start="23" data-line-end="24">Two approaches:</p>
+<ul>
+<li class="has-line-data" data-line-start="24" data-line-end="25">Use existing player-game log datasets (faster, reduces timeline)</li>
+<li class="has-line-data" data-line-start="25" data-line-end="27">Web scrape player statistics from ESPN/Basketball-reference (more control, more time-intensive)</li>
+</ul>
+<h2 class="code-line" data-line-start=27 data-line-end=28 ><a id="EDA__Insights_27"></a>EDA &amp; Insights</h2>
+<p class="has-line-data" data-line-start="29" data-line-end="30">Analyze how player scoring varies by opponent strength, rest status, and usage rate. Identify key predictive features (recent form, matchup difficulty). Calculate correlations between candidate features and player point totals. Visualizations will include scatter plots of usage rate vs. scoring, distribution plots of scoring by opponent defense rating, and time-series analysis of individual player trends. Compare model performance against a simple baseline (e.g., using season average) to ensure meaningful predictive value.</p>
+<h2 class="code-line" data-line-start=31 data-line-end=32 ><a id="Potential_Limitations_31"></a>Potential Limitations</h2>
+<ul>
+<li class="has-line-data" data-line-start="33" data-line-end="34"><strong>Game-to-game variance:</strong> Player performance is highly variable; some games are outliers due to hot/cold shooting.</li>
+<li class="has-line-data" data-line-start="34" data-line-end="35"><strong>Injury uncertainty:</strong> Last-minute injuries or load management decisions affect playing time unpredictably.</li>
+<li class="has-line-data" data-line-start="35" data-line-end="36"><strong>Small sample sizes:</strong> Some matchups may have limited historical data.</li>
+<li class="has-line-data" data-line-start="36" data-line-end="38"><strong>Model assumes consistency:</strong> Player form and roles can change mid-season due to trades or coaching changes.</li>
+</ul>
+<h2 class="code-line" data-line-start=38 data-line-end=39 ><a id="Implications_for_Stakeholders_38"></a>Implications for Stakeholders</h2>
+<p class="has-line-data" data-line-start="40" data-line-end="41"><strong>Sports Bettors:</strong> Help identify player prop bets with positive expected value.</p>
+<p class="has-line-data" data-line-start="42" data-line-end="43"><strong>Sportsbooks:</strong> Understand what drives player prop lines and refine odds-setting.</p>
+<p class="has-line-data" data-line-start="44" data-line-end="45"><strong>NBA Analysts:</strong> Identify which factors most influence individual player performance.</p>
+<h2 class="code-line" data-line-start=46 data-line-end=47 ><a id="Responsible_Deployment__Ethics_46"></a>Responsible Deployment &amp; Ethics</h2>
+<p class="has-line-data" data-line-start="48" data-line-end="49"><strong>Concerns:</strong> Model could encourage problem gambling; predictions are probabilistic.</p>
+<p class="has-line-data" data-line-start="50" data-line-end="51"><strong>Legal:</strong> Gambling laws vary by state. This model is for analysis only, not financial advice.</p>
+<p class="has-line-data" data-line-start="52" data-line-end="53"><strong>Mitigation:</strong> Include gambling risk disclaimers; frame as educational/analytical exercise.</p>
+
+</body></html>
