@@ -1,0 +1,251 @@
+---
+title: "Final Project Progress Presentation"
+subtitle: "Russian Air/Drone Strikes on Ukraine"
+author: "Denys Sharpylo, Luke Finkielstein"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    seal: false
+    lib_dir: libs
+    css: [default, default-fonts]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(
+  echo       = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.width  = 10,
+  fig.height = 6,
+  fig.retina = 2
+)
+
+library(tidyverse)
+library(lubridate)
+library(plotly)
+library(leaflet)
+library(sf)
+```
+
+
+```{r load-data, eval=TRUE}
+# Update paths to where you store the raw data files, then set eval = TRUE
+
+acled_raw        <- readr::read_csv("/Users/dsharpylo/Library/CloudStorage/OneDrive-DickinsonCollege/DATA400 Seminar/Final Project/ACLED Data_2026-02-13.csv")
+missiles_daily   <- readr::read_csv("/Users/dsharpylo/Library/CloudStorage/OneDrive-DickinsonCollege/DATA400 Seminar/Final Project/missile_attacks_daily.csv")
+missiles_and_uav <- readr::read_csv("/Users/dsharpylo/Library/CloudStorage/OneDrive-DickinsonCollege/DATA400 Seminar/Final Project/missiles_and_uavs.csv")
+
+#  Example cleaning / merging scaffolding – adjust to match your own code
+# 
+#  ACLED cleaning (illustrative)
+ # acled <- acled_raw |>
+ #   mutate(
+ #    event_date = lubridate::ymd(event_date),
+ #    year       = year(event_date),
+ #    month      = floor_date(event_date, unit = "month")
+ #  )
+```
+
+class: center, middle
+
+# Final Project Progress Presentation
+
+## Russian Air/Drone Strikes on Ukraine
+
+### Denys Sharpylo  
+### Luke Finkielstein
+
+`r Sys.Date()`
+
+
+---
+
+# Research Questions
+
+- What are the **time and geographic patterns** of Russian missile and UAV strikes on Ukraine?
+- Which regions are **most heavily targeted**?
+- What are strikes targeting: **infrastructure vs. residential areas**?
+- How often are these strikes **“successful”**?
+- Can we **predict where the next strike will occur** or the **number of fatalities** using a model?
+
+---
+
+# Data Preparation
+
+.pull-left[
+
+## ACLED Air/Drone Strikes Data
+
+- Feb 24, 2022 – Feb 13, 2025 (968 unique dates)
+- 4,447 strikes
+- 8,982 fatalities
+- Key metrics:
+  - Geolocation (longitude, latitude)
+  - `is_civilian` indicator
+  - Number of fatalities
+
+]
+
+.pull-right[
+
+## missile_attacks_daily and missiles_and_uavs
+
+- Kaggle missile/UAV dataset, updated daily
+- 1,004 unique dates
+- Key metrics:
+  - Missile and UAV model types
+  - Number of UAVs launched
+  - Number of UAVs destroyed
+
+]
+
+---
+
+# Current Progress
+
+.pull-left[
+
+## Merged Datasets
+
+- Merged **missile_attacks_daily** and **missiles_and_uavs** into a single `missiles_combined` dataset.
+- Filtered observations to focus on **UAV-related records**.
+
+]
+
+.pull-right[
+
+## Issues Encountered & Plan
+
+- **Date formats**: UNIX timestamps vs. approximate datetime strings.
+- **Multiple entries per date/time** for some missile/UAV events.
+- Developed a **plan of action** to finish cleaning, align with ACLED, and create modeling-ready features.
+
+]
+
+---
+
+# Key Findings So Far
+
+- Most common missile/UAV type is **Shahed-136/131 (Iranian-made)**.
+- Most common **launch place** is **Crimea**.
+- There are on average **≈ 1.7 fatalities per strike** in the ACLED air/drone data.
+
+---
+
+# Strike Counts by Region
+
+```{r viz-strikes-by-region, out.width="90%", out.height="400px"}
+knitr::include_graphics("Picture1.png")
+```
+
+.center[
+**Key finding**: Donetsk is by far the most heavily targeted region with ~2,460 strikes, followed by Kharkiv (~790) and Zaporizhia (~760).
+]
+
+---
+
+# Missile/UAV Launches Over Time
+
+```{r viz-launches-time-series, out.width="90%", out.height="400px"}
+knitr::include_graphics("Picture2.png")
+```
+
+.center[
+**Trend**: Launch activity remained relatively low through mid‑2024, then escalated sharply, peaking in July 2025 before declining steeply in early 2026.
+]
+
+---
+
+# Looking Ahead
+
+.pull-left[
+
+## Geospatial Visualization
+
+- Develop a **3D or interactive map of Ukraine**
+- Highlight **most targeted regions**
+- Emphasize **high-fatality areas**
+
+Potential references:
+
+- National borders and oblast boundaries
+- Major cities and infrastructure
+- [Map 1](https://storymaps.arcgis.com/stories/36a7f6a6f5a9448496de641cf64bd375)
+- [Map 2](https://ukraine.mapping.jp/3d.html)
+
+]
+
+.pull-right[
+
+## Predictive Modeling
+
+Predict:
+
+- Strike geolocation
+- Fatality counts
+- High-fatality probability
+
+Candidate Models:
+
+- Random Forest
+- Ridge Regression
+- Linear Regression
+- Logistic Regression
+
+]
+
+---
+
+# Potential Modeling Framework
+
+## Outcome Variables
+
+- **Binary**: high-fatality vs. low/no-fatality strike.
+- **Continuous**: fatalities per strike.
+- **Spatial**: probability of a strike occurring in a given region.
+
+## Predictors
+
+- Historical **strike density** in the region.
+- **Missile/UAV launch volume** in recent days.
+
+---
+
+# Implications for Stakeholders
+
+- **Governments and military leadership**
+  - Evaluate whether past and current air-defense strategies are effective at **preserving the lives of personnel and civilians**.
+  - Identify regions where strategic changes could **reduce civilian harm**.
+- **Ukrainian taxpayers**
+  - Gain insight into how effectively military expenditures are being used to **protect civilian populations**.
+- **Taxpayers of countries supporting Ukraine financially**
+  - Understand whether their support is producing **tangible protective outcomes**.
+  - Provide evidence to maintain, increase, or redirect aid.
+- **Humanitarian and accountability organizations**
+  - Offer **quantitative evidence** on the scale and impact of the air campaign.
+  - Support humanitarian response planning, defense strategy, and future accountability mechanisms.
+
+---
+
+# Ethical, Legal, Societal Implications
+
+- The project focuses on the **preservation of human life**, treated as the most important quality of any living being.
+- If the research identifies **which regions, cities, or areas are most targeted**, it may:
+  - Guide investments in **local air-defense technology**.
+  - Inform potential **relocation or additional protection** of at-risk civilian populations.
+
+
+---
+
+class: center, middle
+
+# Questions?
+
+Thank you!

@@ -1,0 +1,665 @@
+---
+title: "Russian Air/Drone Strikes on Ukraine"
+subtitle: "EDA Analysis (2022-2025)"
+author: "Denys Sharpylo"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+    css: [default, default-fonts]
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 10,
+  fig.height = 6,
+  fig.retina = 2
+)
+
+# Load libraries
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(plotly)
+library(leaflet)
+library(sf)
+setwd('/Users/dsharpylo/Library/CloudStorage/OneDrive-DickinsonCollege/DATA400 Seminar/Mini_project')
+# Load cleaned data
+strikes <- read_csv("russian_strikes_cleaned.csv")
+monthly_ts <- read_csv("strikes_monthly_timeseries.csv")
+geo_2022 <- read_csv("strikes_geo_2022.csv")
+geo_2023 <- read_csv("strikes_geo_2023.csv")
+geo_2024 <- read_csv("strikes_geo_2024.csv")
+geo_2025 <- read_csv("strikes_geo_2025.csv")
+geo_all <- read_csv("strikes_geo_all_years.csv")
+
+
+```
+
+```{r ukraine-interactive-final-fixed, include=FALSE}
+library(sf)
+library(dplyr)
+library(ggplot2)
+library(ggiraph)
+library(scales)
+
+# Load Ukraine oblasts (GADM level 1)
+ukr_sf <- st_read(
+  "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_UKR_1.json",
+  quiet = TRUE
+)
+
+# Manual name mapping if needed (adjust to your actual geo_all$region values)
+geo_all_fixed <- geo_all |>
+  mutate(
+    region_matched = case_when(
+      region == "Kyiv" ~ "Kyiv City",
+      TRUE ~ region
+    )
+  )
+
+# Join shapefile with your aggregated data
+map_data <- ukr_sf |>
+  mutate(region_clean = NAME_1) |>
+  left_join(geo_all_fixed, by = c("region_clean" = "region_matched"))
+
+# Compute centroids only for regions with data
+centroids_data <- map_data |>
+  filter(!is.na(total_strikes)) |>
+  st_centroid() |>
+  st_coordinates() |>
+  as_tibble() |>
+  bind_cols(
+    map_data |>
+      st_drop_geometry() |>
+      filter(!is.na(total_strikes)) |>
+      select(region = NAME_1, total_strikes, total_fatalities)
+  )
+
+# Scale fatalities for bar height (visual only, in lat degrees)
+max_fat <- max(centroids_data$total_fatalities, na.rm = TRUE)
+centroids_data <- centroids_data |>
+  mutate(height = total_fatalities / max_fat * 1.8)
+
+# Build interactive 2.5D map: red fill = strikes, black bars = fatalities
+p_interactive <- ggplot() +
+  # Oblast fill: severity of attacks (total strikes)
+  geom_sf_interactive(
+    data = map_data,
+    aes(
+      fill   = total_strikes,
+      tooltip = ifelse(
+        is.na(total_strikes),
+        paste0("<b>", NAME_1, "</b><br>No recorded strikes"),
+        paste0(
+          "<b>", NAME_1, "</b><br>",
+          "Strikes: ", scales::comma(total_strikes), "<br>",
+          "Fatalities: ", scales::comma(total_fatalities)
+        )
+      )
+    ),
+    color = "grey50",
+    size  = 0.4
+  ) +
+  scale_fill_gradientn(
+    colours  = c("#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15"),
+    na.value = "lightgrey",
+    name     = "Total strikes"
+  ) +
+  # Black 2.5D bars (fatalities)
+  geom_segment(
+    data = centroids_data,
+    aes(x = X, xend = X, y = Y, yend = Y + height),
+    lineend  = "round",
+    color    = "black",
+    linewidth = 3.5,
+    alpha    = 1
+  ) +
+  geom_point(
+    data = centroids_data,
+    aes(x = X, y = Y + height, size = total_fatalities),
+    shape = 15,  # square
+    fill  = "black",
+    color = "black",
+    stroke = 1.3
+  ) +
+  scale_size_continuous(
+    range = c(4, 12),
+    name  = "Fatalities",
+    labels = scales::comma
+  ) +
+  # Optional labels for key oblasts
+  geom_text(
+    data = centroids_data |>
+      filter(region %in% c("Donetsk", "Kharkiv", "Sumy", "Kyiv City", "Lviv")),
+    aes(x = X, y = Y - 0.25, label = region),
+    size = 3.8,
+    color = "white",
+    fontface = "bold"
+  ) +
+  coord_sf(xlim = c(22.2, 40.2), ylim = c(44.2, 52.4)) +
+  theme_void(base_size = 16) +
+  theme(
+    legend.position   = "bottom",
+    legend.direction  = "horizontal",
+    legend.key.width  = unit(2.5, "cm"),
+    plot.title        = element_text(size = 22, face = "bold", hjust = 0.5),
+    plot.subtitle     = element_text(size = 15, hjust = 0.5)
+  ) +
+  labs(
+    title    = "Russian Air/Drone Strikes on Ukraine by Oblast",
+    subtitle = "Red intensity: strike frequency | Black bars: fatality severity"
+  )
+
+# Wrap in ggiraph for interactivity
+p_ukraine_final <- girafe(ggobj = p_interactive) |>
+  girafe_options(
+    opts_hover(css = "stroke-width: 3px; stroke: #0057B7; fill-opacity: 0.85;"),
+    opts_tooltip(use_cursor_pos = TRUE, opacity = 0.9)
+  )
+
+
+```
+
+
+
+# Research Overview
+
+.pull-left[
+## Research Questions
+
+1. How has the **frequency** of air/drone strikes changed over time?
+
+2. What is the **trend of fatalities** from these strikes?
+
+3. Which regions are most heavily targeted?
+
+4. What proportion of strikes target civilians/civilian infrastructure?
+
+5. **Spatial Evolution**: How has the geographic focus of strikes shifted across years?
+]
+
+.pull-right[
+## Data Source
+
+**ACLED (Armed Conflict Location & Event Data Project)**
+
+## Methodology
+
+- Exploratory Data Analysis (EDA)
+- Time series analysis
+- Geospatial mapping
+- Statistical aggregation
+]
+
+---
+
+# Dataset Overview
+
+```{r dataset-summary}
+summary_stats <- tibble(
+  Metric = c(
+    "Total Strikes",
+    "Total Fatalities",
+    "Time Period",
+    "Unique Locations",
+    "Regions Affected",
+    "Average Fatalities per Strike",
+    "Median Fatalities per Strike",
+    "Maximum Fatalities (Single Strike)"
+  ),
+  Value = c(
+    "4,447",
+    "8,982",
+    "Feb 24, 2022 - Feb 13, 2025 (1,085 days)",
+    "815",
+    "23",
+    "2.02",
+    "1.00",
+    "300"
+  )
+)
+
+kable(summary_stats, format = "html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), 
+                full_width = FALSE,
+                font_size = 18) %>%
+  column_spec(1, bold = TRUE, width = "10cm") %>%
+  column_spec(2, width = "8cm") %>%
+  row_spec(0, background = "#0057B7", color = "white")
+```
+
+**Key Insight**: Over 3 years of conflict, Russian forces have conducted an average of **4.1 strikes per day**, resulting in an average of **8.3 fatalities per day**.
+
+---
+
+# Yearly Breakdown
+
+```{r yearly-table}
+yearly_summary <- strikes %>%
+  group_by(year) %>%
+  summarise(
+    `Total Strikes` = n(),
+    `Total Fatalities` = sum(fatalities),
+    `Avg Fatalities/Strike` = round(mean(fatalities), 2),
+    `Days in Period` = n_distinct(event_date),
+    `Strikes per Day` = round(n() / n_distinct(event_date), 2)
+  ) %>%
+  mutate(Year = as.character(year)) %>%
+  dplyr::select(Year, dplyr::everything(), -year)
+
+
+kable(yearly_summary, format = "html", align = "c") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), 
+                full_width = FALSE,
+                font_size = 16) %>%
+  row_spec(0, background = "#0057B7", color = "white") %>%
+  row_spec(1:nrow(yearly_summary), extra_css = "padding: 10px;")
+```
+
+**Observation**: 
+- Strike frequency **increased** from 2022 to 2024 (despite 2025 being partial year)
+- Fatality rate per strike has **decreased** over time
+- 2022 had highest average fatalities per strike (2.92)
+
+---
+
+# Strike Frequency Over Time
+
+```{r strikes-timeseries, fig.height=6}
+# Prepare monthly data
+monthly_ts_plot <- monthly_ts %>%
+  mutate(
+    year_month = as.Date(paste0(year_month_str, "-01")),
+    year = year(year_month)
+  )
+
+# Create interactive time series
+p <- plot_ly(monthly_ts_plot, x = ~year_month, y = ~strikes, type = 'scatter', mode = 'lines+markers',
+             line = list(color = '#0057B7', width = 2),
+             marker = list(size = 6, color = '#FFD700'),
+             hovertemplate = paste(
+               '<b>%{x|%B %Y}</b><br>',
+               'Strikes: %{y}<br>',
+               '<extra></extra>'
+             )) %>%
+  layout(
+    title = list(text = "Monthly Russian Air/Drone Strikes on Ukraine", font = list(size = 16)),
+    xaxis = list(title = "Month"),
+    yaxis = list(title = "Number of Strikes"),
+    hovermode = "x unified",
+    plot_bgcolor = '#f8f9fa',
+    paper_bgcolor = '#ffffff'
+  )
+
+p
+```
+
+
+---
+
+# Distribution of Fatalities
+
+```{r fatality-distribution, fig.height=5.5}
+# Severity distribution
+severity_data <- strikes %>%
+  count(severity) %>%
+  mutate(
+    severity = factor(severity, levels = c("No fatalities", "Low (1-2)", "Medium (3-10)", "High (11-50)", "Very High (50+)")),
+    percentage = round(n / sum(n) * 100, 1)
+  ) %>%
+  arrange(severity)
+
+# Create bar chart
+p3 <- plot_ly(severity_data, x = ~severity, y = ~n, type = 'bar',
+             marker = list(color = c('#90EE90', '#FFD700', '#FFA500', '#FF6347', '#8B0000')),
+             text = ~paste0(n, " (", percentage, "%)"),
+             textposition = 'outside',
+             hovertemplate = paste(
+               '<b>%{x}</b><br>',
+               'Count: %{y}<br>',
+               'Percentage: ', severity_data$percentage, '%<br>',
+               '<extra></extra>'
+             )) %>%
+  layout(
+    title = list(text = "Distribution of Strike Severity by Fatalities", font = list(size = 16)),
+    xaxis = list(title = "Severity Category"),
+    yaxis = list(title = "Number of Strikes"),
+    showlegend = FALSE
+  )
+
+p3
+```
+
+---
+
+# 2022: Early War Period
+
+```{r map-2022, fig.height=6}
+map_2022 <- leaflet(geo_2022) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(
+    lng = ~lon,
+    lat = ~lat,
+    radius = ~sqrt(strikes_2022) * 2,
+    fillColor = ~colorQuantile("Reds", strikes_2022)(strikes_2022),
+    fillOpacity = 0.7,
+    color = "black",
+    weight = 1,
+    label = ~paste0(region, ": ", strikes_2022, " strikes, ", fatalities_2022, " fatalities"),
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "12px"
+    )
+  ) %>%
+  addLegend(
+    position = "bottomright",
+    pal = colorQuantile("Reds", geo_2022$strikes_2022),
+    values = ~strikes_2022,
+    title = "2022 Strikes",
+    opacity = 0.7
+  )
+
+map_2022
+```
+
+---
+
+# 2023: Sustained Campaign
+
+```{r map-2023, fig.height=6}
+map_2023 <- leaflet(geo_2023) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(
+    lng = ~lon,
+    lat = ~lat,
+    radius = ~sqrt(strikes_2023) * 2,
+    fillColor = ~colorQuantile("Oranges", strikes_2023)(strikes_2023),
+    fillOpacity = 0.7,
+    color = "black",
+    weight = 1,
+    label = ~paste0(region, ": ", strikes_2023, " strikes, ", fatalities_2023, " fatalities")
+  ) %>%
+  addLegend(
+    position = "bottomright",
+    pal = colorQuantile("Oranges", geo_2023$strikes_2023),
+    values = ~strikes_2023,
+    title = "2023 Strikes",
+    opacity = 0.7
+  )
+
+map_2023
+```
+
+---
+
+# 2024: Intensification
+
+```{r map-2024, fig.height=6}
+map_2024 <- leaflet(geo_2024) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(
+    lng = ~lon,
+    lat = ~lat,
+    radius = ~sqrt(strikes_2024) * 2,
+    fillColor = ~colorQuantile("YlOrRd", strikes_2024)(strikes_2024),
+    fillOpacity = 0.7,
+    color = "black",
+    weight = 1,
+    label = ~paste0(region, ": ", strikes_2024, " strikes, ", fatalities_2024, " fatalities")
+  ) %>%
+  addLegend(
+    position = "bottomright",
+    pal = colorQuantile("YlOrRd", geo_2024$strikes_2024),
+    values = ~strikes_2024,
+    title = "2024 Strikes",
+    opacity = 0.7
+  )
+
+map_2024
+```
+
+---
+
+# Geographic Heatmap: All Years Combined
+
+```{r map-all-years, fig.height=6}
+# Create interactive leaflet map
+map_all <- leaflet(geo_all) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircleMarkers(
+    lng = ~lon,
+    lat = ~lat,
+    radius = ~sqrt(total_strikes) * 2,
+    fillColor = ~colorQuantile("YlOrRd", total_strikes)(total_strikes),
+    fillOpacity = 0.7,
+    color = "black",
+    weight = 1,
+    label = ~paste0(region, ": ", total_strikes, " strikes, ", total_fatalities, " fatalities"),
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "12px",
+      direction = "auto"
+    )
+  ) %>%
+  addLegend(
+    position = "bottomright",
+    pal = colorQuantile("YlOrRd", geo_all$total_strikes),
+    values = ~total_strikes,
+    title = "Strike Intensity",
+    opacity = 0.7
+  )
+
+map_all
+```
+---
+
+```{r 3d-display, fig.height=8}
+p_ukraine_final
+```
+---
+<!-- --- -->
+
+
+<!-- **Interpretation:** Height represents the total fatalities from Russian air/drone strikes in each area, while the color intensity represents the number of strikes (darker red = more strikes). -->
+
+
+
+<!-- **Note**: Size and color represent total strikes; height represents total fatalities. Eastern regions show highest values. -->
+
+<!-- --- -->
+
+
+# Civilian Targeting Overview
+
+```{r civilian-summary}
+civilian_stats <- tibble(
+  Metric = c(
+    "Strikes Explicitly Involving Civilians (actor2)",
+    "Percentage of All Strikes",
+    "Total Fatalities (Explicit Civilian Strikes)",
+    "Avg Fatalities per Civilian Strike",
+    "",
+    "Strikes Mentioning Civilian Infrastructure (notes)",
+    "Percentage of All Strikes",
+    "Total Fatalities (Civilian Infrastructure)",
+    "Avg Fatalities (Civilian Infrastructure)"
+  ),
+  Value = c(
+    "139",
+    "3.13%",
+    "605",
+    "4.35",
+    "",
+    "272",
+    "6.12%",
+    "816",
+    "3.00"
+  )
+)
+
+kable(civilian_stats, format = "html", col.names = c("", "")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), 
+                full_width = FALSE,
+                font_size = 16) %>%
+  column_spec(1, bold = TRUE, width = "14cm") %>%
+  column_spec(2, width = "6cm") %>%
+  row_spec(5, background = "#f0f0f0") %>%
+  row_spec(c(1, 6), background = "#e6f2ff")
+```
+
+**Key Finding**: Strikes explicitly involving civilians or civilian infrastructure have **significantly higher fatality rates** (3.00-4.35) compared to the overall average (2.02).
+
+---
+
+# Civilian Impact by Year
+
+```{r civilian-yearly, fig.height=5.5}
+# Civilian-related strikes by year
+civilian_yearly <- strikes %>%
+  filter(str_detect(tolower(notes), "civilian|residential|hospital|school|children")) %>%
+  group_by(year) %>%
+  summarise(
+    `Civilian-Related Strikes` = n(),
+    `Fatalities` = sum(fatalities)
+  )
+
+# All strikes by year for comparison
+all_yearly <- strikes %>%
+  group_by(year) %>%
+  summarise(
+    `Total Strikes` = n(),
+    `Total Fatalities` = sum(fatalities)
+  )
+
+comparison_data <- left_join(all_yearly, civilian_yearly, by = "year") %>%
+  mutate(
+    `% Civilian-Related` = round(`Civilian-Related Strikes` / `Total Strikes` * 100, 1)
+  )
+
+kable(comparison_data, format = "html", align = "c") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), 
+                full_width = FALSE,
+                font_size = 14) %>%
+  row_spec(0, background = "#0057B7", color = "white")
+```
+
+**Trend**: Civilian-related strikes as a percentage of total strikes varied from 5.0% (2024) to 11.4% (2022), with the early war period showing higher rates.
+
+---
+
+# Deadliest Strikes
+
+```{r deadliest-strikes}
+deadliest_strikes <- strikes %>%
+  arrange(desc(fatalities)) %>%
+  head(10) %>%
+  dplyr::select(
+    Date = event_date,
+    Region = admin1,
+    Location = location,
+    Fatalities = fatalities
+  ) %>%
+  mutate(Date = format(Date, "%b %d, %Y"))
+
+
+kable(deadliest_strikes, format = "html", align = "c") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), 
+                full_width = FALSE,
+                font_size = 14) %>%
+  row_spec(0, background = "#DC143C", color = "white") %>%
+  row_spec(1:3, background = "#ffcccc")
+```
+
+**Catastrophic Events**: The deadliest single strike resulted in 300 fatalities. The top 10 strikes account for **13.7%** of all fatalities across the entire conflict period.
+
+---
+
+
+
+# Limitations and Considerations
+
+## Data Limitations
+
+- **Reporting Bias**: Events in contested areas may be underreported
+- **Fatality Verification**: Difficult to verify exact casualty figures in active war zones
+- **Civilian Classification**: Not all civilian impacts may be explicitly flagged in data
+- **Geographic Precision**: 82.7% of strikes coded at city/town level (precision = 2)
+
+<!-- --- -->
+
+<!-- # Policy and Research Implications -->
+
+<!-- ## For Policymakers -->
+
+<!-- 1. **Defense Priorities**: Eastern oblasts require sustained air defense capabilities -->
+<!-- 2. **Civilian Protection**: Enhanced early warning systems in high-strike areas -->
+<!-- 3. **Humanitarian Response**: Resource allocation should reflect geographic concentration -->
+<!-- 4. **Border Security**: Sumy and northern regions remain vulnerable -->
+
+<!-- ## For Future Research -->
+
+<!-- 1. **Causal Analysis**: Relationship between strike patterns and military operations -->
+<!-- 2. **Effectiveness Assessment**: Strike success rates and target types -->
+<!-- 3. **Comparative Studies**: Air/drone strikes vs. other attack methods -->
+<!-- 4. **Predictive Modeling**: Machine learning for strike pattern prediction -->
+<!-- 5. **3D Geospatial**: Advanced spatial clustering analysis -->
+
+<!-- --- -->
+---
+# Implications for stakeholders
+
+**The intended stakeholders for this project are:**
+
+- Governments and military leadership :  such research will allow them to understand whether their past and current strategies seem to be effective in terms of preserving the lives of their personnel, and if there is a necessity to change said strategy.
+
+- Ukrainian taxpayers: their money is going towards military expenditure, and it is the government's responsibility to be using their money effectively and responsibly. 
+
+- Taxpayers of the countries supporting Ukraine financially: it is important to understand whether their money is spent effectively to help Ukraine preserve itself, or pressure the Ukrainian government if that is not the case. 
+
+- This analysis provides quantitative evidence of the air campaign's scale and impact,
+supporting humanitarian response planning, defense strategy, and documentation of the conflict for future accountability mechanisms.
+---
+
+# Ethical, Legal, and Societal Implications
+
+- The ethical, legal, and societal implications for this project are important in nature, as it is focusing on the preservation of human life, which is considered to be the most important quality of any living being. 
+
+- If this research deems to produce significant results- and we can understand which regions/cities/areas the adversary is targeting- it might contribute to the efforts of preserving human lives by investing in the defense technology locally or relocating the civilian populations that are in danger the most. 
+---
+
+
+# References and Data Sources
+
+### Primary Data Source & References
+
+**ACLED (Armed Conflict Location & Event Data Project)**
+- Website: https://acleddata.com/
+- Coverage: Real-time conflict event data across 200+ countries
+- Methodology: Multi-source verification with geolocation
+- Citation: Raleigh, C., Linke, A., Hegre, H., & Karlsen, J. (2010). Introducing ACLED: An Armed Conflict Location and Event Dataset. *Journal of Peace Research*, 47(5), 651-660.
+
+### Analytical Tools
+**R**, **Python**,**xaringan**, **Leaflet**, **Plotly**
+
+**This research uses publicly available conflict data.**
+
+---
+
+class: center, middle
+
+# Thank You
+## Questions?
+
+```{r}
+#| echo = FALSE
+```

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Final Project Progress Presentation</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Denys Sharpylo, Luke Finkielstein" />
+    <meta name="date" content="2026-03-27" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+class: center, middle
+
+# Final Project Progress Presentation
+
+## Russian Air/Drone Strikes on Ukraine
+
+### Denys Sharpylo  
+### Luke Finkielstein
+
+2026-03-27
+
+
+---
+
+# Research Questions
+
+- What are the **time and geographic patterns** of Russian missile and UAV strikes on Ukraine?
+- Which regions are **most heavily targeted**?
+- What are strikes targeting: **infrastructure vs. residential areas**?
+- How often are these strikes **“successful”**?
+- Can we **predict where the next strike will occur** or the **number of fatalities** using a model?
+
+---
+
+# Data Preparation
+
+.pull-left[
+
+## ACLED Air/Drone Strikes Data
+
+- Feb 24, 2022 – Feb 13, 2025 (968 unique dates)
+- 4,447 strikes
+- 8,982 fatalities
+- Key metrics:
+  - Geolocation (longitude, latitude)
+  - `is_civilian` indicator
+  - Number of fatalities
+
+]
+
+.pull-right[
+
+## missile_attacks_daily and missiles_and_uavs
+
+- Kaggle missile/UAV dataset, updated daily
+- 1,004 unique dates
+- Key metrics:
+  - Missile and UAV model types
+  - Number of UAVs launched
+  - Number of UAVs destroyed
+
+]
+
+---
+
+# Current Progress
+
+.pull-left[
+
+## Merged Datasets
+
+- Merged **missile_attacks_daily** and **missiles_and_uavs** into a single `missiles_combined` dataset.
+- Filtered observations to focus on **UAV-related records**.
+
+]
+
+.pull-right[
+
+## Issues Encountered &amp; Plan
+
+- **Date formats**: UNIX timestamps vs. approximate datetime strings.
+- **Multiple entries per date/time** for some missile/UAV events.
+- Developed a **plan of action** to finish cleaning, align with ACLED, and create modeling-ready features.
+
+]
+
+---
+
+# Key Findings So Far
+
+- Most common missile/UAV type is **Shahed-136/131 (Iranian-made)**.
+- Most common **launch place** is **Crimea**.
+- There are on average **≈ 1.7 fatalities per strike** in the ACLED air/drone data.
+
+---
+
+# Strike Counts by Region
+
+&lt;img src="Picture1.png" alt="" width="90%" height="400px" /&gt;
+
+.center[
+**Key finding**: Donetsk is by far the most heavily targeted region with ~2,460 strikes, followed by Kharkiv (~790) and Zaporizhia (~760).
+]
+
+---
+
+# Missile/UAV Launches Over Time
+
+&lt;img src="Picture2.png" alt="" width="90%" height="400px" /&gt;
+
+.center[
+**Trend**: Launch activity remained relatively low through mid‑2024, then escalated sharply, peaking in July 2025 before declining steeply in early 2026.
+]
+
+---
+
+# Looking Ahead
+
+.pull-left[
+
+## Geospatial Visualization
+
+- Develop a **3D or interactive map of Ukraine**
+- Highlight **most targeted regions**
+- Emphasize **high-fatality areas**
+
+Potential references:
+
+- National borders and oblast boundaries
+- Major cities and infrastructure
+- [Map 1](https://storymaps.arcgis.com/stories/36a7f6a6f5a9448496de641cf64bd375)
+- [Map 2](https://ukraine.mapping.jp/3d.html)
+
+]
+
+.pull-right[
+
+## Predictive Modeling
+
+Predict:
+
+- Strike geolocation
+- Fatality counts
+- High-fatality probability
+
+Candidate Models:
+
+- Random Forest
+- Ridge Regression
+- Linear Regression
+- Logistic Regression
+
+]
+
+---
+
+# Potential Modeling Framework
+
+## Outcome Variables
+
+- **Binary**: high-fatality vs. low/no-fatality strike.
+- **Continuous**: fatalities per strike.
+- **Spatial**: probability of a strike occurring in a given region.
+
+## Predictors
+
+- Historical **strike density** in the region.
+- **Missile/UAV launch volume** in recent days.
+
+---
+
+# Implications for Stakeholders
+
+- **Governments and military leadership**
+  - Evaluate whether past and current air-defense strategies are effective at **preserving the lives of personnel and civilians**.
+  - Identify regions where strategic changes could **reduce civilian harm**.
+- **Ukrainian taxpayers**
+  - Gain insight into how effectively military expenditures are being used to **protect civilian populations**.
+- **Taxpayers of countries supporting Ukraine financially**
+  - Understand whether their support is producing **tangible protective outcomes**.
+  - Provide evidence to maintain, increase, or redirect aid.
+- **Humanitarian and accountability organizations**
+  - Offer **quantitative evidence** on the scale and impact of the air campaign.
+  - Support humanitarian response planning, defense strategy, and future accountability mechanisms.
+
+---
+
+# Ethical, Legal, Societal Implications
+
+- The project focuses on the **preservation of human life**, treated as the most important quality of any living being.
+- If the research identifies **which regions, cities, or areas are most targeted**, it may:
+  - Guide investments in **local air-defense technology**.
+  - Inform potential **relocation or additional protection** of at-risk civilian populations.
+
+
+---
+
+class: center, middle
+
+# Questions?
+
+Thank you!
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false,
+  "ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
