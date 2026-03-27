@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Do Remittances Predict Inflation and Consumption in Nepal? (2000-2024)</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Sanskriti Rijal" />
+    <meta name="date" content="2026-02-17" />
+    <script src="Untitled_files/header-attrs/header-attrs.js"></script>
+    <link href="Untitled_files/remark-css/default.css" rel="stylesheet" />
+    <link href="Untitled_files/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Do Remittances Predict Inflation and Consumption in Nepal? (2000-2024)
+]
+.author[
+### Sanskriti Rijal
+]
+.date[
+### 2026-02-17
+]
+
+---
+
+## Research Question
+Can remittance inflows help predict changes in household consumption and inflation in Nepal between 2000–2024, and does this relationship change during major shocks such as the 2015 earthquake and the COVID-19 pandemic?
+
+## Focus:
+1. Short-term vs long-term remittance effects (remittance income may not influence the economy immediately)
+2. Major economic shocks (2015 Earthquake, COVID-19) which can disrupt normal patterns 
+3. Economic stability in a remittance-dependent economy
+---
+### Problem &amp; Motivation
+
+1. Nepal relies heavily on remittances, with over 25% of GDP linked to external labor income.
+
+2. Policy debates around elections often focus on inflation and household welfare.
+
+3. At the same time, UN projections suggest Nepal may become an aging society by 2030 as youth migration increases.
+
+Key Question:
+Do remittances provide useful signals about economic stability?
+
+### Approach
+
+Time-series analysis using macroeconomic data from 2000–2024.
+
+Steps:
+1. Exploratory data analysis (EDA)
+2. Visual trend analysis
+3. Regression models with lagged remittances
+4. Shock indicators for earthquake and COVID-19
+
+Goal:
+Evaluate predictive relationships 
+---
+
+# Data
+
+Sources- Publicly available macroeconomic time-series data from: 
+1. World Bank: World Development Indicators
+2. Nepal Rastra Bank statistics
+
+Variables:
+1. Remittances (USD)
+2. Inflation (CPI %)
+3. Consumption growth
+4. GDP growth
+
+Why tractable?
+1. Public, aggregated, annual data
+2. Clean time-series structure which is consistent
+3. Suitable for visualization and modeling
+---
+
+
+### Exploratory Data Analysis
+
+1. Strong growth in remittances after 2000  
+2. Reflects increasing labor migration and Nepal’s growing dependence on external income
+3. Remittances behave like a long run structural trend rather than a volatile variable.
+
+![](Untitled_files/figure-html/unnamed-chunk-1-1.svg)&lt;!-- --&gt;
+---
+### Finding 1: Remittances vs Inflation
+
+1. Remittances increase steadily over time, reflecting Nepal’s growing reliance on migration income.
+2. However, the relationship between remittances and inflation appears weak and slightly negative, suggesting that inflation is shaped by multiple macroeconomic forces beyond remittance inflows alone.
+3. Not strong predictive power 
+![](Untitled_files/figure-html/unnamed-chunk-2-1.svg)&lt;!-- --&gt;
+
+---
+#### Finding 2: Remittances and Household Consumption (Trends)
+1. Scaled both variables so we can compare movement rather than magnitude.
+2. While remittances rise steadily, consumption growth shows sharper fluctuations, especially during shocks.
+3.Suggests that remittances may support long-term household stability, but they do not fully determine short-term spending behavior.
+
+
+![](Untitled_files/figure-html/unnamed-chunk-3-1.svg)&lt;!-- --&gt;
+
+---
+####Finding 3: Economic Shocks for Inflation
+1. Plot overlays inflation and scaled remittances with vertical lines marking the 2015 earthquake and COVID-19
+2. Inflation reacts strongly around shocks, showing clear disruptions.
+3. Remittances continue growing even when inflation fluctuates during shocks.
+4. Remittances behave like a stabilizing external income stream rather than a shock sensitive macro variable.
+![](Untitled_files/figure-html/unnamed-chunk-4-1.svg)&lt;!-- --&gt;
+---
+#### Finding 4: Model Comparison (Inflation)
+3 regression models: 1. Baseline using only shocked indicators, 2.  Model with one year lagged remittances, 3. Model with 3 year lagged remittances
+
+Including lagged remittances modestly improves model fit:
+
+Baseline (shocks only): R² ≈ 0.13
+
+Lag 1 model: R² ≈ 0.21
+
+Lag 3 model: R² ≈ 0.24
+
+This suggests remittance effects may operate gradually rather than immediately
+
+<div id="mrortxyweb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mrortxyweb table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#mrortxyweb thead, #mrortxyweb tbody, #mrortxyweb tfoot, #mrortxyweb tr, #mrortxyweb td, #mrortxyweb th {
+  border-style: none;
+}
+
+#mrortxyweb p {
+  margin: 0;
+  padding: 0;
+}
+
+#mrortxyweb .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mrortxyweb .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#mrortxyweb .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mrortxyweb .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mrortxyweb .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mrortxyweb .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mrortxyweb .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mrortxyweb .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mrortxyweb .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mrortxyweb .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mrortxyweb .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mrortxyweb .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mrortxyweb .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#mrortxyweb .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#mrortxyweb .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mrortxyweb .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mrortxyweb .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mrortxyweb .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mrortxyweb .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mrortxyweb .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#mrortxyweb .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#mrortxyweb .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#mrortxyweb .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mrortxyweb .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#mrortxyweb .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#mrortxyweb .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mrortxyweb .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mrortxyweb .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mrortxyweb .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mrortxyweb .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mrortxyweb .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mrortxyweb .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mrortxyweb .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mrortxyweb .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mrortxyweb .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mrortxyweb .gt_left {
+  text-align: left;
+}
+
+#mrortxyweb .gt_center {
+  text-align: center;
+}
+
+#mrortxyweb .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mrortxyweb .gt_font_normal {
+  font-weight: normal;
+}
+
+#mrortxyweb .gt_font_bold {
+  font-weight: bold;
+}
+
+#mrortxyweb .gt_font_italic {
+  font-style: italic;
+}
+
+#mrortxyweb .gt_super {
+  font-size: 65%;
+}
+
+#mrortxyweb .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#mrortxyweb .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#mrortxyweb .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#mrortxyweb .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#mrortxyweb .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#mrortxyweb .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#mrortxyweb .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#mrortxyweb .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#mrortxyweb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="model">model</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="r.squared">r.squared</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="adj.r.squared">adj.r.squared</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="sigma">sigma</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="p.value">p.value</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="model" class="gt_row gt_left">Baseline (Shocks only)</td>
+<td headers="r.squared" class="gt_row gt_right">0.131</td>
+<td headers="adj.r.squared" class="gt_row gt_right">0.029</td>
+<td headers="sigma" class="gt_row gt_right">2.461</td>
+<td headers="p.value" class="gt_row gt_right">0.302</td></tr>
+    <tr><td headers="model" class="gt_row gt_left">Lag 1 Remittances</td>
+<td headers="r.squared" class="gt_row gt_right">0.211</td>
+<td headers="adj.r.squared" class="gt_row gt_right">0.063</td>
+<td headers="sigma" class="gt_row gt_right">2.418</td>
+<td headers="p.value" class="gt_row gt_right">0.273</td></tr>
+    <tr><td headers="model" class="gt_row gt_left">Lag 3 Remittances</td>
+<td headers="r.squared" class="gt_row gt_right">0.237</td>
+<td headers="adj.r.squared" class="gt_row gt_right">0.094</td>
+<td headers="sigma" class="gt_row gt_right">2.378</td>
+<td headers="p.value" class="gt_row gt_right">0.217</td></tr>
+  </tbody>
+  
+</table>
+</div>
+
+Explanatory power remains moderate and adds some predictive signal
+---
+## Ethical, Legal and Societal Implications 
+1. This analysis uses aggregated public data, so privacy risks are minimal.
+2. Remittances reflect real social pressures like migration, inequality, and family separation so it’s important not to reduce them to just economic numbers.
+3. Avoid making causal claims for observational time series data 
+---
+##Stakeholders
+
+1. Government of Nepal
+-Fiscal planning and migration policy
+-Understanding external income dependence
+-Preparing for demographic aging and labor shortages
+
+2. Nepal Rastra Bank (Central Bank)
+-Inflation monitoring and macroeconomic forecasting
+-Evaluating whether remittances provide early signals of economic change
+
+3. Migrant Households and Communities
+-Household stability and consumption smoothing
+
+4. Development Organizations (World Bank, UNDP, NGOs)
+-Designing policies around migration, remittances, and poverty reduction
+
+5. Researchers and Data Analysts
+-Improving macroeconomic modeling in remittance-dependent economies
+-Understanding lagged effects rather than immediate impacts
+
+---
+## Conclusion and Key Takeaways 
+
+
+1. Remittances are not a dominant driver of inflation, but lagged remittances slightly improve prediction.
+
+2. Remittances may support household stability, but spending decisions respond to many short-term pressures.
+
+3. Heavy reliance on remittances raises long-term questions about sustainability and demographic change
+
+3. During economic shocks, remittances behave more like a stabilizing external income source rather than a shock driven variable
+
+
+## Next steps
+
+1. Add more macroeconomic controls (e.g., trade, exchange rate, fuel prices)
+
+
+3. Extend to ML models for the big project
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

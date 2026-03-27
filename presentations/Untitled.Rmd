@@ -1,0 +1,265 @@
+
+---
+title: "Do Remittances Predict Inflation and Consumption in Nepal? (2000-2024)"
+author: "Sanskriti Rijal"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, default-fonts]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+## Research Question
+Can remittance inflows help predict changes in household consumption and inflation in Nepal between 2000–2024, and does this relationship change during major shocks such as the 2015 earthquake and the COVID-19 pandemic?
+
+## Focus:
+1. Short-term vs long-term remittance effects (remittance income may not influence the economy immediately)
+2. Major economic shocks (2015 Earthquake, COVID-19) which can disrupt normal patterns 
+3. Economic stability in a remittance-dependent economy
+---
+### Problem & Motivation
+
+1. Nepal relies heavily on remittances, with over 25% of GDP linked to external labor income.
+
+2. Policy debates around elections often focus on inflation and household welfare.
+
+3. At the same time, UN projections suggest Nepal may become an aging society by 2030 as youth migration increases.
+
+Key Question:
+Do remittances provide useful signals about economic stability?
+
+### Approach
+
+Time-series analysis using macroeconomic data from 2000–2024.
+
+Steps:
+1. Exploratory data analysis (EDA)
+2. Visual trend analysis
+3. Regression models with lagged remittances
+4. Shock indicators for earthquake and COVID-19
+
+Goal:
+Evaluate predictive relationships 
+---
+
+# Data
+
+Sources- Publicly available macroeconomic time-series data from: 
+1. World Bank: World Development Indicators
+2. Nepal Rastra Bank statistics
+
+Variables:
+1. Remittances (USD)
+2. Inflation (CPI %)
+3. Consumption growth
+4. GDP growth
+
+Why tractable?
+1. Public, aggregated, annual data
+2. Clean time-series structure which is consistent
+3. Suitable for visualization and modeling
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(scipen = 999)
+
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE,
+  fig.width = 9, fig.height = 5.5, dev = "svg"
+)
+
+library(tidyverse)
+library(gt)
+
+
+# saved files live 
+data_dir <- "/Users/sanskriti/Desktop/remittances nepal"
+
+# load cleaned outputs 
+nepal_model <- readr::read_csv(file.path(data_dir, "nepal_model.csv"), show_col_types = FALSE)
+model_table <- readr::read_csv(file.path(data_dir, "model_table.csv"), show_col_types = FALSE)
+corr_long   <- readr::read_csv(file.path(data_dir, "corr_long.csv"), show_col_types = FALSE)
+
+#  global slide theme 
+theme_set(theme_minimal(base_size = 18))
+
+# plot objects 
+p_remit_trend <- ggplot(nepal_model, aes(year, remittances/1e9)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  labs(
+    title = "Remittances in Nepal Over Time (2000–2024)",
+    x = "Year", y = "Remittances (Billions USD)"
+  )
+
+p_infl_trend <- ggplot(nepal_model, aes(year, inflation)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  geom_vline(xintercept = 2015, linetype = "dashed") +
+  geom_vline(xintercept = 2020, linetype = "dashed") +
+  labs(
+    title = "Inflation in Nepal with Shock Markers (2000–2024)",
+    x = "Year", y = "Inflation (CPI annual %)"
+  )
+
+p_scatter <- ggplot(nepal_model, aes(remittances/1e9, inflation)) +
+  geom_point(size = 2.5, alpha = 0.8) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 1) +
+  labs(
+    title = "Remittances vs Inflation (2000–2024)",
+    x = "Remittances (Billions USD)", y = "Inflation (%)"
+  )
+
+p_heatmap <- ggplot(corr_long, aes(Var1, Var2, fill = Correlation)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+  labs(title = "Correlation Heatmap: Nepal Macro Variables (2000–2024)", x = "", y = "") +
+  theme_minimal(base_size = 14) +
+  theme(axis.text.x = element_text(angle = 35, hjust = 1))
+
+# Combined Shock Plot
+nepal_model <- nepal_model %>%
+  mutate(remit_scaled = as.numeric(scale(remittances/1e9)))
+
+p_shock_compare <- ggplot(nepal_model, aes(x = year)) +
+  geom_line(aes(y = inflation, color = "Inflation"), linewidth = 1) +
+  geom_line(aes(y = remit_scaled, color = "Remittances (scaled)"), linewidth = 1) +
+  geom_vline(xintercept = 2015, linetype = "dashed") +
+  geom_vline(xintercept = 2020, linetype = "dashed") +
+  scale_color_manual(values = c("Inflation" = "black",
+                                "Remittances (scaled)" = "steelblue")) +
+  labs(
+    title = "Inflation and Remittances During Economic Shocks",
+    x = "Year",
+    y = "Value (Inflation % and Scaled Remittances)",
+    color = ""
+  )
+
+nepal_scaled <- nepal_model %>%
+  mutate(
+    remit_scaled = as.numeric(scale(remittances/1e9)),
+    cons_scaled  = as.numeric(scale(consumption))
+  )
+
+p_remit_cons_scaled <- ggplot(nepal_scaled, aes(year)) +
+  geom_line(aes(y = cons_scaled, color = "Consumption (scaled)"), linewidth = 1) +
+  geom_line(aes(y = remit_scaled, color = "Remittances (scaled)"), linewidth = 1) +
+  geom_vline(xintercept = 2015, linetype = "dashed") +
+  geom_vline(xintercept = 2020, linetype = "dashed") +
+  labs(
+    title = "Remittances and Consumption (Scaled) During Shocks",
+    x = "Year", y = "Scaled value (z-score)"
+  ) +
+  theme(legend.title = element_blank())
+```
+### Exploratory Data Analysis
+
+1. Strong growth in remittances after 2000  
+2. Reflects increasing labor migration and Nepal’s growing dependence on external income
+3. Remittances behave like a long run structural trend rather than a volatile variable.
+
+```{r, echo=FALSE}
+p_remit_trend
+
+```
+---
+### Finding 1: Remittances vs Inflation
+
+1. Remittances increase steadily over time, reflecting Nepal’s growing reliance on migration income.
+2. However, the relationship between remittances and inflation appears weak and slightly negative, suggesting that inflation is shaped by multiple macroeconomic forces beyond remittance inflows alone.
+3. Not strong predictive power 
+```{r, echo=FALSE}
+p_scatter
+```
+
+---
+#### Finding 2: Remittances and Household Consumption (Trends)
+1. Scaled both variables so we can compare movement rather than magnitude.
+2. While remittances rise steadily, consumption growth shows sharper fluctuations, especially during shocks.
+3.Suggests that remittances may support long-term household stability, but they do not fully determine short-term spending behavior.
+
+
+```{r}
+p_remit_cons_scaled
+```
+
+---
+####Finding 3: Economic Shocks for Inflation
+1. Plot overlays inflation and scaled remittances with vertical lines marking the 2015 earthquake and COVID-19
+2. Inflation reacts strongly around shocks, showing clear disruptions.
+3. Remittances continue growing even when inflation fluctuates during shocks.
+4. Remittances behave like a stabilizing external income stream rather than a shock sensitive macro variable.
+```{r, echo=FALSE}
+p_shock_compare
+
+```
+---
+#### Finding 4: Model Comparison (Inflation)
+3 regression models: 1. Baseline using only shocked indicators, 2.  Model with one year lagged remittances, 3. Model with 3 year lagged remittances
+
+Including lagged remittances modestly improves model fit:
+
+Baseline (shocks only): R² ≈ 0.13
+
+Lag 1 model: R² ≈ 0.21
+
+Lag 3 model: R² ≈ 0.24
+
+This suggests remittance effects may operate gradually rather than immediately
+
+```{r, echo=FALSE}
+model_table %>%
+  mutate(across(where(is.numeric), ~ round(.x, 3))) %>%
+  gt()
+```
+
+Explanatory power remains moderate and adds some predictive signal
+---
+## Ethical, Legal and Societal Implications 
+1. This analysis uses aggregated public data, so privacy risks are minimal.
+2. Remittances reflect real social pressures like migration, inequality, and family separation so it’s important not to reduce them to just economic numbers.
+3. Avoid making causal claims for observational time series data 
+---
+##Stakeholders
+
+1. Government of Nepal
+-Fiscal planning and migration policy
+-Understanding external income dependence
+-Preparing for demographic aging and labor shortages
+
+2. Nepal Rastra Bank (Central Bank)
+-Inflation monitoring and macroeconomic forecasting
+-Evaluating whether remittances provide early signals of economic change
+
+3. Migrant Households and Communities
+-Household stability and consumption smoothing
+
+4. Development Organizations (World Bank, UNDP, NGOs)
+-Designing policies around migration, remittances, and poverty reduction
+
+5. Researchers and Data Analysts
+-Improving macroeconomic modeling in remittance-dependent economies
+-Understanding lagged effects rather than immediate impacts
+
+---
+## Conclusion and Key Takeaways 
+
+
+1. Remittances are not a dominant driver of inflation, but lagged remittances slightly improve prediction.
+
+2. Remittances may support household stability, but spending decisions respond to many short-term pressures.
+
+3. Heavy reliance on remittances raises long-term questions about sustainability and demographic change
+
+3. During economic shocks, remittances behave more like a stabilizing external income source rather than a shock driven variable
+
+
+## Next steps
+
+1. Add more macroeconomic controls (e.g., trade, exchange rate, fuel prices)
+
+
+3. Extend to ML models for the big project
