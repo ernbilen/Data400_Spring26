@@ -1,0 +1,107 @@
+---
+title: "Product-Level Insurance Strategy Across Macroeconomic Cycles"
+subtitle: "A Macro-Informed Framework for Strategic Planning"
+author: "Michael Pelletier"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+    nature:
+      ratio: "16:9"
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+library(ggplot2)
+library(tibble)
+library(tidyr)
+```
+class: center middle inverse
+
+
+This report quantifies how the  Affiliated channel production varies with a small set of macroeconomic and financial-market conditions using monthly data and transparent, interpretable regression models. The central contribution is a practical set of “macro signals” that can be used to calibrate expectations and diagnose performance variance. The empirical results are consistent with product economics and observable field behavior: (i) single premium deferred annuity (SPDA) production behaves as a rate‑regime product and rises when short‑term interest rates increase materially versus the prior year; (ii) market volatility (VIX) is associated with a meaningful shift in Life mix toward Term; and (iii) Life WNAP is negatively associated with labor-market stress as proxied by the unemployment rate. 
+---
+
+class: incremental
+
+## Project Motivation
+The analysis is performed at the channel level (not the Organizational level). As such, the results should be interpreted as describing how the aggregate Affiliated business tends to move with macro indicators, not which organizations outperformed the environment. A GA-level extension is recommended as a next step.
+
+## Data Used
+
+2.1 Sales outcomes (monthly)
+We use monthly Affiliated production measures, including Life WNAP, Term WNAP, IUL WNAP, total annuity premium, and SPDA premium. From these series, we compute Term share of Life WNAP (Term WNAP divided by total Life WNAP).
+2.2 Macro and market indicators (monthly)
+Macro and market variables are aligned to the same monthly cadence. Core indicators include the unemployment rate, the 2‑year U.S. Treasury yield, the 12‑month change in the 2‑year yield (rate impulse), the 10‑year minus 2‑year yield curve slope, the VIX volatility index (monthly average), AAA credit spreads, and a 12‑month NASDAQ return measure.
+2.3 Model windows
+Because year-over-year change variables require a 12‑month lag, the annuity and SPDA models begin in mid‑2011. The Life and Term-share models are estimated over 2015–2025 due to data availability and consistency in the Life WNAP series.
+
+---
+
+class: incremental
+
+## Methods
+## 3.1 Transformations
+Two transformations are used to make the dependent variables more well-behaved statistically and more interpretable across large regime shifts:
+1. For lumpy positive series (SPDA and annuity premiums), we model a log-based year-over-year change: YoY change (log-based) = 100 × [ ln(1 + xₜ) − ln(1 + xₜ₋₁₂) ]. This approach is common in empirical macro/finance because it reduces the influence of extreme values and behaves sensibly when series can be near zero.
+2. For Term share (bounded between 0 and 1), we use a logit transform: logit(p) = ln(p / (1 − p)).
+3. For Life WNAP (levels), we use log(1 + Life WNAP) to reduce skew and allow interpretation in approximate percentage terms.
+## 3.2 Regression specification
+For each outcome, we estimate an ordinary least squares regression that includes (i) month-of-year fixed effects to control for seasonality, and (ii) a linear time trend to capture slow-moving structural drift (e.g., recruiting base expansion). Macro variables enter as contemporaneous monthly indicators. 
+---
+class: center, middle
+
+class: center, middle
+
+<img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 1.png"
+     style="width:92%;">
+
+---
+class: center, middle
+
+<img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 2.png"
+     style="width:92%;">
+
+---
+class: center, middle
+
+<img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 3.png"
+     style="width:92%;">
+
+---
+class: center, middle
+
+<img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 4.png"
+     style="width:92%;">
+
+---
+class: center, middle
+
+<img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 5.png"
+     style="width:92%;">
+---
+class: center, middle
+
+<img src="/Users/michaelpelletier/Downloads/Data200_Fall24-main/Anaconda/Data400_Spring26/Images/Figure 6.png"
+     style="width:92%;">
+
+---
+##Ethical Implications
+1. Avoid exploiting vulnerability - Macroeconomic stress (recessions, volatility, unemployment) increases consumer fear. Strategy should inform support — not amplify anxiety to drive sales.
+2. Fair access to protection - Product emphasis shifts across cycles must not unintentionally disadvantage lower-income or financially stressed households.
+3. Transparent positioning - When guarantees or downside protection become more salient, communication must remain clear about costs, tradeoffs, and risks.
+4. Responsible forecasting - Macro-informed projections should guide preparedness — not justify aggressive sales targets detached from client suitability.
+5. Long-term trust over short-term gain - Strategic adjustments across macro regimes should prioritize sustainable client outcomes and reputational integrity.
+---
+class: center, middle
+
+## Thank You  
+
+
