@@ -1,0 +1,512 @@
+---
+title: "Mapping Narrative Time in Tristram Shandy"
+subtitle: "A Computational Model of Temporal Digression"
+author: "David Whitmer"
+institute: "Dickinson College | Data Capstone 400 Mini Project"
+date: "February 17, 2026"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+    css: [default, default-fonts]
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(knitr)
+```
+
+```{css, echo=FALSE}
+.title-slide {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.title-slide h1 {
+  font-size: 2.5em;
+  font-weight: 600;
+  margin-bottom: 0.3em;
+  color: #000000;
+}
+
+.title-slide h2 {
+  font-size: 1.5em;
+  font-weight: 300;
+  margin-bottom: 1em;
+  color: #000000;
+}
+
+.title-slide h3 {
+  font-size: 1.2em;
+  font-weight: 400;
+  margin-top: 2em;
+  color: #000000;
+}
+
+.remark-slide-content {
+  font-size: 24px;
+  padding: 1em 2em 1em 2em;
+}
+
+.remark-slide-content h1 {
+  font-size: 2em;
+  color: #2c3e50;
+  margin-bottom: 0.5em;
+}
+
+.remark-slide-content h2 {
+  font-size: 1.5em;
+  color: #34495e;
+  margin-bottom: 0.5em;
+}
+
+.large {
+  font-size: 1.3em;
+}
+
+.medium {
+  font-size: 1.1em;
+}
+
+.small {
+  font-size: 0.9em;
+}
+
+.pull-left-narrow {
+  float: left;
+  width: 35%;
+}
+
+.pull-right-wide {
+  float: right;
+  width: 60%;
+}
+
+.highlight-box {
+  background-color: #fff3cd;
+  border-left: 5px solid #ffc107;
+  padding: 15px;
+  margin: 15px 0;
+}
+
+.key-point {
+  background-color: #e3f2fd;
+  border-left: 5px solid #2196f3;
+  padding: 15px;
+  margin: 15px 0;
+  font-weight: 500;
+}
+
+.methodology {
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+.timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.timeline-item {
+  padding: 15px;
+  border-radius: 5px;
+  border-left: 4px solid;
+  font-size: 0.85em;
+}
+
+.timeline-item strong {
+  display: block;
+  font-size: 1.3em;
+  margin-bottom: 5px;
+}
+
+.pre-birth {
+  background-color: #e3f2fd;
+  border-color: #2196f3;
+}
+
+.digressions {
+  background-color: #fff9e6;
+  border-color: #ffc107;
+}
+
+.life {
+  background-color: #e8f5e9;
+  border-color: #4caf50;
+}
+
+.present {
+  background-color: #f3e5f5;
+  border-color: #9c27b0;
+}
+```
+
+
+
+# The Problem of Narrative Time:
+
+.large[
+Tristram Shandy attempts to tell his life story but **never arrives at the present**
+]
+
+--
+
+.highlight-box[
+By Volume 4, Tristram has covered only **one day** of his life
+
+Yet the novel spans **9 volumes** and **~300 chapters**
+]
+
+--
+
+.medium[
+**The central question:**  
+How does Sterne's temporal disorder function as narrative structure?
+]
+
+???
+Speaker notes:
+- Published 1759-1767, revolutionary experimental novel
+- Narrator constantly digresses backward and forward in time
+- Not random chaos—there's a pattern we can computationally model
+- This talk shows how data visualization makes temporal structure visible
+
+---
+
+# Why Linear Chronology Fails
+
+.pull-left-narrow[
+### Traditional Biography
+- Birth → Childhood → Youth → Death
+- Chronological progression
+- Linear narrative arc
+]
+
+.pull-right-wide[
+### Tristram Shandy
+- Begins with conception... 
+- ...then jumps to Uncle Toby's war injury **decades earlier**
+- ...then to Yorick's death **years before birth**
+- ...then to present-day writing
+- ...then back to childhood accidents
+- **No sustained chronological sequence**
+]
+
+--
+
+.key-point[
+**Sterne's structure is not broken—it's deliberate**  
+Digression becomes the primary narrative mode
+]
+
+???
+Speaker notes:
+- Traditional autobiography: Franklin, Rousseau follow chronological order
+- Sterne deliberately frustrates this expectation
+- The digressions ARE the point—not obstacles to the "real" story
+- Question: Can we map this disorder systematically?
+
+---
+
+# Data Collection & Web Scraping Pipeline
+
+.methodology[
+**Source:** Project Gutenberg full text (HTML)  
+**Method:** Python web scraping with BeautifulSoup
+]
+
+--
+
+### Pipeline Architecture
+
+1. **Chapter Extraction**
+   - Regex pattern matching: `C H A P. [Roman numeral]`
+   - 300+ chapters across 9 volumes
+   - Full text preservation
+
+--
+
+2. **Intelligent Quotation Selection**
+   - Temporal markers & character names
+   - Keyword matching to narrative period
+
+---
+# Narrative Classification System
+
+3\. **Narrative Classification**
+   - 18 time period categories
+   - Chronological position (-4 to 11)
+
+???
+Speaker notes:
+- Not manual coding—fully automated and reproducible
+- Quotation algorithm selects contextually relevant excerpts
+- Each chapter gets chronological position based on story time
+- Output: structured JSON with 300 annotated chapters
+
+---
+
+# Modeling Time: The -4 to 11 Scale
+
+.timeline-grid[
+.timeline-item.pre-birth[
+**-4 to -1**  
+Before Birth  
+Family history, Namur, Yorick
+]
+
+.timeline-item.digressions[
+**0**  
+Digressions  
+Timeless embedded narratives
+]
+
+.timeline-item.life[
+**1 to 8**  
+Tristram's Life  
+Conception → Youth
+]
+
+.timeline-item.present[
+**10-11**  
+Present  
+Tristram writing, meta-commentary
+]
+]
+
+--
+
+.highlight-box[
+**Key Innovation:** Negative numbers represent *years before birth*
+
+Position -2 = Uncle Toby wounded at Namur (decades before Tristram exists)  
+Position 0 = Digressions outside story time  
+Position 10 = Present-day narration
+]
+
+--
+
+.medium[
+**This allows us to plot:** Reading Order (1–300) vs. Chronological Position (-4 to 11)
+]
+
+???
+Speaker notes:
+- Not arbitrary—based on actual temporal relationships in text
+- Negative scale shows how far back Sterne reaches
+- Zero marks timeless philosophical asides
+- Positive numbers follow life chronology
+- Creates two-dimensional temporal map
+
+---
+
+# Visualization Architecture
+
+### Dual-Panel Design
+
+.pull-left[
+**Top Panel: Narrative Path**
+- X-axis: Reading order (1→300)
+- Y-axis: Chronological position
+- Connected line = reader's path through time
+- Color-coded by narrative period
+]
+
+.pull-right[
+**Bottom Panel: Distribution**
+- Shows density at each position
+- Reveals where novel "dwells"
+- Stacked bars by period
+]
+
+--
+
+.key-point[
+**If the novel were linear:** smooth diagonal line  
+**What we actually see:** wild temporal oscillation
+]
+
+???
+Speaker notes:
+- Two complementary views of same data
+- Top: shows temporal MOVEMENT (reader's journey)
+- Bottom: shows temporal DENSITY (where Sterne lingers)
+- Not decorative—reveals structure of delay
+- Every vertical jump = temporal disruption
+
+---
+class: center, middle
+
+# Interactive Narrative Model
+
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("newplot.png")
+```
+
+.footnote[
+Dual-panel temporal architecture visualization
+]
+
+???
+Speaker notes:
+- This is the actual working model
+- Notice the jagged line—not smooth progression
+- Hover over points to see quotations from chapters
+- Bottom panel shows Sterne spends ~80 chapters at position 10 (present)
+- But spreads life events thinly across positive positions
+- Pattern visible: oscillation between past/present/digression
+
+---
+
+# Key Insights from the Model
+
+### Quantified Temporal Disruption
+
+--
+
+1. **Oscillation Pattern**
+   - Novel jumps constantly: past (-4) → present (10) → digression (0)
+   - No sustained chronological progression
+   - Average jump magnitude: **6 chronological positions**
+
+--
+
+2. **Narrative Density**
+   - **~80 chapters** at position 10 (present narration)
+   - Only **~40 chapters** cover positions 1-8 (entire life)
+   - **Present overwhelms chronology** by 2:1 ratio
+
+--
+
+3. **Structured Delay**
+   - Toby's story split across positions -2, -1, and 7
+   - Birth delayed until reading order ~60
+   - Childhood scattered non-consecutively
+
+--
+
+.highlight-box[
+**Finding:** Digressions are not chaos—they form a **temporal architecture**
+]
+
+???
+Speaker notes:
+- These are empirical findings from the data
+- Not impressionistic—computationally measured
+- The 2:1 ratio quantifies the "problem" of Tristram Shandy
+- More time spent commenting than narrating
+- This is the architecture of delay made visible
+
+---
+
+# What This Reveals About Sterne
+
+.large[
+**Thesis:** Sterne's digressions are **structural**, not ornamental
+]
+
+--
+
+### Three Interpretive Claims:
+
+--
+
+1. **Memory operates non-linearly**
+   - Flashbacks interrupt forward progress
+   - Past intrudes on present constantly
+   - The visualization **models memory itself**
+
+--
+
+2. **Narration is impossible**
+   - To tell one story requires telling ten others
+   - Each explanation demands further backstory
+   - The act of writing **delays the story indefinitely**
+
+--
+
+3. **Form enacts argument**
+   - Structure performs the impossibility of autobiography
+
+???
+Speaker notes:
+- Not just showing disorder—arguing disorder is meaningful
+- Visualization proves form and content are inseparable
+- Sterne demonstrates autobiography is always incomplete
+- Each digression reveals narrative as construct
+- Modern readers frustrated by this—18th century readers delighted
+
+---
+
+# Conclusion
+
+.pull-left[
+### What I Built
+- Web scraping pipeline
+- 300-chapter dataset
+- Chronological coding
+- Interactive visualization
+- Hoverable quotations
+]
+
+.pull-right[
+### What I Learned
+- Temporal disorder is **systematic**
+- Digressions form **architecture**
+- Visualization makes **structure visible**
+- Computational methods reveal **literary patterns**
+]
+
+--
+
+.key-point.large[
+**Core finding:**  
+Tristram Shandy's "chaos" is actually a **quantifiable oscillation**  
+The jagged line reveals the **structure of delay**
+]
+
+???
+Speaker notes:
+- Started with question: how does temporal disorder work?
+- Answer: it's patterned, measurable, visualizable
+- DH methods don't replace close reading—they enable new close reading
+- We can now SEE the structure Sterne built
+- This approach applies to any non-linear narrative
+- Questions?
+
+---
+class: center, middle
+
+# Thank You
+
+.large[
+**Questions?**
+]
+
+.medium[
+David Whitmer  
+Dickinson College  
+Data Capstone 400
+]
+
+.center[
+.small[
+Project code and visualization available upon request  
+Source: Sterne, Laurence. *The Life and Opinions of Tristram Shandy, Gentleman*. Project Gutenberg.
+]
+]
+
+???
+Speaker notes:
+- Open to questions about methodology, findings, or technical implementation
+- Happy to discuss extensions: other non-linear novels, comparative analysis
+- All code is reproducible and available
