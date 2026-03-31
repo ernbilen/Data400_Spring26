@@ -12,6 +12,7 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
+      
 ---
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 library(xaringanthemer)

@@ -18,14 +18,14 @@
  *  Version: 0.4.4
  *
  * ------------------------------------------------------- */
-@import url(https://fonts.googleapis.com/css?family=Helvetica:300,300i&display=swap);
+@import url(https://fonts.googleapis.com/css?family=Montserrat:300,300i&display=swap);
 @import url(https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap);
 @import url(https://fonts.googleapis.com/css?family=Fira+Mono&display=swap);
 
 
 :root {
   /* Fonts */
-  --text-font-family: Helvetica;
+  --text-font-family: Montserrat;
   --text-font-is-google: 1;
   --text-font-family-fallback: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial;
   --text-font-base: sans-serif;
@@ -43,23 +43,23 @@
   --header-h3-font-size: 1.75rem;
 
   /* Colors */
-  --text-color: #152847;
-  --header-color: #1f3a66;
-  --background-color: #E8EBEF;
-  --link-color: #1f3a66;
-  --text-bold-color: #1f3a66;
+  --text-color: #18273F;
+  --header-color: #23395b;
+  --background-color: #E9EBEE;
+  --link-color: #23395b;
+  --text-bold-color: #23395b;
   --code-highlight-color: rgba(255,255,0,0.5);
-  --inverse-text-color: #E8EBEF;
-  --inverse-background-color: #1f3a66;
-  --inverse-header-color: #E8EBEF;
-  --inverse-link-color: #1f3a66;
-  --title-slide-background-color: #1f3a66;
-  --title-slide-text-color: #E8EBEF;
-  --header-background-color: #1f3a66;
-  --header-background-text-color: #E8EBEF;
-  --base: #1f3a66;
-  --white: #E8EBEF;
-  --black: #152847;
+  --inverse-text-color: #E9EBEE;
+  --inverse-background-color: #23395b;
+  --inverse-header-color: #E9EBEE;
+  --inverse-link-color: #23395b;
+  --title-slide-background-color: #23395b;
+  --title-slide-text-color: #E9EBEE;
+  --header-background-color: #23395b;
+  --header-background-text-color: #E9EBEE;
+  --base: #23395b;
+  --white: #E9EBEE;
+  --black: #18273F;
 }
 
 html {
@@ -100,10 +100,10 @@ h1, h2, h3 {
 }
 .remark-inline-code {
   font-size: var(--code-inline-font-size);
-  color: #1f3a66;
+  color: #23395b;
 }
 .remark-slide-number {
-  color: #1f3a66;
+  color: #23395b;
   opacity: 1;
   font-size: 0.9rem;
 }
@@ -151,10 +151,10 @@ a, a > code {
   float: left;
 }
 .left-column h2, .left-column h3 {
-  color: #1f3a6699;
+  color: #23395b99;
 }
 .left-column h2:last-of-type, .left-column h3:last-child {
-  color: #1f3a66;
+  color: #23395b;
 }
 .right-column {
   width: 75%;
@@ -176,7 +176,7 @@ img, video, iframe {
   max-width: 100%;
 }
 blockquote {
-  border-left: solid 5px #1f3a6680;
+  border-left: solid 5px #23395b80;
   padding-left: 1em;
 }
 .remark-slide table {
@@ -193,7 +193,7 @@ th, td {
 .remark-slide table:not(.table-unshaded) thead,
 .remark-slide table:not(.table-unshaded) tfoot,
 .remark-slide table:not(.table-unshaded) tr:nth-child(even) {
-  background: #D2D7E0;
+  background: #D3D7DE;
 }
 table.dataTable tbody {
   background-color: var(--background-color);
@@ -203,7 +203,7 @@ table.dataTable.display tbody tr.odd {
   background-color: var(--background-color);
 }
 table.dataTable.display tbody tr.even {
-  background-color: #D2D7E0;
+  background-color: #D3D7DE;
 }
 table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
   background-color: rgba(255, 255, 255, 0.5);
