@@ -604,7 +604,8 @@ I think a presentation is basically a way to communicate insights to the audienc
 
 [2] By comparison, bad presentations only put the audience to sleep.
 
-[3] Personally I find that setting background images for slides is a killer feature of remark.js. It is an effective way to bring visual impact into your presentations.
+[3] Personally I find that setting background images for slides is a killer feature of remark.js. It is an eff
+ective way to bring visual impact into your presentations.
 ]
 
 ---
