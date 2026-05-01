@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>The Russo-Ukrainian War</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Denys Sharpylo &amp; Luke Finkielstein" />
+    <meta name="date" content="2026-05-01" />
+    <script src="DATA400-Final-Presentation_files/header-attrs-2.30/header-attrs.js"></script>
+    <link href="DATA400-Final-Presentation_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="DATA400-Final-Presentation_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# The Russo-Ukrainian War
+]
+.subtitle[
+## An Analysis of Russian Air/Drone Strikes on Ukraine
+]
+.author[
+### Denys Sharpylo &amp; Luke Finkielstein
+]
+.date[
+### 2026-05-01
+]
+
+---
+
+
+# Research Questions
+
+- What are the **temporal and geographic patterns** of Russian missile and UAV strikes?
+
+- Which regions are **most heavily targeted**, and why?
+
+- Can we **predict fatality presence** based on strike characteristics?
+
+- What factors **drive casualty counts** when fatalities occur?
+
+- How can these insights inform **humanitarian response and defense strategy**?
+
+---
+
+# Data &amp; Methodology
+
+**Primary Datasets (2022-2026):**
+
+.pull-left[
+
+1. **ACLED** (Armed Conflict Location &amp; Event Data)
+   - 6,119 conflict events
+   - 10,000+ fatalities
+   - Geolocation data (lat/long)
+   - Civilian targeting indicators
+
+]
+
+.pull-right[
+
+2. **Missile/UAV Attack Data** (Kaggle)
+   - 85,814 recorded airstrikes
+   - Launch and destruction counts by model
+   - Temporal records spanning 4 years
+
+]
+
+
+**Approach:**
+- Exploratory Data Analysis (EDA)
+- Temporal trend analysis
+- Geospatial clustering (K-Means, k=5)
+- Feature engineering (temporal, geospatial)
+- Predictive modeling (Lasso Regression, Random Forest, Logistic Regression)
+
+---
+
+# Key Statistics
+
+.pull-left[
+
+## Scale of the Conflict
+
+- **6,119** conflict events recorded
+- **10,000+** total fatalities
+- **85,814** total recorded airstrikes
+- **1.7** average fatalities per strike
+- **1,030** unique locations affected
+
+]
+
+.pull-right[
+
+## Weapon Systems
+
+- **Shahed-136/131** accounts for **88%** of all airstrikes
+- Iranian-origin UAV dominates attack patterns
+- **70%+** overall destruction rate for launched projectiles
+- **50%+** of events result in zero fatalities
+
+]
+
+---
+
+# Geographic Concentration
+
+**Most Affected Regions:**
+
+1. **Donetsk** - 2,460+ strikes (most heavily targeted)
+2. **Kharkiv** - 790+ strikes
+3. **Zaporizhia** - 760+ strikes
+
+**Key Finding:** Eastern frontline regions (Donetsk, Luhansk) experience disproportionately high attack concentrations, correlating with greater casualty counts despite not representing the majority of total incidents.
+
+Donetsk and Luhansk alone account for a **significant percentage of total conflict-related fatalities**.
+
+---
+
+# Temporal Trends
+
+Attack intensity remained relatively stable through mid-2024, then escalated sharply with:
+
+- **Peak period:** July 2025
+- **Sharp escalation:** Mid-2024 onwards
+- **Recent decline:** Early 2026
+
+This temporal pattern suggests:
+- Shifts in military strategy
+- Seasonal variations
+- Response to defensive improvements
+- Correlation with broader conflict phases
+
+---
+
+# Lasso Regression for Feature Selection
+
+### Task: Identify Key Predictors of Fatality Magnitude
+
+**Purpose:** Determine which features most strongly influence the number of fatalities when casualties occur.
+
+**Key Findings:**
+
+- **Geospatial clusters** show strong positive correlation with fatality counts
+- **Population density** of target areas associated with increased casualties
+- **Temporal features** (day of year, month) indicate seasonal fatality variations
+- **Geographic coordinates** (longitude/latitude) are critical predictors
+
+**Interpretation:** When strikes do cause fatalities, location and temporal context significantly influence the scale of impact. These features were selected as most important for our binary classification model.
+
+---
+
+# Predictive Modeling Results
+
+## Random Forest Classifier
+
+**Task:** Predict presence of fatalities (binary classification)
+
+**Performance:**
+- **Accuracy: 0.90**
+- **Precision: 0.89**
+- **Recall: 0.90**
+- **F1-Score: 0.90**
+
+**Top Predictive Features:**
+1. Day of year
+2. Longitude/Latitude of target
+3. Population of target city
+4. Temporal patterns (month, day of week)
+
+---
+
+# Model Insights
+
+**Key Finding:** Geographic and temporal factors are **crucial determinants** of strike severity and casualty patterns.
+
+## What the Model Tells Us
+
+- **Location matters most** - Specific coordinates predict fatality likelihood with high accuracy
+- **Population density is critical** - Strikes on populated areas are more likely to cause casualties
+- **Seasonal patterns exist** - Certain times of year show higher fatality correlation
+- **Predictability is high** - 90% accuracy suggests systematic, non-random targeting patterns
+
+This predictive capability offers a powerful tool for understanding and potentially mitigating the human cost of these attacks.
+
+---
+
+# Geographic Distribution Map
+
+![Geographic distribution of Russian aerial strikes on Ukraine, showing civilian-targeted strikes (red dots) and non-civilian strikes (blue dots) across affected regions.](Ukraine 2d map.png)
+---
+
+# Interactive 3D Visualization
+
+**Explore the conflict in detail:**
+
+**[Access Interactive 3D Map](https://ukraine-3d-map-nt7et2c3m46k2boo2vqnfd.streamlit.app)**
+
+Features:
+- Regional attack intensity (color-coded)
+- Individual strike fatalities (3D bars)
+- Hover tooltips with detailed statistics
+- Rotatable 3D view to explore hotspots
+
+This visualization allows stakeholders to understand both the scale and distribution of attacks across Ukraine.
+
+---
+
+# Implications for Stakeholders
+
+**Governments &amp; Military Leadership**
+- Evaluate effectiveness of current air-defense strategies
+- Identify regions where strategic changes could reduce civilian harm
+- Allocate resources to high-risk areas
+
+**Humanitarian Organizations**
+- Target aid and protection efforts to most vulnerable regions
+- Understand casualty patterns for response planning
+- Provide evidence-based support recommendations
+
+**Policy Makers &amp; International Community**
+- Quantitative evidence on conflict scale and impact
+- Support decisions on aid allocation and sanctions
+- Inform diplomatic and military strategies
+
+**Accountability Mechanisms**
+- Document targeting patterns for future accountability
+- Analyze civilian vs. military infrastructure targeting
+- Contribute to conflict documentation efforts
+
+---
+
+# Ethical &amp; Societal Implications
+
+This research prioritizes **preservation of human life** as the fundamental objective.
+
+**Potential Applications:**
+- Guide investments in local air-defense technology
+- Inform evacuation and protection strategies for at-risk populations
+- Contribute to humanitarian resource allocation
+- Support evidence-based policy decisions
+
+**Our Commitment:**
+- Transparent methodology and data sources
+- Acknowledgment of data limitations
+- Respect for victims and affected communities
+- Contribution to understanding conflict dynamics for peace-building
+
+---
+
+# Limitations &amp; Caveats
+
+- **ACLED data** relies on media reporting; coverage gaps may exist in isolated areas
+- **Missile/UAV data** sourced from Ukrainian media; reflects Ukrainian reporting
+- **Geolocation accuracy** varies; some events lack precise coordinates
+- **Temporal lag** between incident occurrence and data publication
+- **Zero-fatality events** may be underreported in media sources
+- **Model predictions** assume historical patterns continue; future patterns may differ
+
+---
+
+# Future Work
+
+**Potential Extensions:**
+
+- Integrate additional data sources (economic indicators, social media sentiment)
+- Develop spatio-temporal deep learning models
+- Predict specific types of casualties or infrastructure damage
+- Analyze economic impact and reconstruction needs
+- Model trajectory of conflict escalation/de-escalation
+
+**Next Steps:**
+- Refine geospatial prediction models
+- Develop early warning systems for escalating violence
+- Expand analysis to include secondary effects of attacks
+
+---
+
+# Project Resources
+
+**Full Analysis &amp; Code:**
+
+**[GitHub Repository](https://github.com/lukef533/Russo-Ukrainian-Airstrike-Analysis/tree/main)**
+
+Includes:
+- Complete Jupyter notebooks with analysis pipeline
+- Data preprocessing and feature engineering code
+- Model training and evaluation scripts
+- All EDA visualizations
+- Interactive map application code
+- Poster and presentations
+
+---
+
+class: center, middle
+
+# Questions?
+
+**Interactive Map:** [https://ukraine-3d-map-nt7et2c3m46k2boo2vqnfd.streamlit.app](https://ukraine-3d-map-nt7et2c3m46k2boo2vqnfd.streamlit.app)
+
+**GitHub Repository:** [https://github.com/lukef533/Russo-Ukrainian-Airstrike-Analysis](https://github.com/lukef533/Russo-Ukrainian-Airstrike-Analysis)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
