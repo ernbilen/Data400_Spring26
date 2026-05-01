@@ -1,0 +1,428 @@
+---
+title: ""
+subtitle: ""
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      seal: false
+      
+---
+class: center, middle, clear
+background-image: url("slide1.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide2.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide3.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide4.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide5.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide6.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide7.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide8.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide9.png")
+background-size: contain
+
+---
+class: center, middle, clear
+background-image: url("slide10.png")
+background-size: contain
+
+---
+class: title-slide, inverse, center, middle
+
+# Seeking Alpha with Alternative Data
+## Using Retail Sentiment to Find an Edge
+
+---
+
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(knitr)
+# Global chunk options to automatically hide code and center images
+opts_chunk$set(echo = FALSE, fig.align = 'center', out.width = '80%')
+```
+
+# Introduction: The Quest for Alpha
+
+**The Modern Market Landscape**
+* Traditional financial data (earnings, PE ratios, SEC filings) is instantly priced in by institutional algorithms.
+* Generating *Alpha* (excess return) requires finding an edge where others aren't looking.
+
+**The Shift to Alternative Data**
+* Satellite imagery, credit card transactions, and web traffic are the new frontiers for hedge funds.
+* Goal: Exploit **Information Asymmetry** before the broader market reacts.
+
+**Behavioral Inefficiencies**
+* Markets are not perfectly rational. Retail momentum and collective human psychology create measurable, exploitable price distortions.
+
+---
+
+# The Edge in the Echo Chamber
+
+**Why Small Online Forums?**
+* Mega-forums (like mainstream news) are heavily monitored by institutional algorithms and often deal with megacap stocks that are unlikely to move much due to punditry.
+* Niche retail trading communities serve as incubators for chaotic large scale price shifts ($GME, $BYND, $NBIS).
+*Potential market edges may exist but not be scalable meaning large firms responsibly for managing billions or trillions in assets will overlook the ability to make thousands.
+
+**The Hypothesis**
+* By aggregating localized, high-conviction retail sentiment, we can front-run retail momentum before it translates into institutional volume.
+* **The Challenge:** How do we systematically extract structured financial signals from highly unstructured, chaotic internet slang?
+
+---
+
+# Phase 1: Data Acquisition: Scrapping
+
+**The API Problem**
+* The Official Reddit API is heavily rate-limited, expensive, and requires petitioning for a license.
+
+**Scrapping Reddit Trading Communities**
+* Built a custom, asynchronous Python scraper to hit raw `.json` endpoints.
+* **Rolling-Rate-Limit Evasion:** Implemented a fault-tolerant `immortal_request` function that detects `429 Too Many Requests` errors, sleeps dynamically, and mimics human browser headers to bypass Reddit's firewall allowing the script to be robust against errors, internet outages, and sleeping.
+* **Micro-Batching:** Data is saved instantly to local `.csv` files to prevent data loss during long scraping marathons.
+
+**Results**
+* We achieve perfect accuracy when scrapping posts, saving the entirety of titles, body text, comment, date, upvotes, and link to our data repository.
+
+---
+
+# Phase 2: The NLP Bottleneck: User Sentiment
+
+**The Failure of Traditional Methods**
+* Standard NLP libraries (VADER, finBERT) fail at financial slang. (e.g., "This stock is sick" = Negative to VADER, Positive to retail). And "$CMG to the Moon" is unrecognizable by open access institutional tools like finBERT.
+* Regex ticker extraction fails at common words. (e.g., "Sandisk is a strong buy." or "OP is stupid, META is at ATH!").
+
+---
+
+#Phase 2B: The NLP Solution: LLMs
+
+**The Localized LLM Solution**
+* Deployed a locally hosted 14-Billion parameter Large Language Model (Qwen 2.5).
+* **Why Local?** Zero API costs, absolute privacy, and total control over generation constraints (Only Json).
+* The LLM acts as a structured extraction engine, understanding context, detecting sarcasm, and outputting clean JSON `[Ticker, Sentiment]` pairs while aggressively rejecting hallucinations. The 14-Billion parameter model makes less errors then the old traditional sentiment and Regex approach.
+
+**Results**
+* Added to our csv: Sentiment classified as "POSITIVE", "NEGAITVE", or "NEUTRAL"
+* stock ticker symbol ($META, $TSLA, $APPL)
+
+---
+
+# Phase 3: Financial Grounding
+
+**Calculating Market-Relative Alpha**
+* Merging alternative data with empirical market reality using the `yfinance` API.
+
+**The Pipeline**
+1. Read the parsed daily signals from the LLM.
+2. Query Yahoo Finance for the asset's price on the exact date of the post.
+3. Track the asset's trajectory over 1-Day, 1-Week, and 1-Month intervals.
+4. **Benchmark:** Subtract the S&P 500 (SPY) return over the exact same period to isolate the stock's true Alpha.
+
+---
+
+# The Initial Backtest: 100% Returns?
+
+**The "Holy Grail" Miracle**
+* Initial backtests of a 1-Week holding period on "Positive" consensus stocks yielded localized annualized returns exceeding 100%.
+
+**The Setup**
+* Strategy: invest for one week on any ticker with >3 mentions and a positive LLM consensus.
+* Accounted for $10,000 starting capital and a strict 0.5% friction/slippage cost per trade.
+
+```{r sal, echo=FALSE, out.width="70%"}
+knitr::include_graphics("TEMP.png")
+```
+
+*Why did the equity curve look like a straight line up?*
+
+---
+
+# The Reality Check: Statistical Biases
+
+**1. Look-Ahead Bias (The Upvote Problem)**
+* *The Error:* Scraping by "Top of the Year" meant sorting by future outcomes. A stock that went bankrupt had 0 upvotes. A stock that soared 500% got upvoted *after* the fact. 
+* *The Fix:* Forcing the pipeline to scrape strictly chronologically by "New."
+* Originally, we wanted easy access to historical Reddit posts which is why we shied away from "New". Reddit only saves 1000 posts by each tab.
+
+**2. Survivorship Bias (The Bankruptcy Problem)**
+* *The Error:* Yahoo Finance purges delisted/bankrupt companies. The backtest silently dropped these `-100%` losses, artificially inflating the win rate of the "survivors."
+* *The Fix:* Engineered a "Lock-Box" memory system that explicitly penalizes the portfolio with total losses if a tracked ticker disappears from the exchange. Tracking in real-time allows us to track when and if these stocks go bankrupt.
+---
+
+# Future Architecture & Forward-Testing
+
+**Scaling the Operation**
+* Transitioning from historical backfilling to a lightweight, daily Scrape job handled by Windows Task Scheduler.
+* Processing strictly chronological, 48-hour data windows to guarantee zero look-ahead bias.
+
+**Live Forward-Testing (The Ultimate Proof)**
+* Historical backtests are inherently flawed. 
+* **Next Step:** Connecting the output of the Alpha pipeline to the **Alpaca Trading API**.
+* Deploying a "Paper Trading" bot to execute these momentum signals live with fake capital, measuring actual market slippage and real-time execution dynamics before risking a single dollar.
+
+
+---
+class: top, left
+
+# Finding the Edge: The Liquidity Variable
+
+**The Problem:** Traditional fundamental data (like Yahoo Finance Market Cap) is fragile. 35% of the initial dataset was lost to "Unknown" sizes due to delistings, bankruptcies, or ETF classifications.
+
+**The Quantitative Solution:** We created a historical liquidity proxy to perfectly map tradeability at the time of the post: **Average Daily Dollar Volume (ADDV)**.
+
+$$ADDV = Median(Volume \times Close Price)$$
+
+By calculating this over the previous year of trading, we defined three true liquidity tiers:
+
+* **Tier 1 (Large/Highly Liquid):** > $50 Million traded per day. (Negligible friction: ~0.05%)
+* **Tier 2 (Mid/Liquid):** $5M to $50 Million per day. (Standard friction: ~0.20%)
+* **Tier 3 (Small/Illiquid):** < $5 Million per day. (Massive slippage, high borrow fees)
+
+This eliminated the 35% data leak, reducing "Unknowns" to just 1.5%, providing a bulletproof baseline for friction cost analysis.
+
+---
+class: top, left
+
+# The Short-Sellers' Mirage
+
+Initial backtests revealed a staggering **+70.41% return (70.3% win rate)** when shorting Small-Cap stocks with negative Reddit sentiment. 
+
+However, market mechanics render this Alpha **structurally un-extractable** due to friction:
+
+1. **The "Locate" Problem:** When retail panic hits a $5M ADDV micro-cap, shares become unavailable. Brokers will outright reject `SELL_SHORT` orders due to "No Locates."
+2. **Extortionate Borrow Fees:** If located, these assets are designated Hard-To-Borrow (HTB), carrying annualized interest fees ranging from 50% to 200%, instantly consuming the gross Alpha.
+3. **The Liquidity Tax:** Market makers widen Bid-Ask spreads on illiquid stocks during panic, routinely enforcing a 3% to 5% spread tax on entry and exit.
+
+**Takeaway:** Alpha only exists here *because* institutional capital refuses to pay the friction costs to extract it. 
+
+---
+class: top, left
+
+# Trading Small-Caps: The Friction Floor
+
+Can we extract Alpha from Small-Caps on the **Long** side (where borrow fees don't exist)? 
+
+Testing `POSITIVE` sentiment Small-Caps on `r/stock_picks` yielded massive paper returns: **+84.49% over 2-weeks**. But problematizing this with real-world execution friction reveals a razor-thin margin of survival:
+
+* **At 0.5% Friction (Generous):** Strategy soars.
+* **At 3.0% Friction (Realistic limit orders):** Strategy survives and remains highly profitable.
+* **At 5.0% Friction (Market order slippage):** Alpha is completely obliterated.
+
+**The Execution Mandate:** Live trading this strategy requires a programmatic **"Spread Shield."** Algorithms must calculate the live Level-1 quote spread and abort the trade if it exceeds 6%, strictly utilizing Mid-Point Limit Orders to prevent market makers from devouring the edge.
+
+---
+class: top, left
+
+# The Pure Alpha Matrix: Highlighted Cohorts
+
+<div style="font-size: 0.85em; width: 100%; margin-top: 20px;">
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th style="text-align:left;">Subreddit</th>
+        <th style="text-align:left;">Size (ADDV)</th>
+        <th style="text-align:left;">Sentiment</th>
+        <th style="text-align:left;">Signals</th>
+        <th style="text-align:left;">1D_Alpha</th>
+        <th style="text-align:left;">1W_Alpha</th>
+        <th style="text-align:left;">2W_Alpha</th>
+        <th style="text-align:left;">3W_Alpha</th>
+        <th style="text-align:left;">1M_Alpha</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>ValueInvesting</strong></td>
+        <td><strong>Large</strong></td>
+        <td><strong>POSITIVE</strong></td>
+        <td>499</td>
+        <td>+0.19%</td>
+        <td>+0.82%</td>
+        <td>+1.50%</td>
+        <td>+1.92%</td>
+        <td><strong>+2.75%</strong></td>
+      </tr>
+      <tr>
+        <td>ValueInvesting</td>
+        <td>Large</td>
+        <td>NEGATIVE</td>
+        <td>460</td>
+        <td>+0.02%</td>
+        <td>+0.45%</td>
+        <td>+1.10%</td>
+        <td>+1.15%</td>
+        <td>+1.39%</td>
+      </tr>
+      <tr>
+        <td><strong>pennystocks</strong></td>
+        <td><strong>Large</strong></td>
+        <td><strong>NEGATIVE</strong></td>
+        <td>43</td>
+        <td>+1.48%</td>
+        <td>+1.78%</td>
+        <td>+5.00%</td>
+        <td>+6.71%</td>
+        <td><strong>+7.83%</strong></td>
+      </tr>
+      <tr>
+        <td><strong>pennystocks</strong></td>
+        <td><strong>Small</strong></td>
+        <td><strong>POSITIVE</strong></td>
+        <td>516</td>
+        <td>+0.06%</td>
+        <td>-1.20%</td>
+        <td>-5.20%</td>
+        <td>-2.02%</td>
+        <td><strong>-3.68%</strong></td>
+      </tr>
+      <tr>
+        <td>stock_picks</td>
+        <td>Large</td>
+        <td>NEUTRAL</td>
+        <td>548</td>
+        <td>+0.28%</td>
+        <td>-0.28%</td>
+        <td>-0.87%</td>
+        <td>-1.43%</td>
+        <td>-1.18%</td>
+      </tr>
+      <tr>
+        <td><strong>stock_picks</strong></td>
+        <td><strong>Small</strong></td>
+        <td><strong>POSITIVE</strong></td>
+        <td>190</td>
+        <td>-0.37%</td>
+        <td>+5.02%</td>
+        <td>+8.99%</td>
+        <td>+9.15%</td>
+        <td><strong>+8.84%</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br>
+**Matrix Insights:**
+* *Row 1 & 3:* Identifying scalable, high-liquidity strategies (The Slow-Burn & The Reverse-Degen).
+* *Row 4 vs Row 6:* The exact same market cohort (Small-Cap Positive) yields violently different results depending entirely on the community generating the signal.
+
+---
+class: top, left
+
+# The "Slow-Burn" Long: Institutional Grade Edge
+
+By mining the Pure Alpha Matrix, we identified the safest, most scalable strategy on the board:
+
+**Target:** `r/ValueInvesting` + Large Cap + POSITIVE
+
+* **Signal Count:** 499 (Massive sample size, highly statistically significant)
+* **Execution:** Near-zero friction (~0.05%) due to massive Tier 1 liquidity.
+* **Trajectory:** +0.82% (1W) ➔ +1.50% (2W) ➔ +1.92% (3W) ➔ **+2.75% (1M)**
+
+**Why it's tradeable:** Capturing a linear, positive time-decay of +2.75% *Alpha* over a single month on highly liquid assets is institutional-grade. It scales infinitely, poses zero margin-call risk, and effortlessly absorbs standard market order execution.
+
+---
+class: top, left
+
+# Behavioral Traps: The Exit-Liquidity Scam
+
+The matrix successfully quantified the difference between genuine community analysis and coordinated "Pump and Dumps."
+
+**The Trap:** `r/pennystocks` + Small Cap + POSITIVE
+* **Signal Count:** 516 (The most frequent signal in the dataset)
+* **Trajectory:** -1.20% (1W) ➔ -5.20% (2W) ➔ **-3.68% (1M)**
+
+**The Contrast:** `r/stock_picks` generated +8.84% Alpha on the exact same cohort (Small Cap/Positive), proving a legitimate edge. 
+
+**Conclusion:** The 516 signals on `r/pennystocks` mathematically prove a coordinated scam. "Positive" posts are heavily utilized by early entrants attempting to manufacture exit liquidity from naive retail traders, leaving them holding assets that rapidly decay relative to the market.
+
+---
+class: top, left
+# The Final Portfolio: Projected Dollar Returns
+By applying our localized LLM signals to the live market, we can project the total dollar returns over the dataset.
+
+**The Assumptions:** * Starting Capital: `$10,000` * Static Position Size: `$1,000 per trade` * Holding Period: `1 Month`
+
+<div style="display: flex; justify-content: space-between; margin-top: 15px; gap: 20px;">
+<div style="background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 18px; width: 48%;">
+<h3 style="color: #38bdf8; margin-top: 0; margin-bottom: 6px; font-size: 1.1em;">1. The "Slow-Burn" Long</h3>
+<p style="font-size: 14px; color: #94a3b8; margin: 0 0 8px 0;">r/ValueInvesting (Large Cap)</p>
+<hr style="border-color: rgba(56, 189, 248, 0.2); margin: 6px 0;">
+<ul style="list-style: none; padding-left: 0; font-size: 14px; line-height: 1.7; margin: 0;">
+  <li><strong>Signals Executed:</strong> 499</li>
+  <li><strong>Gross Alpha:</strong> +2.75%</li>
+  <li><strong>Friction (Tier 1):</strong> -0.05%</li>
+  <li><strong>Net Alpha per Trade:</strong> <span style="color: #4ade80;">+2.70%</span></li>
+</ul>
+<h2 style="text-align: center; color: #4ade80; font-size: 34px; margin: 12px 0 0 0;">+$13,473</h2>
+</div>
+<div style="background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 18px; width: 48%;">
+<h3 style="color: #38bdf8; margin-top: 0; margin-bottom: 6px; font-size: 1.1em;">2. The "Penny-Pumper" Long</h3>
+<p style="font-size: 14px; color: #94a3b8; margin: 0 0 8px 0;">r/stock_picks (Small Cap)</p>
+<hr style="border-color: rgba(56, 189, 248, 0.2); margin: 6px 0;">
+<ul style="list-style: none; padding-left: 0; font-size: 14px; line-height: 1.7; margin: 0;">
+  <li><strong>Signals Executed:</strong> 190</li>
+  <li><strong>Gross Alpha:</strong> +8.84%</li>
+  <li><strong>Friction (Limit Orders):</strong> -3.00%</li>
+  <li><strong>Net Alpha per Trade:</strong> <span style="color: #4ade80;">+5.84%</span></li>
+</ul>
+<h2 style="text-align: center; color: #4ade80; font-size: 34px; margin: 12px 0 0 0;">+$11,096</h2>
+</div>
+</div>
+<h3 style="text-align: center; margin-top: 18px; color: #f8fafc;">Total Projected Profit: <span style="color: #38bdf8; font-size: 1.5em;">+$24,569</span></h3>
+---
+
+class: center, middle, clear
+background-image: url("slide11.png")
+background-size: contain
+---
+
+class: center, middle, clear
+background-image: url("slide12.png")
+background-size: contain
+---
+
+class: center, middle, clear
+background-image: url("slide13.png")
+background-size: contain
+---
+class: center, middle
+
+# Thank You
+
+**Questions?**
