@@ -1,0 +1,183 @@
+---
+title: "Predicting Star-Level Contracts in the NBA"
+author: "Milo Wessel and Delaney Reimer"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_light(
+  base_color = "#F88158",
+  header_font_google = google_font("Stack Sans Headline"),
+  text_font_google   = google_font("Stack Sans Text"),
+  code_font_google   = google_font("Stack Sans Text")
+)
+```
+
+#Research Question: 
+
+###Which early career performance factors lead to a "star-level" contract during a player's career?
+
+- **Hundreds of advanced stats and metrics exist to measure different aspects of player performance**
+
+- **Can we use these to predict how high a player's contract value will peak?**
+
+---
+# Data
+<div style="text-align: center;">
+  <img src="images/BRScraper.png" style="width: 250px; margin-right: 20px;" />
+  <img src="images/BBallRef.png" style="width: 250px;" />
+</div>
+
+<div style="clear: both;"></div>
+
+- Advanced stats scraped from BasketballReference using Gabriel Pastorello's BRScraper tool
+
+- Contract data scraped from BasketballReference by scraping every team-season page to extract player salaries, matching them to the list of players, and calculating each player's max salary
+
+- 924 players drafted between 1991 and 2015 who played at least 2 seasons were used
+
+- Year 1 and Year 2 stats:
+  - Advanced stats (TS%, eFG%, USG%, PER, VORP, BPM, WS, WS/48, TRB%, AST%, STL%, BLK%)
+  - Per game stats (Points, Total Rebounds, Assists, Steals, Blocks)
+
+---
+
+# Salaries
+
+<img src="images/PeakSalaryDistribution.png" style="float: right; width: 400px; margin-left: 20px;" />
+
+- Player salaries represented as % of that season's salary cap to account for cap inflation
+
+- Mean: 10% of the salary cap or ~$15.5 million under the current salary cap of $154.64 million
+
+- Median: 7% of cap or ~$10.8 million currently
+
+- We defined a "star-level" contract as one that is greater than 20% of the salary cap for the given year.
+
+---
+
+# Draft distribution
+
+<img src="images/DraftDistribution.png" style="float: right; width: 300px; margin-left: 20px;" />
+
+- As expected, the number of players who peaked with a "star contract" is higher at the beginning of the draft
+
+- Two main reasons:
+  - Players drafted higher tend to be better
+  
+  - Players drafted higher that don't perform as well tend to be given more time to develop, as the team's "commitment" to them is larger. 
+
+---
+
+#Draft Position and Playing Time
+
+<img src="images/DraftPickMPGHeatMap.png" style="float: right; width: 350px; margin-right: 20px;" />
+
+Moderate negative correlation (r ≈ -0.53):
+  - Higher draft picks receive more minutes to start
+  - Higher expectations earlier on and increased opportunity on weaker teams
+  
+---
+# Early Production and Role Drive Future Earnings
+
+<img src="images/Top10Bottom10.png" style="float: right; width: 350px; margin-right: 20px;" />
+
+
+- Year 2 Production and opportunity metrics most important
+  - Points, Win Shares, VORP, Minutes (r ≈ 0.52–0.59)
+
+- Year 2 performance is more predictive than Year 1
+
+- Efficiency metrics show weaker relationships
+  - 3P% very low, eFG%, TS%, FT% all towards the middle
+
+- Improvement metrics not showing much impact so far
+
+- Draft position somewhat of a factor (r ≈ -0.37)
+
+---
+
+# Year 1 vs Year 2 vs Improvement
+
+<img src="images/Year1Year2Improvement.png" style="float: right; width: 400px; margin-right: 20px;" />
+
+- Year 2 metrics are the most predictive
+  - Average correlation: **0.31** vs 0.24 (Year 1) and 0.20 (Improvement)
+
+- Year 1 performance still matters, but not as strong of a correlation
+
+- Improvement metrics have limited predictive power
+  - Growth is less important than overall production level
+  
+---
+
+# Key Takeaways so far
+
+- Performance more predictive than improvement
+  - Year 2 metrics (production + impact) are stronger predictors than growth or improvement alone
+  
+- Production & opportunity matter most
+  - Points, WS, VORP, minutes most strongly correlated with future star-level contracts
+
+- Draft position still influential
+  - Early picks get more opportunity and larger contracts, after some control for performance
+
+- Efficiency less predictive early
+  - TS%, eFG%, 3P%, FT% show weaker correlation with star-level contracts in first two years
+  
+---
+
+# Modeling Approach
+
+Planning to build two models to compare ability to predict star-level contracts
+
+**Model 1: Early-Career Performance Model**
+  - Year 1 + Year 2 stats
+  - Focusing on production, efficiency, and overall impact
+
+**Model 2: Improvement-Based Model**
+  - Year 1 → Year 2 changes
+  - Tests whether growth is able to predict future earnings
+
+**Potential model types:**
+  - Random Forest
+    - Captures nonlinear relationships and interactions between features (production, efficiency, draft position, or improvement metrics)
+    - More robust to correlated features and subtle patterns
+      
+  - Logistic Regression with Lasso:
+    - Identifies the most predictive metrics, reduces overfitting, clearer interpretability
+
+---
+
+#Implications for Stakeholders
+
+**Primary Audience:** NBA front offices
+
+- **Early identification of future stars** 
+  - Helps teams recognize players on star trajectories before contract decisions
+  - Can help identify undervalued players
+
+- **Contributes to rookie extensions and longer-term financial planning**
+  - Predicting future player breakouts can help with salary planning in an era of the NBA where penalties for exceeding the salary cap can be harsh
+  - Can reduce likelihood of overpaying players without "star-level" indicators
+
+---
+#Ethical/Societal Implications
+
+- **Oversimplification of talent evaluation**
+  - Important traits like leadership, locker room value, and injuries aren’t captured in stats
+
+- **Risk of missing out on late bloomers**
+  - Early improvement doesn't guarantee later career success, many players are late bloomers and this data only covers a player's first two years. 
+
+- **Potential for bias**
+  - Historical biased contract trends might affect how the model treats certain players
+  - Higher drafted players getting larger contracts, lack of appreciation for defensive specialists and stretch bigs. 

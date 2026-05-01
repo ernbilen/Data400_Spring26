@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Predicting Star-Level Contracts in the NBA</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Milo Wessel and Delaney Reimer" />
+    <meta name="date" content="2026-05-01" />
+    <script src="FinalProjectProgressPresentation_files/header-attrs-2.30/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Predicting Star-Level Contracts in the NBA
+]
+.author[
+### Milo Wessel and Delaney Reimer
+]
+.date[
+### 2026-05-01
+]
+
+---
+
+
+
+
+#Research Question: 
+
+###Which early career performance factors lead to a "star-level" contract during a player's career?
+
+- **Hundreds of advanced stats and metrics exist to measure different aspects of player performance**
+
+- **Can we use these to predict how high a player's contract value will peak?**
+
+---
+# Data
+&lt;div style="text-align: center;"&gt;
+  &lt;img src="images/BRScraper.png" style="width: 250px; margin-right: 20px;" /&gt;
+  &lt;img src="images/BBallRef.png" style="width: 250px;" /&gt;
+&lt;/div&gt;
+
+&lt;div style="clear: both;"&gt;&lt;/div&gt;
+
+- Advanced stats scraped from BasketballReference using Gabriel Pastorello's BRScraper tool
+
+- Contract data scraped from BasketballReference by scraping every team-season page to extract player salaries, matching them to the list of players, and calculating each player's max salary
+
+- 924 players drafted between 1991 and 2015 who played at least 2 seasons were used
+
+- Year 1 and Year 2 stats:
+  - Advanced stats (TS%, eFG%, USG%, PER, VORP, BPM, WS, WS/48, TRB%, AST%, STL%, BLK%)
+  - Per game stats (Points, Total Rebounds, Assists, Steals, Blocks)
+
+---
+
+# Salaries
+
+&lt;img src="images/PeakSalaryDistribution.png" style="float: right; width: 400px; margin-left: 20px;" /&gt;
+
+- Player salaries represented as % of that season's salary cap to account for cap inflation
+
+- Mean: 10% of the salary cap or ~$15.5 million under the current salary cap of $154.64 million
+
+- Median: 7% of cap or ~$10.8 million currently
+
+- We defined a "star-level" contract as one that is greater than 20% of the salary cap for the given year.
+
+---
+
+# Draft distribution
+
+&lt;img src="images/DraftDistribution.png" style="float: right; width: 300px; margin-left: 20px;" /&gt;
+
+- As expected, the number of players who peaked with a "star contract" is higher at the beginning of the draft
+
+- Two main reasons:
+  - Players drafted higher tend to be better
+  
+  - Players drafted higher that don't perform as well tend to be given more time to develop, as the team's "commitment" to them is larger. 
+
+---
+
+#Draft Position and Playing Time
+
+&lt;img src="images/DraftPickMPGHeatMap.png" style="float: right; width: 350px; margin-right: 20px;" /&gt;
+
+Moderate negative correlation (r ≈ -0.53):
+  - Higher draft picks receive more minutes to start
+  - Higher expectations earlier on and increased opportunity on weaker teams
+  
+---
+# Early Production and Role Drive Future Earnings
+
+&lt;img src="images/Top10Bottom10.png" style="float: right; width: 350px; margin-right: 20px;" /&gt;
+
+
+- Year 2 Production and opportunity metrics most important
+  - Points, Win Shares, VORP, Minutes (r ≈ 0.52–0.59)
+
+- Year 2 performance is more predictive than Year 1
+
+- Efficiency metrics show weaker relationships
+  - 3P% very low, eFG%, TS%, FT% all towards the middle
+
+- Improvement metrics not showing much impact so far
+
+- Draft position somewhat of a factor (r ≈ -0.37)
+
+---
+
+# Year 1 vs Year 2 vs Improvement
+
+&lt;img src="images/Year1Year2Improvement.png" style="float: right; width: 400px; margin-right: 20px;" /&gt;
+
+- Year 2 metrics are the most predictive
+  - Average correlation: **0.31** vs 0.24 (Year 1) and 0.20 (Improvement)
+
+- Year 1 performance still matters, but not as strong of a correlation
+
+- Improvement metrics have limited predictive power
+  - Growth is less important than overall production level
+  
+---
+
+# Key Takeaways so far
+
+- Performance more predictive than improvement
+  - Year 2 metrics (production + impact) are stronger predictors than growth or improvement alone
+  
+- Production &amp; opportunity matter most
+  - Points, WS, VORP, minutes most strongly correlated with future star-level contracts
+
+- Draft position still influential
+  - Early picks get more opportunity and larger contracts, after some control for performance
+
+- Efficiency less predictive early
+  - TS%, eFG%, 3P%, FT% show weaker correlation with star-level contracts in first two years
+  
+---
+
+# Modeling Approach
+
+Planning to build two models to compare ability to predict star-level contracts
+
+**Model 1: Early-Career Performance Model**
+  - Year 1 + Year 2 stats
+  - Focusing on production, efficiency, and overall impact
+
+**Model 2: Improvement-Based Model**
+  - Year 1 → Year 2 changes
+  - Tests whether growth is able to predict future earnings
+
+**Potential model types:**
+  - Random Forest
+    - Captures nonlinear relationships and interactions between features (production, efficiency, draft position, or improvement metrics)
+    - More robust to correlated features and subtle patterns
+      
+  - Logistic Regression with Lasso:
+    - Identifies the most predictive metrics, reduces overfitting, clearer interpretability
+
+---
+
+#Implications for Stakeholders
+
+**Primary Audience:** NBA front offices
+
+- **Early identification of future stars** 
+  - Helps teams recognize players on star trajectories before contract decisions
+  - Can help identify undervalued players
+
+- **Contributes to rookie extensions and longer-term financial planning**
+  - Predicting future player breakouts can help with salary planning in an era of the NBA where penalties for exceeding the salary cap can be harsh
+  - Can reduce likelihood of overpaying players without "star-level" indicators
+
+---
+#Ethical/Societal Implications
+
+- **Oversimplification of talent evaluation**
+  - Important traits like leadership, locker room value, and injuries aren’t captured in stats
+
+- **Risk of missing out on late bloomers**
+  - Early improvement doesn't guarantee later career success, many players are late bloomers and this data only covers a player's first two years. 
+
+- **Potential for bias**
+  - Historical biased contract trends might affect how the model treats certain players
+  - Higher drafted players getting larger contracts, lack of appreciation for defensive specialists and stretch bigs. 
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
