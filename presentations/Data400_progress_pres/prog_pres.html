@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>🍎Progress Presentation🍎</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Olivia Ngai" />
+    <meta name="author" content="Josie Kelley" />
+    <script src="prog_pres_files/header-attrs/header-attrs.js"></script>
+    <link href="prog_pres_files/remark-css/default.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# 🍎Progress Presentation🍎
+]
+.subtitle[
+## <br/> Pennsylvania Public Middle and High School Lunch Menus
+]
+.author[
+### Olivia Ngai
+]
+.author[
+### Josie Kelley
+]
+
+---
+
+
+
+&lt;style type="text/css"&gt;
+
+.remark-slide-content {
+  background-color: #8FBC8F;
+  font-family: 'American Typewriter', serif;
+}
+
+.remark-slide-content h1 {
+  color: #FFFAFA;
+  font-size: 3rem;
+  padding: 0.5rem 1rem;
+  margin: -1rem -4rem 1rem -4rem;  /* ← pulls edges out */
+  background-color: #2F4F4F;
+  border: 3px solid #8B4513;
+}
+
+/* This overrides the above just for the title slide */
+.title-slide h1 {
+  background-color: transparent;
+  color: #2F4F4F;
+  border: none;
+  font-size: 3rem;
+  margin: 0;
+  padding: 0;
+}
+
+
+.remark-slide-content h2 {
+  color: #8B4513;
+  font-size: 1.7rem;
+}
+
+/* Title slide */
+.title-slide {
+  background-color: #8FBC8F;
+  color: #ffffff;
+}
+.title-slide h1 { color: #2F4F4F; border-bottom: none; font-size: 3rem; }
+.title-slide h2 { color: #CADCFC; font-size: 3.5rem; }
+.title-slide.author { color: #8B0000; font-size: 1.1rem; }
+
+
+/* Accent / highlight boxes */
+.highlight-box {
+  background-color: #FFF8DC;
+  color: #2F4F4F;
+  border-radius: 8px;
+  font-size: 1.8rem;
+  padding: 0.8rem 1.2rem;
+  margin: 0.5rem 0;
+}
+
+.text-box {
+  background-color: #ADD8E6;
+  color: #000000;
+  font-size: 1.6rem;
+  border-radius: 8px;
+  padding: 0.8rem 1.2rem;
+  margin: 0.5rem 0;
+}
+.center-box {
+  background-color: #FFF8DC;
+  color: #2F4F4F;
+  border-radius: 8px;
+  padding: 0.8rem 1.2rem;
+  margin: 0.5rem 0;
+  font-size: 2rem;
+  top: 70%;
+  text-align: center;
+}
+.chalkboard {
+  color: #FFFAFA;
+  background-color: #2F4F4F;
+  border: 3px solid #8B4513;
+}
+.footer {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  font-size: 1rem;
+  font-family: "Google", sans-serif;
+  color: #2F4F4F;
+}
+.remark-code {
+  font-size: 0.8rem;  /* ← shrink this number to make it smaller */
+}
+
+/* Two-column layout helpers */
+.left-col  { float: left;  width: 48%; }
+.right-col { float: right; width: 48%; }
+.clear     { clear: both; }
+
+
+&lt;/style&gt;
+
+
+# Research Question
+.center-box[
+"To what extent does district-level income influence the diversity and nutritional content of middle and high school lunch menus in Pennsylvania?"
+]
+.left-col[
+.text-box[
+__Importance__
+- School lunches account for up to 50% of a child's daily caloric intake
+- Lower income students are more reliant on school lunches
+- Informs policy gaps and setting goals for future policy
+]
+]
+.right-col[
+## Key Variables
+.chalkboard[
+- 🏫 School district 
+- 💰 District-level income 
+- 🥗 Food diversity
+- 🧮 Nutritional score 
+]
+]
+???
+- middle and high schools in PA
+- average household income at the district level
+- diversity of meal options offered throughout the month
+  - Do meals vary in terms of category?
+  - Do food items repeat daily, weekly, monthly?
+- will be calculated from fat, sodium, sugar, fiber, and protein
+---
+
+# Tractable School Lunch Data: Nutrislice 
+
+.left-col[
+## Challenges
+.text-box[
+- No uniform reporting of lunch menus 
+  - PDFs
+  - School websites
+  - Third party platforms
+  - Gaps in publicly accessible lunch data
+  - Incomplete nutrition statistics across districts
+]
+]
+
+.right-col[
+## Benefits of Nutrislice
+.text-box[
+- 1/4 of PA school districts use Nutrislice (98)
+- Standardized data format across all districts
+- Accessible nutritional information
+- Consistent menu reporting structure (JSON)
+]
+]
+
+---
+# Data Retrieval Step 1: Selenium
+.left-col[
+## Finding Schools on Nutrislice
+.text-box[
+
+- Obtained PA school district list from the PA Department of Education
+- Used Selenium to loop through each school district on Nutrislice
+- Filtered results for middle and high schools only
+]
+]
+.right-col[
+.remark-code[
+
+``` r
+driver = webdriver.Chrome()
+driver.get("https://lookup.nutrislice.com/en/")
+wait = WebDriverWait(driver, 10)
+
+all_results = []
+schools_nutri = []
+for school in school_districts:
+    # Locating search box
+    search_box = driver.find_element(By.ID, "org-input")
+    time.sleep(2)
+    # Clear last search
+    search_box.clear()
+    search_box.send_keys(school)
+    search_box.send_keys(Keys.RETURN)
+
+    time.sleep(1)
+    
+    options = driver.find_elements(By.CSS_SELECTOR, "mat-option")
+    for opt in options:
+        #Save all results to a list
+        all_results.append(opt.text)
+        schools_nutri.append(school)
+driver.quit() 
+```
+]
+]
+---
+# Data Retrieval Step 2: Creating API links
+.left-col[
+## Formulating API links
+.text-box[
+- Identified a repeatable URL pattern across all Nutrislice schools
+- Automated API link construction by extracting the domain and school name from each URL
+  - The highlighted text was retrieve from the original link
+]]
+.right-col[
+.remark-code[
+
+``` r
+# Getting school link domains using links list
+for link in links:
+    domains = [link[8:link.index(".")] for link in links]
+
+#Getting school name from the link
+for link in links:
+    schools  = 
+    [link.split("menu/")[1].split("/lunch")[0] for link in links]
+
+#Building API link using original link, 
+#school name, and domain name
+api_links=[]
+count=-1
+for domain in domains:
+    count+=1
+    api_link = ("https://" + domain + 
+    ".api.nutrislice.com/menu/api/weeks/school/" +
+     schools[count] + "/menu-type/lunch/2026/03/01/")
+    api_links.append(api_link)
+```
+]]
+
+.footer[
+## Example
+
+https://&lt;mark&gt;tmsd&lt;/mark&gt;.nutrislice.com/menu/&lt;mark&gt;tussey-mountain-high&lt;/mark&gt;/lunch/2026-03-18
+
+https://&lt;mark&gt;tmsd&lt;/mark&gt;.api.nutrislice.com/menu/api/weeks/school/&lt;mark&gt;tussey-mountain-high&lt;/mark&gt;/menu-type/lunch/2026/03/01/
+
+]
+
+---
+# Step 2 continued: Daily Items API
+## Some school menu items were offered daily. These items were in separate APIs.
+.left-col[
+.remark-code[
+
+``` r
+api_links_messages=[]
+for link in message_urls:
+    #the new API link using lists of these elements
+    link = link + "/messages/school/" + str(
+    school_ids[message_urls.index(link)]) + "/menu-type/" + 
+    str(menu_ids[message_urls.index(link)]) +"/"
+    api_links_messages.append(link)
+```
+]
+.text-box[
+- Identified the pattern for formulating this API link
+- Required a menu id from another API and the school name
+- Automated API link construction
+]]
+.right-col[
+&lt;img src="images/daily_menu.png" style= "width:100%;"&gt;
+]
+.footer[
+## Example
+  - https://&lt;mark&gt;bedfordasd&lt;/mark&gt;.api.nutrislice.com/menu/api/messages/school/&lt;mark&gt;7049&lt;/mark&gt;/menu-type/&lt;mark&gt;8719&lt;/mark&gt;/
+]
+---
+
+# Data Retrieval Step 3: Scraping Menu Items
+## Built two scraping functions to handle different JSON structures
+.left-col[
+.text-box[
+ __Main_menu()__
+  - Looped over 5 weekly API requests per school
+]
+.remark-code[
+
+``` r
+    date_map = {
+        'week_1': "01",
+        'week_2': "08",
+        'week_3': "15",
+        'week_4': "22",
+        'week_5': "29” }
+```
+]
+.text-box[
+__Daily_menu()__
+- Instead of a date put "daily"
+]
+]
+.right-col[
+.remark-code[
+
+``` r
+all_rows.append({
+  "school_name": school_name,
+  "menu_id": menu_id,
+  "date": date,
+  "food_id": food.get("id"),
+  "food_name": food.get("name"),
+  "category": category,
+  "ingredients": food.get("ingredients"),
+  "cal": nutrition.get("calories"),
+  "g_fat": nutrition.get("g_fat"),
+  "g_sat_fat": nutrition.get("g_saturated_fat"),
+  "g_trans_fat": nutrition.get("g_trans_fat"),
+  "mg_cholesterol": nutrition.get("mg_cholesterol"),
+  "g_carbs": nutrition.get("g_carbs"),
+  "g_added_sugar": nutrition.get("g_added_sugar"),
+  "g_sugar": nutrition.get("g_sugar"),
+  "mg_potassium": nutrition.get("mg_potassium"),
+  "mg_sodium": nutrition.get("mg_sodium"),
+  "g_fiber": nutrition.get("g_fiber"),
+  "g_protein": nutrition.get("g_protein"),
+  "mg_iron": nutrition.get("mg_iron"),
+  "mg_calcium": nutrition.get("mg_calcium"),
+  "mg_vitamin_c": nutrition.get("mg_vitamin_c"),
+  "iu_vitamin_a": nutrition.get("iu_vitamin_a"),
+  "mg_vitamin_d": nutrition.get("mg_vitamin_d"),
+  "serving_size_amount": serving_size_info.get("serving_size_amount"),
+  "serving_size_unit": serving_size_info.get("serving_size_unit"),
+  })
+```
+]]
+---
+# Preliminary EDA: Exploring Food Categories
+.left-col[
+## Filtered for unique food items per school
+__Entrees__ have the highest count
+- Median is around 41 with a max near 80 (averaging around 1-2 entrees per day)
+- Schools differ greatly on the number of entrees they offer 
+
+__Vegetables and fruit__ are the next most common 
+  - Veggies median is around 15 (likely repeat throughout the month)
+  - Fruit median is around 10 (likely repeat throughout the month)
+- Condiments, grain, meat, milk, sides, and snacks have medians near zero
+]
+.right-col[
+&lt;img src="images/category_eda.png" style= "width:100%;"&gt;
+## Restraints and Improvement
+- Lower limit of all categories is zero
+- Indicates some schools might not completely categorize their food items
+- Inconsistent data
+]
+---
+
+# Next steps:  Feature engineering and Supervised learning
+
+.left-col[
+__Supervised machine learning for Categorizing__
+- Train a classification model on existing categorized food items 
+- Predict and fill in missing categories based on food item names
+
+__Calculating Nutrition Score__
+- Python package Nutriscore
+- positive weights for fiber and protein
+- negative weights for sodium, saturated fats, and added sugars
+
+
+
+__Incorporating more Data for linear regression__
+- District-level mean income (Based on tax returns)
+- Geographic variables (Urban vs. Rural)
+- Percentage of students qualifying for free and reduced lunches (School specific)
+]
+
+.right-col[
+## Nutrition (Per School)
+.chalkboard[
+- 🥗 Score each food item using NutriScore
+- 🥗 Average the score per day
+- 🥗 Average score per month
+- 🥗 Category specific scores
+- 🥗 &lt;mark&gt;Nutrition score for each school&lt;/mark&gt;
+]
+
+## Food Diversity (Per School)
+.chalkboard[
+- 🥗 Total unique items offered per month
+- 🥗 Average unique items offered per day
+- 🥗 Number of unique items in each category
+- 🥗 Food diversity score
+]
+]
+---
+# Implications for Stakeholders
+
+__Policy Makers__
+
+- Provides evidence of income based nutrition disparities
+- Can justify grant funding for low income districts
+- Data driven findings can help allocate resources to districts with the greatest nutritional need
+
+__School Administrators__
+
+- More diverse menus could increase lunch participation and student wellbeing
+- Low food variety may discourage students from eating school lunch entirely
+- This project may discourage school administrators from using nutrislice if it exposes a failure to meet nutritional standards
+
+__Public Health Officials__
+
+- Poor nutrition in childhood is linked to lower academic performance and long term health outcomes
+- Nutritional disparities in school lunches may reinforce existing socioeconomic inequalities
+
+__Students and Families__
+
+- Students dependent on school lunch are most vulnerable to poor nutrition and low food diversity
+- Improved menu quality could directly impact short and long term health outcomes
+
+---
+# Ethical, Legal, and Societal Implications
+__Ethical__
+
+- Schools have a responsibility to provide nutritious options, particularly for students who rely on school lunch as their primary meal
+- Poor nutritional offerings disproportionately impact low income students who have fewer alternatives
+- Healthier menus are linked to better academic performance and long term health and well being
+
+__Legal__
+
+- Schools that fail to meet federal nutrition standards could face increased scrutiny or liability
+- Districts with documented nutritional deficiencies may be subject to policy enforcement
+
+__Societal__
+
+- Nutritional disparities in school lunches risk widening existing socioeconomic inequalities
+- Low income students who depend most on school lunch are most vulnerable to the consequences of poor menu quality
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "slideNumberFormat": "%current%",
+  "highlightStyle": "solarized-light",
+  "highlightLines": true,
+  "ratio": "16:9",
+  "countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
