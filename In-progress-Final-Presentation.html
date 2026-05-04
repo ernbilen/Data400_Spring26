@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Macroeconomic Drivers, Market Dynamics, and the Predictability of Gold and Silver Prices Under Economic Uncertainty</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Anisha Choudhury &amp; Sanskriti Rijal" />
+    <meta name="date" content="2026-05-04" />
+    <script src="In-progress-Final-Presentation_files/header-attrs-2.29/header-attrs.js"></script>
+    <link href="In-progress-Final-Presentation_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="In-progress-Final-Presentation_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Macroeconomic Drivers, Market Dynamics, and the Predictability of Gold and Silver Prices Under Economic Uncertainty
+]
+.subtitle[
+## Final Presentation
+]
+.author[
+### Anisha Choudhury &amp; Sanskriti Rijal
+]
+.date[
+### May 4, 2026
+]
+
+---
+
+class: hide-slide
+
+
+
+&lt;style type="text/css"&gt;
+.hide-slide {
+  display: none;
+}
+
+.remark-slide-content {
+  background: linear-gradient(135deg, #FBE7D3, #C9A98F) !important;
+}
+
+.title-slide.remark-slide-content {
+  background: url("Charts/Title-background.jpg") center/cover no-repeat !important;
+}
+
+.title-slide h1,
+.title-slide h2,
+.title-slide h3,
+.title-slide p {
+  color: white !important;
+}
+&lt;/style&gt;
+---
+class: center, middle
+
+# Research Question
+
+How do macroeconomic and market variables influence gold and silver price movements, and does economic policy uncertainty affect their ability to predict price trends?
+
+---
+
+### Main Analysis:
+- Gold and silver have long been considered safe-haven assets, particularly during periods of economic instability, inflation, and financial market volatility. 
+- Understanding the factors that drive their price movements is important for investors, policymakers, and financial institutions seeking to manage risk and make informed decisions. 
+- However, despite their significance, there is limited understanding of how macroeconomic variables and economic policy uncertainty jointly influence the predictability of gold and silver price movements in a rapidly changing global financial environment. 
+
+### Objective:
+
+To examine how macroeconomic indicators, market variables, and economic policy uncertainty affect gold and silver price dynamics, and to evaluate whether these factors can be used to predict short-term price movements. The study also investigates whether prediction accuracy varies across different levels of economic policy uncertainty
+
+---
+### Data Retrieval
+
+Three data sources were combined into a unified daily panel spanning January 2006 to March 2026.
+1. Yahoo Finance (yfinance API) : Daily closing prices for 15+ instruments pulled via yf.download() from Jan 2006 to March 2026. Forward/backward filled for missing trading days. Included Gold, Silver, Crude Oil, S&amp;P 500, Nasdaq, Dollar Index, VIX, Copper, Platinum
+2. FRED- Inflation &amp; Interest rate : 5 year breakeven inflation and federal funds rate (DFF). Merged on business day date key with forward fill to align monthly/daily cadences
+3. EPU Index : The Economic Policy Uncertainty was captured using the Baker, Bloom &amp; Davis Daily Policy Uncertainty Index.
+
+All three datasets were merged on a shared business day date key, with forward filling applied to align monthly or sparse series to the daily frequency
+&lt;img src="Charts/dataset.png" width="100%" style="display: block; margin: auto;" /&gt;
+---
+
+### Methodology
+&lt;div style="font-size: 85%;"&gt;
+1. Feature Engineering: Daily percentage returns were computed for gold and silver using pct_change() and shifted by one day to create next-day return targets. Three interaction terms were constructed by multiplying EPU with inflation rate, interest rate, and the Dollar Index to capture regime conditional macro effects. A binary highuncertainty flag (epu_high) was created by thresholding EPU at its 75th percentile, classifying the top 25% of observations as high-uncertainty periods. 
+
+2. Models: Three models were trained and compared on a chronological 80/20 train-test split. Linear Regression was trained on standardized features as a baseline. Random Forest used 300 trees with a maximum depth of 8 and minimum 5 samples per leaf. XGBoost used 300 boosting rounds with a learning rate of 0.05 subsampling of 0.8, and column subsampling of 0.8. All models predicted next-day returns for gold and silver separately. Performance was evaluated using MSE, RMSE, MAE, and R2.
+
+3. Crisis Regime Tests: Two out-of-sample regime experiments were conducted. For the 2008 Financial crisis, models were trained on data through December 2007 and tested on January 2008 to January 2010. For COVID-!9, models were trained on January 2017 to December 2019 and tested on December 2019 to January 2022. Linear regression coefficients were compared across the full dataset and each crisis period to identify structural shifts in macro-variable relationship
+&lt;div&gt;
+---
+### EDA
+&lt;img src="Charts/Normalized Gold vs Silver over time.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="Charts/time-series.png" width="75%" style="display: block; margin: auto;" /&gt;
+---
+### Linear Regression Model
+&lt;div style="font-size: 67%;"&gt;
+- Gold MSE: 1.3239 
+- Silver MSE: 6.269 
+
+Gold error = √1.39 ≈ 1.18% daily -&gt;lower overall error, meaning its predictions are closer to the actual, observed data. More accurate than silver.
+Silver error: √6.24 ≈ 2.50% daily -&gt;has higher overall error. The predictions deviate further from the true values, indicating poorer performance.
+- Gold is much more predictable whereas silver is more volatile + harder to predict
+
+Incorporating EPU Index:
+- Gold MSE (High EPU): 2.003 &gt; MSE (Low EPU): 0.7654 -&gt; Model more difficult to predict with uncertainty
+- Silver MSE (High EPU): 9.9420 &gt; MSE (Low EPU): 3.2509 -&gt; Model more difficult to predict with uncertainty
+
+Coefficients: SILVER Example
+.pull-left[
+&lt;img src="Charts/LRM-coeff-silver.png" width="95%" /&gt;
+]
+1. EPU (+0.148): If uncertainty increases by 1 unit, silver returns increase by ~0.15. Shows some safe-haven demand.
+2. MSCI Emerging Markets (+0.323): If emerging markets rise by 1%, silver increases by ~0.32%. This highlights silver’s industrial nature, as global growth increases demand.
+3. Inflation × EPU (+0.052): When uncertainty is high, inflation has a stronger positive effect on silver. Indicates silver behaves more like a precious metal (inflation hedge) under uncertainty.
+4. Interest rate × EPU (−0.154):When uncertainty is high, the positive effect (int rate coeff = +0.574) of interest rates weakens significantly. Normally, higher int rates are associated with stronger economic conditions, which increase industrial demand for silver. However, during periods of high uncertainty, this link breaks down: economic activity becomes less predictable, so interest rates no longer translate as strongly into higher silver demand
+&lt;div&gt;
+---
+### Model Comparisons
+.pull-left[
+&lt;img src="Charts/model-comparison.png" style="height:300px; width:auto;"&gt;
+]
+
+.pull-right[
+&lt;img src="Charts/model-comparison2.png" style="height:300px; width:auto;"&gt;
+]
+
+- Each model is normalized, allowing comparison across gold and silver. 
+- Random Forest performs the best across both gold and silver. 
+- XGBoost shows higher error compared to the other models.
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:center;"&gt; Metric &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; LRM &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; RF &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; XGB &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Gold &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 49.86 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 52.23 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 50.52 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Silver &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 47.30 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 48.63 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 47.58 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+### Model Comparison: XG Boost vs Random Forest
+
+&lt;img src="Charts/top-features-gold.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="Charts/top-features-silver.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+### Impact of Financial Recession - Behavior under Economic Uncertainty
+.pull-left[
+&lt;img src="Charts/Gold Full vs Crisis Coefficients.png" width="90%" /&gt;
+]
+
+Gold: Relationship with macro variables shift significantly, especially stronger negative links with equities under uncertainty. Shows that gold acts as a clearer safe-haven during financial stress.
+
+.pull-right[
+&lt;img src="Charts/Silver Full vs Crisis Coefficients.png" width="90%" /&gt;
+]
+.clear[]
+
+Silver: Larger and more unstable coefficient swings with stronger reversals, indicates that silver becomes highly sensitive to market conditions rather than behaving like stable hedge.
+
+A positive or negative coefficient does not indicate whether gold/silver rises or falls overall, but rather how sensitive  returns are to changes in specific variables. 
+
+During GFR, for example, the model shows that the influence of underlying factors such as interest rates, MSCI changed in direction and strength for gold.
+
+---
+###Impact of COVID-19- Behavior under Economic Uncertainty
+.pull-left[
+&lt;img src="Charts/covid- gold .png" width="90%" /&gt;
+]
+
+Gold: During COVID-19, gold’s relationships with macro variables shifted noticeably. The stronger effects of Treasury futures, interest rates, EPU, and the gold-silver ratio suggest that gold became more responsive to uncertainty, monetary conditions, and safe-haven demand.
+.pull-right[
+&lt;img src="Charts/covid-silver.png" width="90%" /&gt;
+]
+.clear[]
+
+Silver: Silver shows larger and more uneven coefficient changes during COVID-19, especially around EPU, interest rates, equities, and the gold-silver ratio. This suggests that silver behaved less like a stable hedge and more like a crisis-sensitive asset tied to both investor demand and industrial expectations.
+
+---
+#Implications for Stakeholders
+Portfolio Managers and Investors: Used as a hedging risk, decide how to allocate between stocks, commodities, alternative assets
+
+Retail investors &amp; Households: marketed as a safe investment, people invest during inflation fears or crisis
+
+Central bank &amp; Government: Holds gold reserves, monitors inflation expectations, currency strength, global financial stability
+
+Mining Industry: Revenue depends on gold silver prices, countries depend on commodity exports 
+
+Traders &amp; Financial Analysts: Trade short term movements, build predictive models
+
+
+
+---
+#Ethical, legal, societal implications
+Limitations of Financial Prediction: Financial markets are uncertain and influenced by unpredictable events, over reliance on predictions can lead to risky financial decisions
+
+Human rights abuse: In some regions, mining industries are linked to labor exploitation, unsafe working conditions and environmental harm
+
+Correlation vs causation: Observed relationships do not imply direct causality, Important to find patterns
+
+Unequal access to financial knowledge: Advanced data and modelling tools are not equally accessible, institutional investors have more resources than individuals 
+
+Market Narratives: “Gold is a safe haven” is simplified narrative, Misleading assumptions can affect financial decision
+
+
+---
+class: center, middle
+background-color: "#1c5253"
+
+## Thanks for listening!
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
