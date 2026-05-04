@@ -1,0 +1,238 @@
+---
+title: "Macroeconomic Drivers, Market Dynamics, and the Predictability of Gold and Silver Prices Under Economic Uncertainty"
+subtitle: "Final Presentation"
+author: "Anisha Choudhury & Sanskriti Rijal"
+date: "`r format(Sys.Date(), '%B %e, %Y')`"
+output:
+ xaringan::moon_reader:
+ css: []
+ lib_dir: libs
+ nature:
+ beforeInit: "macros.js"
+ highlightStyle: github
+ highlightLines: true
+ countIncrementalSlides: false
+ yolo:
+ img: "../img/emo/boredom-small.png"
+ times: 1
+ seal: false
+---
+class: hide-slide
+
+```{r xaringan-theme, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_accent(
+  base_color = "#5B4636",
+  background_color = "#F0D9C6"
+)
+```
+
+```{css, echo=FALSE}
+.hide-slide {
+  display: none;
+}
+
+.remark-slide-content {
+  background: linear-gradient(135deg, #FBE7D3, #C9A98F) !important;
+}
+
+.title-slide.remark-slide-content {
+  background: url("Charts/Title-background.jpg") center/cover no-repeat !important;
+}
+
+.title-slide h1,
+.title-slide h2,
+.title-slide h3,
+.title-slide p {
+  color: white !important;
+}
+```
+---
+class: center, middle
+
+# Research Question
+
+How do macroeconomic and market variables influence gold and silver price movements, and does economic policy uncertainty affect their ability to predict price trends?
+
+---
+
+### Main Analysis:
+- Gold and silver have long been considered safe-haven assets, particularly during periods of economic instability, inflation, and financial market volatility. 
+- Understanding the factors that drive their price movements is important for investors, policymakers, and financial institutions seeking to manage risk and make informed decisions. 
+- However, despite their significance, there is limited understanding of how macroeconomic variables and economic policy uncertainty jointly influence the predictability of gold and silver price movements in a rapidly changing global financial environment. 
+
+### Objective:
+
+To examine how macroeconomic indicators, market variables, and economic policy uncertainty affect gold and silver price dynamics, and to evaluate whether these factors can be used to predict short-term price movements. The study also investigates whether prediction accuracy varies across different levels of economic policy uncertainty
+
+---
+### Data Retrieval
+```{r echo=FALSE, out.width="70%",fig.align="center"}
+```
+Three data sources were combined into a unified daily panel spanning January 2006 to March 2026.
+1. Yahoo Finance (yfinance API) : Daily closing prices for 15+ instruments pulled via yf.download() from Jan 2006 to March 2026. Forward/backward filled for missing trading days. Included Gold, Silver, Crude Oil, S&P 500, Nasdaq, Dollar Index, VIX, Copper, Platinum
+2. FRED- Inflation & Interest rate : 5 year breakeven inflation and federal funds rate (DFF). Merged on business day date key with forward fill to align monthly/daily cadences
+3. EPU Index : The Economic Policy Uncertainty was captured using the Baker, Bloom & Davis Daily Policy Uncertainty Index.
+
+All three datasets were merged on a shared business day date key, with forward filling applied to align monthly or sparse series to the daily frequency
+```{r, out.width="100%", fig.align="center", echo=FALSE}
+knitr::include_graphics("Charts/dataset.png")
+```
+---
+
+### Methodology
+<div style="font-size: 85%;">
+1. Feature Engineering: Daily percentage returns were computed for gold and silver using pct_change() and shifted by one day to create next-day return targets. Three interaction terms were constructed by multiplying EPU with inflation rate, interest rate, and the Dollar Index to capture regime conditional macro effects. A binary highuncertainty flag (epu_high) was created by thresholding EPU at its 75th percentile, classifying the top 25% of observations as high-uncertainty periods. 
+
+2. Models: Three models were trained and compared on a chronological 80/20 train-test split. Linear Regression was trained on standardized features as a baseline. Random Forest used 300 trees with a maximum depth of 8 and minimum 5 samples per leaf. XGBoost used 300 boosting rounds with a learning rate of 0.05 subsampling of 0.8, and column subsampling of 0.8. All models predicted next-day returns for gold and silver separately. Performance was evaluated using MSE, RMSE, MAE, and R2.
+
+3. Crisis Regime Tests: Two out-of-sample regime experiments were conducted. For the 2008 Financial crisis, models were trained on data through December 2007 and tested on January 2008 to January 2010. For COVID-!9, models were trained on January 2017 to December 2019 and tested on December 2019 to January 2022. Linear regression coefficients were compared across the full dataset and each crisis period to identify structural shifts in macro-variable relationship
+<div>
+---
+### EDA
+```{r, out.width="75%", fig.align="center", echo=FALSE}
+knitr::include_graphics("Charts/Normalized Gold vs Silver over time.png")
+```
+
+```{r, out.width="75%", fig.align="center", echo=FALSE}
+knitr::include_graphics("Charts/time-series.png")
+```
+---
+### Linear Regression Model
+<div style="font-size: 67%;">
+- Gold MSE: 1.3239 
+- Silver MSE: 6.269 
+
+Gold error = √1.39 ≈ 1.18% daily ->lower overall error, meaning its predictions are closer to the actual, observed data. More accurate than silver.
+Silver error: √6.24 ≈ 2.50% daily ->has higher overall error. The predictions deviate further from the true values, indicating poorer performance.
+- Gold is much more predictable whereas silver is more volatile + harder to predict
+
+Incorporating EPU Index:
+- Gold MSE (High EPU): 2.003 > MSE (Low EPU): 0.7654 -> Model more difficult to predict with uncertainty
+- Silver MSE (High EPU): 9.9420 > MSE (Low EPU): 3.2509 -> Model more difficult to predict with uncertainty
+
+Coefficients: SILVER Example
+.pull-left[
+```{r echo=FALSE, out.width="95%"}
+knitr::include_graphics("Charts/LRM-coeff-silver.png")
+```
+]
+1. EPU (+0.148): If uncertainty increases by 1 unit, silver returns increase by ~0.15. Shows some safe-haven demand.
+2. MSCI Emerging Markets (+0.323): If emerging markets rise by 1%, silver increases by ~0.32%. This highlights silver’s industrial nature, as global growth increases demand.
+3. Inflation × EPU (+0.052): When uncertainty is high, inflation has a stronger positive effect on silver. Indicates silver behaves more like a precious metal (inflation hedge) under uncertainty.
+4. Interest rate × EPU (−0.154):When uncertainty is high, the positive effect (int rate coeff = +0.574) of interest rates weakens significantly. Normally, higher int rates are associated with stronger economic conditions, which increase industrial demand for silver. However, during periods of high uncertainty, this link breaks down: economic activity becomes less predictable, so interest rates no longer translate as strongly into higher silver demand
+<div>
+---
+### Model Comparisons
+.pull-left[
+<img src="Charts/model-comparison.png" style="height:300px; width:auto;">
+]
+
+.pull-right[
+<img src="Charts/model-comparison2.png" style="height:300px; width:auto;">
+]
+
+- Each model is normalized, allowing comparison across gold and silver. 
+- Random Forest performs the best across both gold and silver. 
+- XGBoost shows higher error compared to the other models.
+
+
+```{r, echo=FALSE}
+library(knitr)
+
+data <- data.frame(
+  Metric = c("Gold", "Silver"),
+  LRM = c(49.857820, 47.298578),
+  RF = c(52.227488, 48.625592),
+  XGB = c(50.521327, 47.582938)
+)
+
+kable(data, format = "html", digits = 2, align = "c")
+```
+
+---
+### Model Comparison: XG Boost vs Random Forest
+
+```{r echo=FALSE,  fig.align="center", out.width="60%"}
+knitr::include_graphics("Charts/top-features-gold.png")
+```
+
+```{r echo=FALSE,  fig.align="center", out.width="60%"}
+knitr::include_graphics("Charts/top-features-silver.png")
+```
+
+---
+### Impact of Financial Recession - Behavior under Economic Uncertainty
+.pull-left[
+```{r echo=FALSE, out.width="90%"}
+knitr::include_graphics("Charts/Gold Full vs Crisis Coefficients.png")
+```
+]
+
+Gold: Relationship with macro variables shift significantly, especially stronger negative links with equities under uncertainty. Shows that gold acts as a clearer safe-haven during financial stress.
+
+.pull-right[
+```{r echo=FALSE, out.width="90%"}
+knitr::include_graphics("Charts/Silver Full vs Crisis Coefficients.png")
+```
+]
+.clear[]
+
+Silver: Larger and more unstable coefficient swings with stronger reversals, indicates that silver becomes highly sensitive to market conditions rather than behaving like stable hedge.
+
+A positive or negative coefficient does not indicate whether gold/silver rises or falls overall, but rather how sensitive  returns are to changes in specific variables. 
+
+During GFR, for example, the model shows that the influence of underlying factors such as interest rates, MSCI changed in direction and strength for gold.
+
+---
+###Impact of COVID-19- Behavior under Economic Uncertainty
+.pull-left[
+```{r echo=FALSE, out.width="90%"}
+knitr::include_graphics("Charts/covid- gold .png")
+```
+]
+
+Gold: During COVID-19, gold’s relationships with macro variables shifted noticeably. The stronger effects of Treasury futures, interest rates, EPU, and the gold-silver ratio suggest that gold became more responsive to uncertainty, monetary conditions, and safe-haven demand.
+.pull-right[
+```{r echo=FALSE, out.width="90%"}
+knitr::include_graphics("Charts/covid-silver.png")
+```
+]
+.clear[]
+
+Silver: Silver shows larger and more uneven coefficient changes during COVID-19, especially around EPU, interest rates, equities, and the gold-silver ratio. This suggests that silver behaved less like a stable hedge and more like a crisis-sensitive asset tied to both investor demand and industrial expectations.
+
+---
+#Implications for Stakeholders
+Portfolio Managers and Investors: Used as a hedging risk, decide how to allocate between stocks, commodities, alternative assets
+
+Retail investors & Households: marketed as a safe investment, people invest during inflation fears or crisis
+
+Central bank & Government: Holds gold reserves, monitors inflation expectations, currency strength, global financial stability
+
+Mining Industry: Revenue depends on gold silver prices, countries depend on commodity exports 
+
+Traders & Financial Analysts: Trade short term movements, build predictive models
+
+
+
+---
+#Ethical, legal, societal implications
+Limitations of Financial Prediction: Financial markets are uncertain and influenced by unpredictable events, over reliance on predictions can lead to risky financial decisions
+
+Human rights abuse: In some regions, mining industries are linked to labor exploitation, unsafe working conditions and environmental harm
+
+Correlation vs causation: Observed relationships do not imply direct causality, Important to find patterns
+
+Unequal access to financial knowledge: Advanced data and modelling tools are not equally accessible, institutional investors have more resources than individuals 
+
+Market Narratives: “Gold is a safe haven” is simplified narrative, Misleading assumptions can affect financial decision
+
+
+---
+class: center, middle
+background-color: "#1c5253"
+
+## Thanks for listening!
+
+
