@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Metal Prices in Transition</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Amelia Kim and Michael Pelletier" />
+    <script src="libs/header-attrs-2.30/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Metal Prices in Transition
+]
+.subtitle[
+## Monte Carlo model and long-term results for copper and silver
+]
+.author[
+### Amelia Kim and Michael Pelletier
+]
+
+---
+
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+  background-color: #f7f4ed; color: black;
+}
+.title-slide {
+  background-color: #1f3a66;
+}
+&lt;/style&gt;
+
+
+### Overview
+
+**Research Question:**
+Are copper and silver entering a structurally tighter regime?
+
+**Thesis:**
+Copper and silver are not just reacting to normal commodity cycles. The evidence points to tighter physical availability, and Monte Carlo is a better way to show that uncertainty over long time horizons.
+
+**Our Project:**
+1. Historical metals panel
+2. Copper and silver physical evidence
+3. Scenario and Monte Carlo model
+
+---
+
+### Data
+
+
+![](https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/data.png)
+![](https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/data2.png)
+![](https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/data3.png)
+
+---
+
+### Why Monte Carlo?
+![](https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/montecarlo.png)
+
+---
+### Monte Carlo Inputs
+
+
+
+![](https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/sim.png)
+
+---
+### Result 1: metals do not move as one simple basket
+
+![](https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/pic1.png)
+
+---
+### Result 2: silver is a hybrid metal
+
+&lt;img src="https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/pic2.png" width="60%" /&gt;
+
+Silver is not purely precious or purely industrial. Its correlation with gold is high, but it also has
+meaningful co-movement with industrial metals such as copper.
+
+- **0.74 silver-gold return correlation**
+- **0.48 silver-copper return correlation**
+---
+
+###Result 3: the dollar is the strongest common macro driver
+
+&lt;img src="https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/pic3.png" width="80%" /&gt;
+
+
+The broad U.S. dollar enters negatively across all six metal regressions. This means a bullish metals thesis is incomplete if it ignores currency conditions.
+
+---
+
+###Copper Evidence
+**Result 4: copper inventories are a physical tightness signal**
+![](https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/pic4.png)
+---
+###Silver Evidence
+**Result 5: silver combines deficits with technology demand**
+![](https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/pic5.png)
+
+---
+
+### How the evidence changes the forecast design
+
+![](https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/fig8.png)
+
+---
+### Scenario Model
+![](https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/fig9.png)
+
+---
+### Simulation Design: Monte Carlo mechanics
+![](https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/fig10.png)
+
+
+---
+
+### Simulation Output: Copper
+
+![](https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/fig11.png)
+
+
+---
+### Simulation Output: Silver
+
+![](https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/fig12.png)
+---
+
+### Simulation Output: 5, 10, and 25 year ranges
+![](https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/fig13.png)
+
+
+---
+
+### Results
+
+&lt;img src="https://raw.githubusercontent.com/ameliakim/Data400_Spring26/main/ppt%20images/fig14.png" width="60%" /&gt;
+
+**Interpretation:**
+- Copper shows a steadier tightening story: demand growth and inventory scarcity point in the same direction.
+- Silver shows a wider distribution: the upside case is stronger,but substitution and investor behavior add uncertainty.
+- The model supports upward pressure under stated assumptions, not a guaranteed price target.
+
+**The safest conclusion is not “prices must reach X.” The conclusion is that sustained deficits and reduced availability create asymmetric upside risk.**
+
+---
+
+###Final Takeaways
+- Metal prices are shaped by both macro forces and physical-market scarcity.
+- Copper and silver deserve deeper treatment because their structural stories are different from the rest of the panel.
+- Monte Carlo is the right final model because it makes uncertainty visible and keeps assumptions transparent.
+
+
+---
+
+### References
+- World Bank Pink Sheet commodity prices
+- Federal Reserve Bank of St. Louis FRED series (VIX, yield spread, unemployment, S&amp;P 500, broad dollar); OECD industrial production
+- London Metal Exchange / Westmetall copper stocks
+- International Energy Agency Global Critical Minerals Outlook 2025
+- International Copper Study Group market releases
+- Silver Institute / Metals Focus World Silver Survey 2026 and market releases
+- U.S. Geological Survey Mineral Commodity Summaries 2026.
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
