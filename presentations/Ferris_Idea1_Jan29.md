@@ -1,0 +1,17 @@
+Will Ferris
+Professor Bilen
+February 6, 2026
+Data Capstone
+
+This project evaluates which valuation multiples and firm characteristics measured at the end of 2024 were most strongly associated with U.S. stock returns in 2025.
+
+This project will use firm-level financial and stock market data which are publicly available. The data will require U.S. equity prices to compute realized stock returns in 2025, as well as firm characteristics such as valuation multiples like price-to-earnings, price-to-book, market capitalization, and basic financial fundamentals measured at the end of 2024. The data is available through Yahoo Finance which provides historical price series, firm fundamentals, and sector classifications for publicly traded companies. 
+
+The data can be retrieved programmatically in Python. Stock prices and firm-level characteristics are accessible through the Yahoo Finance API (yfinance), which allows for automated downloading of price data and company fundamentals. Stock returns for 2025 will be calculated using adjusted closing prices while explanatory variables will be constructed using firm characteristics observed at the end of 2024. Python will also be used for data cleaning, merging datasets by ticker symbols, and constructing derived variables such as momentum and volatility measures. 
+
+The empirical analysis will rely primarily on cross-sectional linear regression models. The dependent variable will be each firm’s realized stock return during the 2025 calendar year, while independent variables will include valuation multiples, growth measures, risk controls, and firm size, all measured prior to the return period. It is likely that I will need to include sector fixed effects to control for industry-wide differences in performance. To complement the regression analysis, the project can include portfolio sorting techniques, where firms are grouped into quantiles based on specific characteristics and average returns are compared across groups. These methods are standard in empirical finance and are appropriate for addressing the research question.
+
+The research will be relevant to individual investors, portfolio managers, and the broader scope of financial firms who care about understanding which firm characteristics have historically been associated with higher returns as of recent. The findings can be highly useful for future investment strategies. Academic researchers and students may find value in the analysis as it contributes to the broader literature on return predictability. More generally, the project will be relevant to anyone interested in how financial markets price firm-level information and whether commonly used valuation metrics are informative for investment decisions.
+
+From a societal perspective, the findings will provide a better understanding of how financial markets allocate capital and which firm characteristics led to higher returns. By evaluating the effectiveness of a variety of valuation metrics, the research may help improve financial literacy and encourage more informed investment decision-making. These skills are critical to long term wealth building and living a financially happy life. Placing your money in bad stocks can decrease net worth rapidly, and it is important to understand the relationship of risk with returns. In this sense, the project contributes to economic understanding and market transparency.
+
